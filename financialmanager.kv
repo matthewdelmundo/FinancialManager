@@ -16,6 +16,44 @@
             text: "Expense"
             on_release: root.choose_expense()
 
+<IncomeAmountInput@AmountInput>
+    foreground_color: 0.75, 0.86, 0.57, 1
+    cursor_color: 0.75, 0.86, 0.57, 1
+    background_color: 0.22, 0.48, 0.3, 1
+    hint_text_color: 0.47, 0.75, 0.39, 1
+    multiline: False
+    focus: True
+    input_type: "number"
+
+<PopupAddIncome>
+    title: "Add Income"
+    size_hint: 0.8, None
+    size: 0, 250
+    on_dismiss: root.reset_inputs()
+
+    RelativeLayout:
+        IncomeAmountInput:
+            id: entry_amount
+            size_hint: 0.9, 0.38
+            pos_hint: {"x": 0.05,"y": 0.6}
+            font_size: 40
+            hint_text: "₱0.00"
+
+
+        TextInput:
+            id: entry_name
+            size_hint: 0.9, 0.18
+            pos_hint: {"x": 0.05,"y": 0.4}
+            hint_text: "New Income"
+            multiline: False
+            focus: True
+
+        Button:
+            size_hint: 0.5, 0.28
+            pos_hint: {"x": 0.25, "y": 0.05}
+            text: "Add"
+
+
 <PopUpTotalBalance>:
     title: "Total Balance"
     size_hint: 0.8, None
@@ -33,7 +71,7 @@
             font_size: 28
 
 
-<TitleLabel>:
+<TitleLabel@Label>:
     canvas:
         Color:
             rgba: 1, 1, 1, 0.25
