@@ -4,14 +4,9 @@ from kivy.uix.widget import Widget
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
-from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
-from kivy.config import Config
-
-
-Config.set('graphics', 'width', '338')
-Config.set('graphics', 'height', '600')
+from kivy.core.window import Window
 
 
 # Popup window for clicking the "Add" button
@@ -32,7 +27,8 @@ class PopUpChooseEntry(Popup):
         self.caller_widget.add_entry("Expense")
         self.dismiss()
 
-#Popup window for clicking the "Total Balance" button
+
+# Popup window for clicking the "Total Balance" button
 class PopUpTotalBalance(Popup):
     def __init__(self, **kwargs):
         super(PopUpTotalBalance, self).__init__(**kwargs)
@@ -60,29 +56,34 @@ class Entry(Widget):
 # Main screen showing entry history
 # Should use array to store and edit data
 class HistoryScreen(Widget):
-    entries_list = ObjectProperty(None)
+    entries_display = ObjectProperty(None)
+    entries_list = []
 
     def __init__(self, **kwargs):
         super(HistoryScreen, self).__init__(**kwargs)
-        self.entries_list.bind(minimum_height=self.entries_list.setter("height"))
+
+        # DEBUG (Remove in Final)
+        # Sets window to phone ratio
+        Window.size = (338, 600)
+
+        # Sets GridLayout size to its number of entries -> allows scrolling
+        self.entries_display.bind(minimum_height=self.entries_display.setter("height"))
 
         # Reference to the popup for ease of opening
         self.entry_popup = PopUpChooseEntry(self)
         self.total_balance_popup = PopUpTotalBalance()
 
-
     # Opens the ChooseEntry popup
     def request_add_entry(self):
         self.entry_popup.open()
 
-    # Adds entry to list by adding a widget
+    # Adds entry to UI display by adding a widget
     def add_entry(self, entry_type):
-        self.ids["entries_list"].add_widget(Button(text=entry_type))
+        self.ids["entries_display"].add_widget(Button(text=entry_type))
 
-    #Views Total Balance
+    # Views Total Balance
     def view_total_balance(self):
         self.total_balance_popup.open()
-        
 
 
 # App Build

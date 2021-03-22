@@ -52,7 +52,7 @@
 
 
 <HistoryScreen>
-    entries_list: entries_list
+    entries_display: entries_display
 
     FloatLayout:
         size: root.width, root.height
@@ -69,14 +69,14 @@
             pos_hint: {"x": 0.15, "y": 0.11}
 
             GridLayout:
-                id: entries_list
+                id: entries_display
                 cols: 1
+                spacing: 5
                 size_hint_y: None
                 row_default_height: '50dp'
                 row_force_default: True
 
-                Button:
-                    text: "Income"
+                Entry:
 
         Button:
             text: "Add"
@@ -85,7 +85,7 @@
             on_release: root.request_add_entry()
 
         Button:
-            text: "Total Balance"
+            text: "Total \nBalance"
             size_hint: 0.2, 0.08
             pos_hint: {"x": 0.5, "y": 0.01}
             on_release: root.view_total_balance()
