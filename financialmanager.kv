@@ -1,0 +1,91 @@
+<PopUpChooseEntry>:
+    title: "Add Entry"
+    size_hint: 0.8, None
+    size: 0, 200
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 10
+        padding: 10
+
+        Button:
+            text: "Income"
+            on_release: root.choose_income()
+
+        Button:
+            text: "Expense"
+            on_release: root.choose_expense()
+
+<PopUpTotalBalance>:
+    title: "Total Balance"
+    size_hint: 0.8, None
+    size: 0, 200
+    on_open: root.total_balance()
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 10
+        padding: 10
+
+        Label:
+            id: total_balance
+            text: ""
+            font_size: 28
+
+
+<TitleLabel>:
+    canvas:
+        Color:
+            rgba: 1, 1, 1, 0.25
+        Rectangle:
+            pos: self.x, self.y
+            size: self.size
+
+<Entry>:
+    canvas:
+        Color:
+            rgba: 1, 1, 1, 0.25
+        Rectangle:
+            pos: self.x, self.y
+            size: self.size
+    Label:
+
+
+<HistoryScreen>
+    entries_list: entries_list
+
+    FloatLayout:
+        size: root.width, root.height
+
+        TitleLabel:
+            text: "History"
+            size_hint: 0.8, 0.08
+            pos_hint: {"x": 0.1, "y": 0.91}
+
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            size_hint: 0.7, 0.78
+            pos_hint: {"x": 0.15, "y": 0.11}
+
+            GridLayout:
+                id: entries_list
+                cols: 1
+                size_hint_y: None
+                row_default_height: '50dp'
+                row_force_default: True
+
+                Button:
+                    text: "Income"
+
+        Button:
+            text: "Add"
+            size_hint: 0.2, 0.08
+            pos_hint: {"x": 0.3, "y": 0.01}
+            on_release: root.request_add_entry()
+
+        Button:
+            text: "Total Balance"
+            size_hint: 0.2, 0.08
+            pos_hint: {"x": 0.5, "y": 0.01}
+            on_release: root.view_total_balance()
