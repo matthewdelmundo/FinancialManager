@@ -8,6 +8,20 @@ from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
 
+# Popup window for clicking an entry
+class PopUpClickEntry(Popup):
+    def __init__(self, caller_widget, **kwargs):
+        super(PopUpClickEntry, self).__init__(**kwargs)
+
+        # Widget that called this popup
+        self.caller_widget = caller_widget
+
+        self.ids.ent_type.color = (0.95, 0.98, 0.32, 1)
+        self.ids.ent_type.text = "ENTRY TYPE: " + self.caller_widget.get_entry_type()
+        self.ids.ent_name.text = self.caller_widget.get_entry_name()
+        self.ids.ent_amt.color = (0.47, 0.75, 0.39, 1)
+        self.ids.ent_amt.text = "AMOUNT: " + self.caller_widget.get_amount()
+
 # Popup window for clicking the "Add" button
 class PopUpChooseEntry(Popup):
     def __init__(self, caller_widget, **kwargs):
@@ -28,7 +42,6 @@ class PopUpChooseEntry(Popup):
     def choose_expense(self):
         self.caller_widget.add_entry("Expense", "", "", "")
         self.dismiss()
-
 
 # Popup window for clicking the "Income" button
 class PopUpAddIncome(Popup):
@@ -79,8 +92,6 @@ class PopUpTotalBalance(Popup):
             self.ids.total_balance.color = (0.75, 0.47, 0.39, 1)
             text = '-₱{:,.2f}'.format(abs_total)
             self.ids.total_balance.text = text
-
-
 
 
 # Custom TextInput for entry name
@@ -206,7 +217,18 @@ class Entry(Widget):
         self.display_amount = display_amount
         self.index = index
 
+        self.click_entry_popup = PopUpClickEntry(self)
+
         self.initialize_entry()
+    
+    def get_entry_type(self):
+        return self.entry_type
+
+    def get_entry_name(self):
+        return self.name
+    
+    def get_amount(self):
+        return self.display_amount
 
     # Initializes entry for UI display
     # Turns amount font color to green when Income entry
@@ -218,6 +240,7 @@ class Entry(Widget):
 
     # Prints list index when widget is pressed
     def press(self):
+        self.click_entry_popup.open()
         print(self.index)
 
 
@@ -267,7 +290,6 @@ class HistoryScreen(Widget):
         for i in range(len(self.entries_list)):
             total = total + self.entries_list[i][1]
         return total
-
 
 
 # App Build
