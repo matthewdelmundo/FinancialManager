@@ -58,13 +58,26 @@ class PopUpAddIncome(Popup):
 
 # Popup window for clicking the "Total Balance" button
 class PopUpTotalBalance(Popup):
-    def __init__(self, **kwargs):
+    def __init__(self, caller_widget, **kwargs):
         super(PopUpTotalBalance, self).__init__(**kwargs)
 
+        # Widget that called this popup
+        self.caller_widget = caller_widget
+
     def total_balance(self):
-        total = 999
-        text = f'Your total balance is {total}'
-        self.ids.total_balance.text = text
+        total = self.caller_widget.get_entries_list_total()
+        if total >= 0:
+            self.ids.total_balance.color = (0.47, 0.75, 0.39, 1)
+            text = f'₱{total}'
+            self.ids.total_balance.text = text
+        else:
+            abs_total = abs(total)
+            self.ids.total_balance.color = (0.75, 0.47, 0.39, 1)
+            text = f'-₱{abs_total}'
+            self.ids.total_balance.text = text
+
+        
+
 
 
 # Custom TextInput for entry name
@@ -223,7 +236,7 @@ class HistoryScreen(Widget):
 
         # Reference to the popup for ease of opening
         self.entry_popup = PopUpChooseEntry(self)
-        self.total_balance_popup = PopUpTotalBalance()
+        self.total_balance_popup = PopUpTotalBalance(self)
 
     # Opens the ChooseEntry popup
     def request_add_entry(self):
@@ -244,6 +257,13 @@ class HistoryScreen(Widget):
     # Views Total Balance
     def view_total_balance(self):
         self.total_balance_popup.open()
+
+    def get_entries_list_total(self):
+        total = 0
+        for i in range(len(self.entries_list)):
+            total = total + self.entries_list[i][1]
+        return total
+
 
 
 # App Build
