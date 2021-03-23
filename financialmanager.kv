@@ -47,7 +47,7 @@
             pos_hint: {"x": 0.05,"y": 0.6}
             font_size: 40
 
-        TextInput:
+        EntryNameInput:
             id: entry_name
             hint_text: "New Income"
             on_focus: entry_amount.append_zeroes()
@@ -99,13 +99,31 @@
 # Custom widget for each entry
 # uses a name and an amount variable
 <Entry>:
-    canvas:
-        Color:
-            rgba: 1, 1, 1, 0.25
-        Rectangle:
-            pos: self.x, self.y
-            size: self.size
-    Label:
+    RelativeLayout:
+        pos: root.x, root.y
+        width: root.width
+        height: root.height
+
+        Button:
+            on_release: root.press()
+
+        Label:
+            id: entry_name
+
+            size_hint: 0.38, 1
+            pos_hint: {"x": 0.05}
+            text_size: self.size
+            halign: "left"
+            valign: "middle"
+
+        Label:
+            id: entry_display_amount
+
+            size_hint: 0.48, 1
+            pos_hint: {"right": 0.95}
+            text_size: self.size
+            halign: "right"
+            valign: "middle"
 
 
 # Main screen for displaying entry history
@@ -133,10 +151,8 @@
                 spacing: 5
 
                 size_hint_y: None
-                row_default_height: '50dp'
+                row_default_height: '60dp'
                 row_force_default: True
-
-                Entry:
 
         Button:
             text: "Add"

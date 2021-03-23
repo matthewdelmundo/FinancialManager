@@ -27,7 +27,7 @@ class PopUpChooseEntry(Popup):
 
     # Sends caller the add_entry function with "Expense" as parameter
     def choose_expense(self):
-        self.caller_widget.add_entry("Expense")
+        self.caller_widget.add_entry("Expense", "", "", "")
         self.dismiss()
 
 
@@ -65,6 +65,15 @@ class PopUpTotalBalance(Popup):
         total = 999
         text = f'Your total balance is {total}'
         self.ids.total_balance.text = text
+
+
+# Custom TextInput for entry name
+class EntryNameInput(TextInput):
+    # Prevents name from going over 24 characters
+    def insert_text(self, substring, from_undo=False):
+        if len(self.text) >= 24:
+            return
+        return super(EntryNameInput, self).insert_text(substring, from_undo)
 
 
 # Custom TextInput for entries
@@ -170,13 +179,30 @@ class AmountInput(TextInput):
         self.append_zeroes()
 
 
-# Unimplemented. Custom Widget for the entries.
-# Should be clickable and have multiple labels indicating Name, Notes, and Amount
+# Custom Widget for the entries.
+# entry_type = "Income"/"Expense"
+# index = index in the currently used entries_list (found in HistoryScreen)
 class Entry(Widget):
-    def __init__(self, **kwargs):
+    def __init__(self, entry_type, name, display_amount, index, **kwargs):
         super(Entry, self).__init__(**kwargs)
-        self.name = "New Entry"
-        self.amount = 0
+        self.entry_type = entry_type
+        self.name = name
+        self.display_amount = display_amount
+        self.index = index
+
+        self.initialize_entry()
+
+    # Initializes entry for UI display
+    # Turns amount font color to green when Income entry
+    def initialize_entry(self):
+        self.ids.entry_name.text = self.name
+        self.ids.entry_display_amount.text = self.display_amount
+        if self.entry_type == "Income":
+            self.ids.entry_display_amount.color = (0.47, 0.75, 0.39, 1)
+
+    # Prints list index when widget is pressed
+    def press(self):
+        print(self.index)
 
 
 # Main screen showing entry history
@@ -208,10 +234,11 @@ class HistoryScreen(Widget):
     # amount is the float amount for use in the data array
     def add_entry(self, entry_type, name, display_amount, amount):
         if entry_type == "Income":
-            print("Income Added:", name, display_amount)
-            self.entries_list.append(amount)
-            print(self.entries_list)
-        else:
+            new_entry = Entry(entry_type, name, display_amount, len(self.entries_list))
+            self.ids["entries_display"].add_widget(new_entry)
+
+            self.entries_list.append([name, amount])
+        elif entry_type == "Expense":
             self.ids["entries_display"].add_widget(Button(text=entry_type))
 
     # Views Total Balance
