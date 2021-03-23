@@ -64,12 +64,17 @@ class PopUpTotalBalance(Popup):
         # Widget that called this popup
         self.caller_widget = caller_widget
 
+    #Gets the total amount from HistoryScreen
     def total_balance(self):
         total = self.caller_widget.get_entries_list_total()
+
+        #positive value, green text
         if total >= 0:
             self.ids.total_balance.color = (0.47, 0.75, 0.39, 1)
             text = f'₱{total}'
             self.ids.total_balance.text = text
+
+        #negative value, red text
         else:
             abs_total = abs(total)
             self.ids.total_balance.color = (0.75, 0.47, 0.39, 1)
@@ -258,6 +263,7 @@ class HistoryScreen(Widget):
     def view_total_balance(self):
         self.total_balance_popup.open()
 
+    #Gets the sum of the entries_list
     def get_entries_list_total(self):
         total = 0
         for i in range(len(self.entries_list)):
