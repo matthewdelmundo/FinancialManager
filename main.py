@@ -39,10 +39,21 @@ class PopUpAddIncome(Popup):
         # Widget that called this popup
         self.caller_widget = caller_widget
 
+    # Reinitialize input boxes
     def reset_inputs(self):
         self.ids.entry_amount.initialize_values()
+        self.ids.entry_name.text = ""
 
-        # TODO: RESET ALL INPUT BOXES AFTER ON_DISMISS
+    # Asks caller_widget to add entry
+    def add_income_entry(self):
+        display_amount = self.ids.entry_amount.text
+        name = self.ids.entry_name.text
+        if display_amount != "":
+            if name == "":
+                name = "New Income"
+            amount = self.ids.entry_amount.get_amount()
+            self.caller_widget.add_entry("Income", name, display_amount, amount)
+            self.dismiss()
 
 
 # Popup window for clicking the "Total Balance" button
@@ -73,9 +84,14 @@ class AmountInput(TextInput):
         self.pre_period_amount = ""
 
     def initialize_values(self):
+        self.text = ""
         self.digits = 0
         self.pre_period_amount = ""
-        self.text = ""
+        self.font_size = 40
+
+    # Retrieves float amount
+    def get_amount(self):
+        return float(self.pre_period_amount + self.text[-3:])
 
     # Input validation for backspaces
     def do_backspace(self, from_undo=False, mode='bkspc'):
@@ -138,6 +154,21 @@ class AmountInput(TextInput):
         else:
             self.text = '₱' + new_pre_period + '0'
 
+    # Adds '.XX' at the end of the string
+    def append_zeroes(self):
+        if self.text != '':
+            end = self.text[-3:]
+            zero_pos = end.find('.')
+            if zero_pos == -1:
+                self.text += '.00'
+            else:
+                for i in range(0, zero_pos):
+                    self.text += '0'
+
+    # Calls append_zeroes when user presses 'enter'
+    def on_text_validate(self):
+        self.append_zeroes()
+
 
 # Unimplemented. Custom Widget for the entries.
 # Should be clickable and have multiple labels indicating Name, Notes, and Amount
@@ -157,7 +188,7 @@ class HistoryScreen(Widget):
     def __init__(self, **kwargs):
         super(HistoryScreen, self).__init__(**kwargs)
 
-        # DEBUG (Remove in Final)
+        # TODO: DEBUG (Remove in Final)
         # Sets window to phone ratio
         Window.size = (338, 600)
 
@@ -173,10 +204,15 @@ class HistoryScreen(Widget):
         self.entry_popup.open()
 
     # Adds entry to UI display by adding a widget
-    def add_entry(self, entry_type):
-        pass
-        ### self.add_entry_popup.open()
-        ### self.ids["entries_display"].add_widget(Button(text=entry_type))
+    # display_amount is the amount in the format ₱XX,XXX.XX
+    # amount is the float amount for use in the data array
+    def add_entry(self, entry_type, name, display_amount, amount):
+        if entry_type == "Income":
+            print("Income Added:", name, display_amount)
+            self.entries_list.append(amount)
+            print(self.entries_list)
+        else:
+            self.ids["entries_display"].add_widget(Button(text=entry_type))
 
     # Views Total Balance
     def view_total_balance(self):
