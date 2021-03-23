@@ -1,3 +1,35 @@
+# Popup for clicking Entry 
+<PopUpClickEntry>:
+    title: "Entry"
+    size_hint: 0.8, None
+    size: 0, 200
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 10
+        padding: 8
+
+        Label:
+            id: ent_type
+            text: ""
+            halign: 'center'
+            valign: 'center'
+            font_size: 24
+
+        Label:
+            id: ent_name
+            text: ""
+            halign: 'center'
+            valign: 'center'
+            font_size: 24
+
+        Label:
+            id: ent_amt
+            text: ""
+            halign: 'center'
+            valign: 'center'
+            font_size: 24
+
 # Popup for choosing between "Income" and "Expense"
 <PopUpChooseEntry>:
     title: "Add Entry"
