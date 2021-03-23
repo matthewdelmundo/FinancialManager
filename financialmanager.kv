@@ -1,5 +1,7 @@
+# Popup for choosing between "Income" and "Expense"
 <PopUpChooseEntry>:
     title: "Add Entry"
+
     size_hint: 0.8, None
     size: 0, 200
 
@@ -16,11 +18,61 @@
             text: "Expense"
             on_release: root.choose_expense()
 
+
+# Custom AmountInput widget featuring a green color scheme
+<IncomeAmountInput@AmountInput>
+    foreground_color: 0.75, 0.86, 0.57, 1
+    background_color: 0.22, 0.48, 0.3, 1
+    cursor_color: 0.75, 0.86, 0.57, 1
+    hint_text_color: 0.47, 0.75, 0.39, 1
+    multiline: False
+    focus: True
+    input_type: "number"
+
+
+# Popup that lets user input an amount and name for an entry
+<PopupAddIncome>
+    title: "Add Income"
+    on_dismiss: root.reset_inputs()
+
+    size_hint: 0.8, None
+    size: 0, 250
+
+    RelativeLayout:
+        IncomeAmountInput:
+            id: entry_amount
+            hint_text: "₱0.00"
+
+            size_hint: 0.9, 0.38
+            pos_hint: {"x": 0.05,"y": 0.6}
+            font_size: 40
+
+        EntryNameInput:
+            id: entry_name
+            hint_text: "New Income"
+            on_focus: entry_amount.append_zeroes()
+
+            size_hint: 0.9, 0.18
+            pos_hint: {"x": 0.05,"y": 0.4}
+            multiline: False
+            focus: True
+
+        Button:
+            text: "Add"
+            on_press: entry_amount.append_zeroes()
+            on_release: root.add_income_entry()
+
+            size_hint: 0.5, 0.28
+            pos_hint: {"x": 0.25, "y": 0.05}
+
+
+# Popup that displays the total balance of the entries
 <PopUpTotalBalance>:
     title: "Total Balance"
+    on_open: root.total_balance()
+
     size_hint: 0.8, None
     size: 0, 200
-    on_open: root.total_balance()
 
     BoxLayout:
         orientation: "vertical"
@@ -30,10 +82,12 @@
         Label:
             id: total_balance
             text: ""
+
             font_size: 28
 
 
-<TitleLabel>:
+# Custom Label for the screen title
+<TitleLabel@Label>:
     canvas:
         Color:
             rgba: 1, 1, 1, 0.25
@@ -41,16 +95,38 @@
             pos: self.x, self.y
             size: self.size
 
+
+# Custom widget for each entry
+# uses a name and an amount variable
 <Entry>:
-    canvas:
-        Color:
-            rgba: 1, 1, 1, 0.25
-        Rectangle:
-            pos: self.x, self.y
-            size: self.size
-    Label:
+    RelativeLayout:
+        pos: root.x, root.y
+        width: root.width
+        height: root.height
+
+        Button:
+            on_release: root.press()
+
+        Label:
+            id: entry_name
+
+            size_hint: 0.38, 1
+            pos_hint: {"x": 0.05}
+            text_size: self.size
+            halign: "left"
+            valign: "middle"
+
+        Label:
+            id: entry_display_amount
+
+            size_hint: 0.48, 1
+            pos_hint: {"right": 0.95}
+            text_size: self.size
+            halign: "right"
+            valign: "middle"
 
 
+# Main screen for displaying entry history
 <HistoryScreen>
     entries_display: entries_display
 
@@ -59,6 +135,7 @@
 
         TitleLabel:
             text: "History"
+
             size_hint: 0.8, 0.08
             pos_hint: {"x": 0.1, "y": 0.91}
 
@@ -72,20 +149,21 @@
                 id: entries_display
                 cols: 1
                 spacing: 5
-                size_hint_y: None
-                row_default_height: '50dp'
-                row_force_default: True
 
-                Entry:
+                size_hint_y: None
+                row_default_height: '60dp'
+                row_force_default: True
 
         Button:
             text: "Add"
+            on_release: root.request_add_entry()
+
             size_hint: 0.2, 0.08
             pos_hint: {"x": 0.3, "y": 0.01}
-            on_release: root.request_add_entry()
 
         Button:
             text: "Total \nBalance"
+            on_release: root.view_total_balance()
+
             size_hint: 0.2, 0.08
             pos_hint: {"x": 0.5, "y": 0.01}
-            on_release: root.view_total_balance()
