@@ -19,6 +19,9 @@ class PopUpChooseEntry(Popup):
         # Reference to the popup for ease of opening
         self.add_income_popup = PopUpAddIncome(caller_widget)
 
+        # Reference to the popup for ease of opening
+        self.add_expense_popup = PopUpAddExpense(caller_widget)
+
     # Sends caller the add_entry function with "Income" as parameter
     def choose_income(self):
         self.add_income_popup.open()
@@ -26,7 +29,7 @@ class PopUpChooseEntry(Popup):
 
     # Sends caller the add_entry function with "Expense" as parameter
     def choose_expense(self):
-        self.caller_widget.add_entry("Expense", "", "", "")
+        self.add_expense_popup.open()
         self.dismiss()
 
 
@@ -52,6 +55,31 @@ class PopUpAddIncome(Popup):
                 name = "New Income"
             amount = self.ids.entry_amount.get_amount()
             self.caller_widget.add_entry("Income", name, display_amount, amount)
+            self.dismiss()
+
+
+# Popup window for clicking the "Expense" button
+class PopUpAddExpense(Popup):
+    def __init__(self, caller_widget, **kwargs):
+        super(PopUpAddExpense, self).__init__(**kwargs)
+
+        # Widget that called this popup
+        self.caller_widget = caller_widget
+
+    # Reinitialize input boxes
+    def reset_inputs(self):
+        self.ids.entry_amount.initialize_values()
+        self.ids.entry_name.text = ""
+
+    # Asks caller_widget to add entry
+    def add_expense_entry(self):
+        display_amount = self.ids.entry_amount.text
+        name = self.ids.entry_name.text
+        if display_amount != "":
+            if name == "":
+                name = "New Expense"
+            amount = self.ids.entry_amount.get_amount()
+            self.caller_widget.add_entry("Expense", name, display_amount, amount)
             self.dismiss()
 
 
@@ -215,6 +243,8 @@ class Entry(Widget):
         self.ids.entry_display_amount.text = self.display_amount
         if self.entry_type == "Income":
             self.ids.entry_display_amount.color = (0.47, 0.75, 0.39, 1)
+        elif self.entry_type == "Expense":
+            self.ids.entry_display_amount.color = (0.94, 0.35, 0.39, 1)
 
     # Prints list index when widget is pressed
     def press(self):
@@ -255,7 +285,10 @@ class HistoryScreen(Widget):
 
             self.entries_list.append([name, amount])
         elif entry_type == "Expense":
-            self.ids["entries_display"].add_widget(Button(text=entry_type))
+            new_entry = Entry(entry_type, name, display_amount, len(self.entries_list))
+            self.ids["entries_display"].add_widget(new_entry)
+            
+            self.entries_list.append([name, -1*amount])
 
     # Views Total Balance
     def view_total_balance(self):
