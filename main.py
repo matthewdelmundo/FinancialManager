@@ -8,7 +8,6 @@ from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
 
-
 # Popup window for clicking the "Add" button
 class PopUpChooseEntry(Popup):
     def __init__(self, caller_widget, **kwargs):
@@ -67,21 +66,20 @@ class PopUpTotalBalance(Popup):
     #Gets the total amount from HistoryScreen
     def total_balance(self):
         total = self.caller_widget.get_entries_list_total()
-
+        
         #positive value, green text
         if total >= 0:
             self.ids.total_balance.color = (0.47, 0.75, 0.39, 1)
-            text = f'₱{total}'
+            text = '₱{:,.2f}'.format(total)
             self.ids.total_balance.text = text
 
         #negative value, red text
         else:
             abs_total = abs(total)
             self.ids.total_balance.color = (0.75, 0.47, 0.39, 1)
-            text = f'-₱{abs_total}'
+            text = '-₱{:,.2f}'.format(abs_total)
             self.ids.total_balance.text = text
 
-        
 
 
 
