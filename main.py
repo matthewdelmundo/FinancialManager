@@ -8,6 +8,33 @@ from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
 
+
+# Popup window for editing an entry
+class PopUpEditEntry(Popup):
+    def __init__(self, caller_widget, **kwargs):
+        super(PopUpEditEntry, self).__init__(**kwargs)
+
+        # Widget that called this popup
+        self.caller_widget = caller_widget
+
+        self.update_edit_entry_info()
+    
+    def update_edit_entry_info(self):
+        self.ids.ent_type.color = (0.95, 0.98, 0.32, 1)
+        self.ids.ent_type.text = "ENTRY TYPE: " + self.caller_widget.get_entry_type()
+        self.ids.ent_name.hint_text = self.caller_widget.get_entry_name()
+        self.ids.ent_amt.hint_text = self.caller_widget.get_amount()
+
+    def reset_inputs(self):
+        self.ids.ent_amt.text = self.caller_widget.get_amount()
+        self.ids.ent_name.text = self.caller_widget.get_entry_name()
+    
+    def edit_entry(self):
+        new_name = self.ids.ent_name.text
+        new_amt = self.ids.ent_amt.text
+        self.caller_widget.edit_entry_info(new_name, new_amt)
+        self.dismiss()
+
 # Popup window for clicking an entry
 class PopUpClickEntry(Popup):
     def __init__(self, caller_widget, **kwargs):
@@ -16,11 +43,20 @@ class PopUpClickEntry(Popup):
         # Widget that called this popup
         self.caller_widget = caller_widget
 
+        self.edit_entry_popup = PopUpEditEntry(caller_widget)
+
+        self.update_entry_info()       
+    
+    def update_entry_info(self):
         self.ids.ent_type.color = (0.95, 0.98, 0.32, 1)
         self.ids.ent_type.text = "ENTRY TYPE: " + self.caller_widget.get_entry_type()
         self.ids.ent_name.text = self.caller_widget.get_entry_name()
         self.ids.ent_amt.color = (0.47, 0.75, 0.39, 1)
         self.ids.ent_amt.text = "AMOUNT: " + self.caller_widget.get_amount()
+
+    def request_edit_entry(self):
+        self.edit_entry_popup.open()
+        self.dismiss()
 
 # Popup window for clicking the "Add" button
 class PopUpChooseEntry(Popup):
@@ -130,6 +166,12 @@ class EntryNameInput(TextInput):
             return
         return super(EntryNameInput, self).insert_text(substring, from_undo)
 
+class EditNameInput(TextInput):
+    # Prevents name from going over 24 characters
+    def insert_text(self, substring, from_undo=False):
+        if len(self.text) >= 24:
+            return
+        return super(EditNameInput, self).insert_text(substring, from_undo)
 
 # Custom TextInput for entries
 class AmountInput(TextInput):
@@ -248,6 +290,12 @@ class Entry(Widget):
         self.click_entry_popup = PopUpClickEntry(self)
 
         self.initialize_entry()
+        
+    def edit_entry_info(self, new_name, new_amt): ###### ALERT!
+        self.name = new_name
+        self.display_amount = new_amt
+        self.ids.entry_name.text = new_name
+        self.ids.entry_display_amount.text = new_amt
     
     def get_entry_type(self):
         return self.entry_type
@@ -271,7 +319,7 @@ class Entry(Widget):
     # Prints list index when widget is pressed
     def press(self):
         self.click_entry_popup.open()
-        print(self.index)
+        
 
 
 # Main screen showing entry history
