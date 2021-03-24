@@ -11,37 +11,70 @@ from kivy.core.window import Window
 
 
 # Popup window for editing an entry
-class PopUpEditEntry(Popup):
+class PopUpEditEntryIncome(Popup):
     def __init__(self, caller_widget, **kwargs):
-        super(PopUpEditEntry, self).__init__(**kwargs)
+        super(PopUpEditEntryIncome, self).__init__(**kwargs)
 
         # Widget that called this popup
         self.caller_widget = caller_widget
 
         self.update_edit_entry_info()
-        
     
     def update_edit_entry_info(self):
         self.ids.ent_type.color = (0.95, 0.98, 0.32, 1)
-        self.ids.ent_type.text = "ENTRY TYPE: " + self.caller_widget.get_entry_type()
+        self.ids.ent_type.text = "ENTRY TYPE: INCOME"
 
         self.ids.ent_name.hint_text = self.caller_widget.get_entry_name()
         self.ids.ent_amt.hint_text = self.caller_widget.get_amount()
 
-        if self.caller_widget.get_entry_type() == "Income":
-            self.ids.ent_amt.background_color = (0.22, 0.48, 0.3, 1)
-            self.ids.ent_amt.hint_text_color = (0.47, 0.75, 0.39, 1)
-        elif self.caller_widget.get_entry_type() == "Expense":
-            self.ids.ent_amt.background_color = (0.63, 0.22, 0.24, 1)
-            self.ids.ent_amt.hint_text_color = (0.94, 0.35, 0.39, 1)
         
-
+        self.ids.ent_amt.background_color = (0.22, 0.48, 0.3, 1)
+        self.ids.ent_amt.hint_text_color = (0.47, 0.75, 0.39, 1)
+        # elif self.caller_widget.get_entry_type() == "Expense":
+        #     self.ids.ent_amt.background_color = (0.63, 0.22, 0.24, 1)
+        #     self.ids.ent_amt.hint_text_color = (0.94, 0.35, 0.39, 1)
+        
     def reset_inputs(self):
         self.ids.ent_amt.text = self.caller_widget.get_amount()
         self.ids.ent_name.text = self.caller_widget.get_entry_name()
     
     def edit_entry(self):
-        new_name = self.ids.ent_name.text
+        if self.ids.ent_name.text == "":
+            new_name = self.caller_widget.get_entry_name()
+        else:
+            new_name = self.ids.ent_name.text
+        new_amt = self.ids.ent_amt.text
+        self.caller_widget.edit_entry_info(new_name, new_amt)
+        self.dismiss()
+
+class PopUpEditEntryExpense(Popup):
+    def __init__(self, caller_widget, **kwargs):
+        super(PopUpEditEntryExpense, self).__init__(**kwargs)
+
+        # Widget that called this popup
+        self.caller_widget = caller_widget
+
+        self.update_edit_entry_info()
+    
+    def update_edit_entry_info(self):
+        self.ids.ent_type.color = (0.95, 0.98, 0.32, 1)
+        self.ids.ent_type.text = "ENTRY TYPE: EXPENSE"
+
+        self.ids.ent_name.hint_text = self.caller_widget.get_entry_name()
+        self.ids.ent_amt.hint_text = self.caller_widget.get_amount()
+
+        self.ids.ent_amt.background_color = (0.63, 0.22, 0.24, 1)
+        self.ids.ent_amt.hint_text_color = (0.94, 0.35, 0.39, 1)
+        
+    def reset_inputs(self):
+        self.ids.ent_amt.text = self.caller_widget.get_amount()
+        self.ids.ent_name.text = self.caller_widget.get_entry_name()
+    
+    def edit_entry(self):
+        if self.ids.ent_name.text == "":
+            new_name = self.caller_widget.get_entry_name()
+        else:
+            new_name = self.ids.ent_name.text
         new_amt = self.ids.ent_amt.text
         self.caller_widget.edit_entry_info(new_name, new_amt)
         self.dismiss()
@@ -54,7 +87,8 @@ class PopUpClickEntry(Popup):
         # Widget that called this popup
         self.caller_widget = caller_widget
 
-        self.edit_entry_popup = PopUpEditEntry(caller_widget)
+        self.edit_incomeentry_popup = PopUpEditEntryIncome(caller_widget)
+        self.edit_expenseentry_popup = PopUpEditEntryExpense(caller_widget)
 
         self.update_entry_info()       
     
@@ -69,7 +103,10 @@ class PopUpClickEntry(Popup):
         self.ids.ent_amt.text = "AMOUNT: " + self.caller_widget.get_amount()
 
     def request_edit_entry(self):
-        self.edit_entry_popup.open()
+        if self.caller_widget.get_entry_type() == "Income":
+            self.edit_incomeentry_popup.open()
+        elif self.caller_widget.get_entry_type() == "Expense":
+            self.edit_expenseentry_popup.open()
         self.dismiss()
 
 # Popup window for clicking the "Add" button
