@@ -343,12 +343,13 @@ class Entry(Widget):
         self.initialize_entry()
         
     def edit_entry_info(self, new_name, new_amt): ###### ALERT!
+        self.name = new_name
+        self.ids.entry_name.text = new_name
+        
         #if user just clicked the finish w/o changing, retain its values
         if new_amt == '':
             return
-        self.name = new_name
         self.display_amount = new_amt
-        self.ids.entry_name.text = new_name
         self.ids.entry_display_amount.text = new_amt
         self.caller_widget.update_entries_list(self.name, self.display_amount, self.index, self.entry_type)
 
