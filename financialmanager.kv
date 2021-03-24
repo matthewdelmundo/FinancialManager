@@ -1,11 +1,20 @@
-<EditAmountInput@AmountInput>
+<EditAmountInputIncome@AmountInput>
     foreground_color: 0.75, 0.86, 0.57, 1
     cursor_color: 0.75, 0.86, 0.57, 1
     multiline: False
     focus: True
     input_type: "number"
 
-<PopUpEditEntry>:
+<EditAmountInputExpense@AmountInput>
+    foreground_color: 0.86, 0.57, 0.6, 1
+    background_color: 0.63, 0.22, 0.24, 1
+    cursor_color: 0.86, 0.57, 0.6, 1
+    hint_text_color: 0.94, 0.35, 0.39, 1
+    multiline: False
+    focus: True
+    input_type: "number"
+
+<PopUpEditEntryIncome>:
     title: "Edit Entry"
     on_open: root.update_edit_entry_info()
     on_dismiss: root.reset_inputs() #!!!!!!
@@ -22,7 +31,7 @@
             pos_hint: {"x": 0.05,"y": 0.8}
             font_size: 24
 
-        EditAmountInput:
+        EditAmountInputIncome:
             id: ent_amt
             hint_text: ""
 
@@ -47,6 +56,50 @@
 
             size_hint: 0.5, 0.28
             pos_hint: {"x": 0.25, "y": 0.05}
+
+<PopUpEditEntryExpense>:
+    title: "Edit Entry"
+    on_open: root.update_edit_entry_info()
+    on_dismiss: root.reset_inputs() #!!!!!!
+
+    size_hint: 0.8, None
+    size: 0, 300
+
+    RelativeLayout:
+        Label:
+            id: ent_type
+            text: ""
+            halign: 'center'
+            valign: 'center'
+            pos_hint: {"x": 0.05,"y": 0.8}
+            font_size: 24
+
+        EditAmountInputExpense:
+            id: ent_amt
+            hint_text: ""
+
+            size_hint: 0.9, 0.38
+            pos_hint: {"x": 0.05,"y": 0.6}
+            font_size: 34
+
+        EditNameInput:
+            id: ent_name
+            hint_text: ""
+            on_focus: ent_amt.append_zeroes()
+
+            size_hint: 0.9, 0.18
+            pos_hint: {"x": 0.05,"y": 0.4}
+            multiline: False
+            focus: True
+
+        Button:
+            text: "Finish!"
+            on_press: ent_amt.append_zeroes()
+            on_release: root.edit_entry()
+
+            size_hint: 0.5, 0.28
+            pos_hint: {"x": 0.25, "y": 0.05}
+
 
 # Popup for clicking Entry 
 <PopUpClickEntry>:
