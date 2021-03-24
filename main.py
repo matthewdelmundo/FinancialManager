@@ -1,3 +1,4 @@
+import re
 import kivy
 from kivy.app import App
 from kivy.uix.widget import Widget
@@ -18,12 +19,22 @@ class PopUpEditEntry(Popup):
         self.caller_widget = caller_widget
 
         self.update_edit_entry_info()
+        
     
     def update_edit_entry_info(self):
         self.ids.ent_type.color = (0.95, 0.98, 0.32, 1)
         self.ids.ent_type.text = "ENTRY TYPE: " + self.caller_widget.get_entry_type()
+
         self.ids.ent_name.hint_text = self.caller_widget.get_entry_name()
         self.ids.ent_amt.hint_text = self.caller_widget.get_amount()
+
+        if self.caller_widget.get_entry_type() == "Income":
+            self.ids.ent_amt.background_color = (0.22, 0.48, 0.3, 1)
+            self.ids.ent_amt.hint_text_color = (0.47, 0.75, 0.39, 1)
+        elif self.caller_widget.get_entry_type() == "Expense":
+            self.ids.ent_amt.background_color = (0.63, 0.22, 0.24, 1)
+            self.ids.ent_amt.hint_text_color = (0.94, 0.35, 0.39, 1)
+        
 
     def reset_inputs(self):
         self.ids.ent_amt.text = self.caller_widget.get_amount()
@@ -51,7 +62,10 @@ class PopUpClickEntry(Popup):
         self.ids.ent_type.color = (0.95, 0.98, 0.32, 1)
         self.ids.ent_type.text = "ENTRY TYPE: " + self.caller_widget.get_entry_type()
         self.ids.ent_name.text = self.caller_widget.get_entry_name()
-        self.ids.ent_amt.color = (0.47, 0.75, 0.39, 1)
+        if self.caller_widget.get_entry_type() == "Income":
+            self.ids.ent_amt.color = (0.47, 0.75, 0.39, 1)
+        elif self.caller_widget.get_entry_type() == "Expense":
+            self.ids.ent_amt.color = (0.75, 0.47, 0.39, 1)
         self.ids.ent_amt.text = "AMOUNT: " + self.caller_widget.get_amount()
 
     def request_edit_entry(self):
@@ -280,22 +294,27 @@ class AmountInput(TextInput):
 # entry_type = "Income"/"Expense"
 # index = index in the currently used entries_list (found in HistoryScreen)
 class Entry(Widget):
-    def __init__(self, entry_type, name, display_amount, index, **kwargs):
+    def __init__(self, entry_type, name, display_amount, index, caller_widget, **kwargs):
         super(Entry, self).__init__(**kwargs)
         self.entry_type = entry_type
         self.name = name
         self.display_amount = display_amount
         self.index = index
-
+        self.caller_widget = caller_widget
         self.click_entry_popup = PopUpClickEntry(self)
 
         self.initialize_entry()
         
     def edit_entry_info(self, new_name, new_amt): ###### ALERT!
+        #if user just clicked the finish w/o changing, retain its values
+        if new_amt == '':
+            return
         self.name = new_name
         self.display_amount = new_amt
         self.ids.entry_name.text = new_name
         self.ids.entry_display_amount.text = new_amt
+        self.caller_widget.update_entries_list(self.name, self.display_amount, self.index, self.entry_type)
+
     
     def get_entry_type(self):
         return self.entry_type
@@ -351,12 +370,13 @@ class HistoryScreen(Widget):
     # amount is the float amount for use in the data array
     def add_entry(self, entry_type, name, display_amount, amount):
         if entry_type == "Income":
-            new_entry = Entry(entry_type, name, display_amount, len(self.entries_list))
+            new_entry = Entry(entry_type, name, display_amount, len(self.entries_list), self)
             self.ids["entries_display"].add_widget(new_entry)
 
             self.entries_list.append([name, amount])
+
         elif entry_type == "Expense":
-            new_entry = Entry(entry_type, name, display_amount, len(self.entries_list))
+            new_entry = Entry(entry_type, name, display_amount, len(self.entries_list), self)
             self.ids["entries_display"].add_widget(new_entry)
             
             self.entries_list.append([name, -1*amount])
@@ -364,6 +384,20 @@ class HistoryScreen(Widget):
     # Views Total Balance
     def view_total_balance(self):
         self.total_balance_popup.open()
+
+    # Update entries_list
+    def update_entries_list(self, new_name, new_amount, index, entry_type):
+        self.entries_list[index][0] = new_name
+
+
+        #remove peso and commas
+        trim = re.compile(r'[^\d.]+')
+        new_amount = trim.sub('',new_amount)
+        new_amount = float(new_amount)
+        if entry_type == "Income":
+            self.entries_list[index][1] = new_amount
+        elif entry_type == "Expense":
+            self.entries_list[index][1] = -1*new_amount
 
     #Gets the sum of the entries_list
     def get_entries_list_total(self):
