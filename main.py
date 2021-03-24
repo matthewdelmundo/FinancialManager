@@ -24,12 +24,15 @@ class PopUpEditEntryIncome(Popup):
         self.ids.ent_type.color = (0.95, 0.98, 0.32, 1)
         self.ids.ent_type.text = "ENTRY TYPE: INCOME"
 
-        self.ids.ent_name.hint_text = self.caller_widget.get_entry_name()
-        self.ids.ent_amt.hint_text = self.caller_widget.get_amount()
+        self.ids.ent_name.text = self.caller_widget.get_entry_name()
+        self.ids.ent_amt.text = self.caller_widget.get_amount()
 
         
         self.ids.ent_amt.background_color = (0.22, 0.48, 0.3, 1)
-        self.ids.ent_amt.hint_text_color = (0.47, 0.75, 0.39, 1)
+        self.ids.ent_amt.text_color = (0.47, 0.75, 0.39, 1)
+        # elif self.caller_widget.get_entry_type() == "Expense":
+        #     self.ids.ent_amt.background_color = (0.63, 0.22, 0.24, 1)
+        #     self.ids.ent_amt.hint_text_color = (0.94, 0.35, 0.39, 1)
         
     def reset_inputs(self):
         self.ids.ent_amt.text = self.caller_widget.get_amount()
@@ -57,11 +60,11 @@ class PopUpEditEntryExpense(Popup):
         self.ids.ent_type.color = (0.95, 0.98, 0.32, 1)
         self.ids.ent_type.text = "ENTRY TYPE: EXPENSE"
 
-        self.ids.ent_name.hint_text = self.caller_widget.get_entry_name()
-        self.ids.ent_amt.hint_text = self.caller_widget.get_amount()
+        self.ids.ent_name.text = self.caller_widget.get_entry_name()
+        self.ids.ent_amt.text = self.caller_widget.get_amount()
 
         self.ids.ent_amt.background_color = (0.63, 0.22, 0.24, 1)
-        self.ids.ent_amt.hint_text_color = (0.94, 0.35, 0.39, 1)
+        self.ids.ent_amt.text_color = (0.94, 0.35, 0.39, 1)
         
     def reset_inputs(self):
         self.ids.ent_amt.text = self.caller_widget.get_amount()
