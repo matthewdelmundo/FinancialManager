@@ -1,0 +1,83 @@
+# Custom Label for the screen title
+<TitleLabel@Label>:
+    canvas:
+        Color:
+            rgba: 1, 1, 1, 0.25
+        Rectangle:
+            pos: self.x, self.y
+            size: self.size
+
+<ToolBar_NoColor@RelativeLayout>:
+    Label:
+        id: title
+        font_size: 20
+        bold: True
+
+        pos_hint: {"center_y": 0.6}
+
+<ToolBar@RelativeLayout>:
+    canvas:
+        Color:
+            rgba: 1, 1, 1, 0.25
+        Rectangle:
+            size: self.size
+
+    Label:
+        id: title
+        font_size: 20
+        bold: True
+
+        pos_hint: {"center_y": 0.6}
+
+<NavigationBar@RelativeLayout>:
+    canvas:
+        Color:
+            rgba: 1, 1, 1, 0.25
+        Rectangle:
+            size: self.size
+
+
+<CircularButton>
+    background_color: 0, 0, 0, 0
+    background_normal: ''
+
+    bg_color_normal: 1, 1, 1, 0.15
+    bg_color_down: 1, 1, 1, 0.1
+
+    color: self.bg_color_normal
+
+    on_press: root.button_pressed()
+    on_release: root.button_released()
+
+    canvas.before:
+        Color:
+            rgba: self.color
+        Ellipse:
+            size: self.size
+            pos: self.pos
+
+<RoundedButton>
+    background_color: 0, 0, 0, 0
+    background_normal: ''
+
+    bg_color_normal: 1, 1, 1, 0.15
+    bg_color_down: 1, 1, 1, 0.1
+    border_radius: [20]
+
+    color: self.bg_color_normal
+
+    on_press: root.button_pressed()
+    on_release: root.button_released()
+
+    canvas.before:
+        Color:
+            rgba: self.color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: self.border_radius
+
+<ImageButton>
+    background_normal: ''
+    image_down: "images/wallet.png"
+    image_normal: "images/add.png"

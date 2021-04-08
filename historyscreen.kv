@@ -281,16 +281,6 @@
             font_size: 24
 
 
-# Custom Label for the screen title
-<TitleLabel@Label>:
-    canvas:
-        Color:
-            rgba: 1, 1, 1, 0.25
-        Rectangle:
-            pos: self.x, self.y
-            size: self.size
-
-
 # Custom widget for each entry
 # uses a name and an amount variable
 <Entry>:
@@ -323,7 +313,7 @@
 
 # Main screen for displaying entry history
 <HistoryScreen>
-    entries_display: entries_display
+    entries_grid: entries_grid
 
     FloatLayout:
         size: root.width, root.height
@@ -341,7 +331,7 @@
             pos_hint: {"x": 0.15, "y": 0.11}
 
             GridLayout:
-                id: entries_display
+                id: entries_grid
                 cols: 1
                 spacing: 5
 
