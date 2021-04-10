@@ -84,11 +84,37 @@ class PopupAddBudget(Popup):
         self.ids["choose_icon"].ids["icon"].source = icon_source
 
     def add_budget(self):
+        name = self.ids["budget_name"].text
         display_amount = "₱" + self.ids["budget_amount"].text
         amount = self.ids["budget_amount"].get_amount()
-        name = self.ids["budget_name"].text
+
+        #does not allow budgets with no names (and no amount)
         if name == "":
-            name = "New Budget"
+            self.ids.budget_name.hint_text = "field required"
+            self.ids.budget_name.hint_text_color = (0.75, 0.47, 0.39, 1)
+            if amount == 0:
+                self.ids.budget_amount.hint_text = "field required"
+                self.ids.budget_amount.hint_text_color = (0.75, 0.47, 0.39, 1)
+                return
+            return
+
+        #does not allow budgets with no amounts (and no name)
+        if amount == 0:
+            self.ids.budget_amount.hint_text = "field required"
+            self.ids.budget_amount.hint_text_color = (0.75, 0.47, 0.39, 1)
+            if name == "":
+                self.ids.budget_name.hint_text = "field required"
+                self.ids.budget_name.hint_text_color = (0.75, 0.47, 0.39, 1)
+                return
+            return
+
+        #reset default values
+        self.ids.budget_name.hint_text = "Budget Name"
+        self.ids.budget_name.hint_text_color = (0.5, 0.5, 0.5, 1)
+
+        self.ids.budget_amount.hint_text = "Amount"
+        self.ids.budget_amount.hint_text_color = (0.5, 0.5, 0.5, 1)
+
         self.caller_widget.add_budget(name, display_amount, amount, self.icon_source)
         self.dismiss()
 
@@ -108,6 +134,7 @@ class AddBudgetButton(AnchorLayout):
 
     def button_function(self):
         self.caller_widget.popup_add_budget()
+        
 
 
 # Button/Image that lets you view the budget
@@ -127,6 +154,15 @@ class Budget(AnchorLayout):
         # Saved remaining amount
         self.display_remaining = display_amount
         self.remaining = amount
+
+        #percentage indicates background color
+        percent = (self.remaining/self.total)*100
+        if percent <= 100 and percent >= 50:
+            self.ids.background.background_normal = "images/ui/green.png"
+        elif percent < 50 and percent >= 25:
+            self.ids.background.background_normal = "images/ui/yellow.png"
+        elif percent < 25 and percent >= 0:
+            self.ids.background.background_normal = "images/ui/red.png"
 
     def set_icon(self, icon_source):
         self.icon_source = icon_source

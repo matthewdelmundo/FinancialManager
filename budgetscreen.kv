@@ -99,7 +99,6 @@
 <AddBudgetButton>
     Button:
         on_release: root.button_function()
-
         background_normal: "images/ui/square_normal.png"
         background_down: "images/ui/square_down.png"
         size_hint: 0.8, 0.8
@@ -111,9 +110,10 @@
 
 <Budget>
     Button:
+    	id: background
         on_release: root.button_function()
-        background_normal: "images/ui/circle_normal.png"
-        background_down: "images/ui/circle_down.png"
+        #background_normal: "images/ui/green.png"		#color indicator
+        background_down: "images/ui/circle_down.png"	
 
         size_hint: 0.9, 0.9
 
