@@ -1,26 +1,184 @@
-<Budget>
-    Button:
-        background_normal: "images/circle_normal.png"
-        background_down: "images/circle_down.png"
+<PopupChooseIcon>
+    icon_grid: icon_grid
 
-        size_hint: 0.9, 0.9
+    title: "Choose Budget Icon"
+    size_hint: 1, 1
+
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        size_hint: 1, 1
+
+        GridLayout:
+            id: icon_grid
+            cols: 3
+
+            size_hint_y: None
+            col_force_default: True
+            row_force_default: True
+            col_default_width: self.parent.width/3
+            row_default_height: self.parent.width/3
+
+<BudgetIcon>
+    Button:
+        on_release: root.button_function()
+
+        background_normal: "images/ui/circle_normal.png"
+        background_down: "images/ui/circle_down.png"
+        size_hint: 0.8, 0.8
 
     Image:
-        source: "images/wallet.png"
+        id: icon
+        source: "images/ui/wallet.png"
+        size_hint: 0.8, 0.8
+
+<PopupAddBudget>
+    title: "Add Budget"
+    size_hint: 0.8, 0.4
+    on_dismiss: root.reset_inputs()
+
+    RelativeLayout:
+        RelativeLayout:
+            size_hint: 1, 0.7
+            pos_hint: {"y": 0.3}
+
+            ChooseIcon:
+                id: choose_icon
+                caller_widget: root
+                size_hint: 0.25, 0.5
+                pos_hint: {"x": 0.05, "y": 0.5}
+
+            TextInput:
+                id: budget_name
+                hint_text: "New Budget"
+                multiline: False
+
+                size_hint: 0.6, 0.25
+                pos_hint: {"x": 0.35, "center_y": 0.75}
+
+            Label:
+                text: "₱"
+                font_size: 40
+                size_hint: 0.25, 0.5
+                pos_hint: {"x": 0.05, "center_y": 0.25}
+
+            AmountInput:
+                id: budget_amount
+                hint_text: "Amount"
+                multiline: False
+
+                prepend_peso: False
+                adjust_font_size: False
+
+                size_hint: 0.6, 0.25
+                pos_hint: {"x": 0.35, "center_y": 0.25}
+
+        Button:
+            size_hint: 0.5, 0.28
+            text: "Add"
+            on_press: budget_amount.append_zeroes()
+            on_release: root.add_budget()
+
+            size_hint: 0.5, 0.25
+            pos_hint: {"x": 0.25, "y": 0.05}
+
+<ChooseIcon>
+    Button:
+        on_release: root.button_function()
+
+        background_normal: "images/ui/circle_normal.png"
+        background_down: "images/ui/circle_down.png"
+        size_hint: 0.8, 0.8
+
+    Image:
+        id: icon
+        source: "images/ui/wallet.png"
         size_hint: 0.8, 0.8
 
 
 <AddBudgetButton>
     Button:
-        background_normal: "images/square_normal.png"
-        background_down: "images/square_down.png"
+        on_release: root.button_function()
+
+        background_normal: "images/ui/square_normal.png"
+        background_down: "images/ui/square_down.png"
         size_hint: 0.8, 0.8
 
     Image:
-        source: "images/add.png"
+        source: "images/ui/add.png"
         size_hint: 0.8, 0.8
 
 
+<Budget>
+    Button:
+        on_release: root.button_function()
+        background_normal: "images/ui/circle_normal.png"
+        background_down: "images/ui/circle_down.png"
+
+        size_hint: 0.9, 0.9
+
+    Image:
+        id: icon
+        source: "images/ui/wallet.png"
+        size_hint: 0.8, 0.8
+
+<BudgetDisplay@RelativeLayout>
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.15
+        Rectangle:
+            size: self.size
+
+    Label:
+        id: budget_remaining
+        text: "₱0.00"
+        multiline: False
+        font_size: 40
+        text_size: self.size
+        halign: "left"
+        valign: "middle"
+
+        pos_hint: {"x": 0.1, "center_y": 0.75}
+
+    # TODO: Make progress bar graphic for budgets
+    #ProgressBar:
+    #    size_hint: 0.8, 1
+    #    pos_hint: {"x": 0.1, "center_y": 0.55}
+
+    Label:
+        text: "Remaining"
+        font_size: 12
+        text_size: self.size
+        halign: "left"
+        valign: "middle"
+
+        pos_hint: {"x": 0.1, "center_y": 0.55}
+
+    Label:
+        id: budget_total
+        text: "₱0.00"
+        font_size: 20
+        text_size: self.size
+        halign: "left"
+        valign: "middle"
+
+        pos_hint: {"x": 0.1, "center_y": 0.4}
+
+    Label:
+        text: "Total"
+        font_size: 12
+        text_size: self.size
+        halign: "left"
+        valign: "middle"
+
+        pos_hint: {"x": 0.1, "center_y": 0.25}
+
+    Label:
+        id: budget_name
+        text: "Daily Budget"
+        bold: True
+
+        pos_hint: {"center_y": 0.1}
 
 <BudgetScreen>
     budgets_grid: budgets_grid
@@ -39,64 +197,10 @@
                 pos_hint: {"center_y": 0.2}
 
         # Current Budget Display
-        RelativeLayout:
+        BudgetDisplay:
+            id: budget_display
             size_hint: 0.8, 0.25
             pos_hint: {"x": 0.1, "y": 0.59}
-
-            canvas.before:
-                Color:
-                    rgba: 1, 1, 1, 0.15
-                Rectangle:
-                    size: self.size
-
-            Label:
-                text: "₱400.00"
-                multiline: False
-                font_size: 40
-                text_size: self.size
-                halign: "left"
-                valign: "middle"
-
-                pos_hint: {"x": 0.1, "center_y": 0.75}
-
-            # TODO: Make progress bar graphic for budgets
-            #ProgressBar:
-            #    size_hint: 0.8, 1
-            #    pos_hint: {"x": 0.1, "center_y": 0.55}
-
-            Label:
-                text: "Remaining"
-                font_size: 12
-                text_size: self.size
-                halign: "left"
-                valign: "middle"
-
-                pos_hint: {"x": 0.1, "center_y": 0.55}
-
-            Label:
-                text: "₱1,000.00"
-                font_size: 20
-                text_size: self.size
-                halign: "left"
-                valign: "middle"
-
-                pos_hint: {"x": 0.1, "center_y": 0.4}
-
-            Label:
-                text: "Total"
-                font_size: 12
-                text_size: self.size
-                halign: "left"
-                valign: "middle"
-
-                pos_hint: {"x": 0.1, "center_y": 0.25}
-
-            Label:
-                text: "Daily Budget"
-                bold: True
-
-                pos_hint: {"center_y": 0.1}
-
 
         # Budget Grid
         ScrollView:
@@ -123,11 +227,7 @@
                 row_default_height: self.parent.width/3
 
                 AddBudgetButton:
-                    id: add_budget_button
-                Budget:
-                Budget:
-                Budget:
-                Budget:
+                    caller_widget: root
 
         NavigationBar:
             size_hint: 1, 0.08
