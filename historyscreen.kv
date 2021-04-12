@@ -314,6 +314,7 @@
 # Main screen for displaying entry history
 <HistoryScreen>
     entries_grid: entries_grid
+    name: "history"
 
     FloatLayout:
         size: root.width, root.height
@@ -344,11 +345,14 @@
             on_release: root.request_add_entry()
 
             size_hint: 0.2, 0.08
-            pos_hint: {"x": 0.3, "y": 0.01}
+            pos_hint: {"x": 0.3, "y": 0.09}
 
         Button:
             text: "Total \nBalance"
             on_release: root.view_total_balance()
 
             size_hint: 0.2, 0.08
-            pos_hint: {"x": 0.5, "y": 0.01}
+            pos_hint: {"x": 0.5, "y": 0.09}
+
+        NavigationBar:
+            size_hint: 1, 0.08

@@ -5,6 +5,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
+from kivy.uix.screenmanager import Screen
 
 # Loads kv files for this screen
 from kivy.lang import Builder
@@ -283,7 +284,7 @@ class Entry(Widget):
 
 # Main screen showing entry history
 # Should use array to store and edit data
-class HistoryScreen(Widget):
+class HistoryScreen(Screen):
     entries_grid = ObjectProperty(None)
     entries_list = []
 
@@ -294,8 +295,8 @@ class HistoryScreen(Widget):
         # Sets window to phone ratio
         Window.size = (338, 600)
 
-        # Sets GridLayout size to its number of entries -> allows scrolling
-        self.entries_grid.bind(minimum_height=self.entries_grid.setter("height"))
+        # # Sets GridLayout size to its number of entries -> allows scrolling
+        # self.entries_grid.bind(minimum_height=self.entries_grid.setter("height"))
 
         # Reference to the popup for ease of opening
         self.entry_popup = PopUpChooseEntry(self)

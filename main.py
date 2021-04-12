@@ -9,11 +9,15 @@ from kivy.app import App
 from kivy.lang import Builder
 Builder.load_file('globalwidgets.kv')
 
+from kivy.uix.screenmanager import ScreenManager, Screen
+
+class WindowManager(ScreenManager):
+    pass
 
 # App Build
 class FinancialManagerApp(App):
     def build(self):
-        return BudgetScreen()
+        return WindowManager()
 
 
 # Run

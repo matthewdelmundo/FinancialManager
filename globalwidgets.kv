@@ -1,3 +1,8 @@
+#: import NoTransition kivy.uix.screenmanager.NoTransition
+<WindowManager>:
+    BudgetScreen:
+    HistoryScreen:
+
 # Custom Label for the screen title
 <TitleLabel@Label>:
     canvas:
@@ -35,6 +40,33 @@
             rgba: 1, 1, 1, 0.25
         Rectangle:
             size: self.size
+
+    Button:
+        text: "Home"
+        size_hint: 0.2, 1
+        pos_hint: {"x":0} 
+    Button:
+        text: "Budget"  
+        size_hint: 0.2, 1
+        pos_hint: {"x":.2} 
+        on_release: 
+            app.root.current = 'budget'
+            app.root.transition = NoTransition() 
+    Button:
+        text: "History" 
+        size_hint: 0.2, 1
+        pos_hint: {"x":.4}
+        on_release: 
+            app.root.current = 'history' 
+            app.root.transition = NoTransition() 
+    Button:
+        text: "Overview"
+        size_hint: 0.2, 1
+        pos_hint: {"x":.6} 
+    Button:
+        text: "Add"
+        size_hint: 0.2, 1
+        pos_hint: {"x":.8} 
 
 
 <CircularButton>

@@ -5,6 +5,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.clock import Clock
+from kivy.uix.screenmanager import Screen
 
 # Loads kv files for this screen
 from kivy.lang import Builder
@@ -253,7 +254,7 @@ class Budget(AnchorLayout):
         self.caller_widget.edit_budget_popup.show_budget_info()
 
 # Budget Screen
-class BudgetScreen(Widget):
+class BudgetScreen(Screen):
     budgets_grid = ObjectProperty(None)
   
     def __init__(self, **kwargs):
@@ -264,11 +265,11 @@ class BudgetScreen(Widget):
         # Sets window to phone ratio
         Window.size = (338, 600)
 
-        # Sets GridLayout height to its number of entries -> allows scrolling
-        self.budgets_grid.bind(minimum_height=self.budgets_grid.setter("height"))
+        # # Sets GridLayout height to its number of entries -> allows scrolling
+        # self.budgets_grid.bind(minimum_height=self.budgets_grid.setter("height"))
 
-        # Initialize Labels
-        self.ids["budgets_toolbar"].ids["title"].text = "Budgets"
+        # # Initialize Labels
+        # self.ids["budgets_toolbar"].ids["title"].text = "Budgets"
 
         # Reference to popups
         self.add_budget_popup = PopupAddBudget(self)
