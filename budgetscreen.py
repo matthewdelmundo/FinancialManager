@@ -43,7 +43,9 @@ class PopupEditBudget(Popup):
         self.icon_source = self.caller_widget.current_budget.get_budg_icon()
 
     def edit_budget(self):
-        if self.ids.budg_name.text == "":
+        budget_names = self.caller_widget.get_budgets_list()
+        name = self.ids.budg_name.text
+        if name == "" or name in budget_names:
             new_name = self.caller_widget.current_budget.get_budg_name()
         else:
             new_name = self.ids.budg_name.text
@@ -137,6 +139,7 @@ class PopupAddBudget(Popup):
         name = self.ids["budget_name"].text
         display_amount = "₱" + self.ids["budget_amount"].text
         amount = self.ids["budget_amount"].get_amount()
+        budget_names = self.caller_widget.get_budgets_list()
 
         #does not allow budgets with no names (and no amount)
         if name == "":
@@ -155,6 +158,17 @@ class PopupAddBudget(Popup):
             if name == "":
                 self.ids.budget_name.hint_text = "field required"
                 self.ids.budget_name.hint_text_color = (0.75, 0.47, 0.39, 1)
+                return
+            return
+
+        #does not allow repeating budget names (and no amount)
+        if name in budget_names:
+            self.ids.budget_name.text = ""
+            self.ids.budget_name.hint_text = "name already exists"
+            self.ids.budget_name.hint_text_color = (0.75, 0.47, 0.39, 1)
+            if amount == 0:
+                self.ids.budget_amount.hint_text = "field required"
+                self.ids.budget_amount.hint_text_color = (0.75, 0.47, 0.39, 1)
                 return
             return
 
@@ -256,6 +270,7 @@ class Budget(AnchorLayout):
 # Budget Screen
 class BudgetScreen(Screen):
     budgets_grid = ObjectProperty(None)
+    budgets_list = []
   
     def __init__(self, **kwargs):
         super(BudgetScreen, self).__init__(**kwargs)
@@ -295,6 +310,7 @@ class BudgetScreen(Screen):
     def add_budget(self, name, display_amount, amount, icon_source):
         budget = Budget(self, name, display_amount, amount, icon_source)
         self.ids["budgets_grid"].add_widget(budget)
+        self.budgets_list.append(name)
 
     def update_icon(self, icon_source):
         self.current_budget.set_icon(icon_source)
@@ -305,4 +321,7 @@ class BudgetScreen(Screen):
         self.ids["budget_display"].ids["budget_remaining"].text = budget_remaining
         self.ids["budget_display"].ids["budget_total"].text = budget_total
         self.current_budget = current_budget
+
+    def get_budgets_list(self):
+        return self.budgets_list
         
