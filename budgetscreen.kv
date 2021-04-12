@@ -1,3 +1,56 @@
+<PopupEditBudget>
+    title: "Edit Budget"
+    size_hint: 0.8, 0.4
+    on_open: root.show_budget_info()
+    on_dismiss: root.reset_inputs() 
+
+    RelativeLayout:
+        RelativeLayout:
+            size_hint: 1, 0.7
+            pos_hint: {"y": 0.3}
+
+            ChooseIcon:
+                id: choose_icon
+                caller_widget: root
+                size_hint: 0.25, 0.5
+                pos_hint: {"x": 0.05, "y": 0.5}
+
+            TextInput:
+                id: budg_name
+                text: ""
+                multiline: False
+                on_focus: budg_amt.append_zeroes()
+
+                size_hint: 0.6, 0.25
+                pos_hint: {"x": 0.35, "center_y": 0.75}
+
+            Label:
+                text: "₱"
+                font_size: 40
+                size_hint: 0.25, 0.5
+                pos_hint: {"x": 0.05, "center_y": 0.25}
+
+            AmountInput:
+                id: budg_amt
+                text: ""
+                multiline: False
+
+                prepend_peso: False
+                adjust_font_size: False
+
+                size_hint: 0.6, 0.25
+                pos_hint: {"x": 0.35, "center_y": 0.25}
+
+        Button:
+            size_hint: 0.5, 0.28
+            text: "Finish Edits!"
+            on_press: budg_amt.append_zeroes()
+            on_release: root.edit_budget()
+
+            size_hint: 0.5, 0.25
+            pos_hint: {"x": 0.25, "y": 0.05}
+
+
 <PopupChooseIcon>
     icon_grid: icon_grid
 
@@ -179,6 +232,17 @@
         bold: True
 
         pos_hint: {"center_y": 0.1}
+    
+    Button:
+        text: "Edit"
+        font_size: 12
+        text_size: self.size
+        halign: "center"
+
+        pos_hint: {"x": 0.9, "center_y": 0.9}
+        size_hint: 0.04, 0.1
+        
+        on_press: root.root.view_edit_budget()
 
 <BudgetScreen>
     budgets_grid: budgets_grid
@@ -201,7 +265,8 @@
             id: budget_display
             size_hint: 0.8, 0.25
             pos_hint: {"x": 0.1, "y": 0.59}
-
+            root: root
+           
         # Budget Grid
         ScrollView:
             do_scroll_x: False
