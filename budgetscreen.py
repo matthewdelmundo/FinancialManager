@@ -49,6 +49,8 @@ class PopupEditBudget(Popup):
             new_name = self.caller_widget.current_budget.get_budg_name()
         else:
             new_name = self.ids.budg_name.text
+            budget_names.append(new_name)
+            budget_names.remove(self.caller_widget.current_budget.get_budg_name())
         
         if self.ids.budg_amt.text == "":
             new_amt = self.caller_widget.current_budget.get_str_budg_amt()
