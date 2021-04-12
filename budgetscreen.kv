@@ -9,8 +9,8 @@
             size_hint: 1, 0.7
             pos_hint: {"y": 0.3}
 
-            ChooseIcon:
-                id: choose_icon
+            ChooseNewIcon:
+                id: choose_new_icon
                 caller_widget: root
                 size_hint: 0.25, 0.5
                 pos_hint: {"x": 0.05, "y": 0.5}
@@ -50,6 +50,19 @@
             size_hint: 0.5, 0.25
             pos_hint: {"x": 0.25, "y": 0.05}
 
+<ChooseNewIcon>
+    Button:
+        on_release: root.button_function()
+
+        background_normal: "images/ui/circle_normal.png"
+        background_down: "images/ui/circle_down.png"
+        size_hint: 0.8, 0.8
+
+    Image:
+        id: icon
+        source: "images/ui/wallet.png"
+        size_hint: 0.8, 0.8
+
 
 <PopupChooseIcon>
     icon_grid: icon_grid
@@ -84,6 +97,7 @@
         id: icon
         source: "images/ui/wallet.png"
         size_hint: 0.8, 0.8
+
 
 <PopupAddBudget>
     title: "Add Budget"
@@ -242,6 +256,8 @@
         pos_hint: {"x": 0.9, "center_y": 0.9}
         size_hint: 0.04, 0.1
         
+
+
         on_press: root.root.view_edit_budget()
 
 <BudgetScreen>
