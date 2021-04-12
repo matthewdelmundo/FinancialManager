@@ -4,6 +4,7 @@ from kivy.core.window import Window
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.clock import Clock
 
 # Loads kv files for this screen
 from kivy.lang import Builder
@@ -16,24 +17,30 @@ class PopupEditBudget(Popup):
         # Widget that called this popup
         self.caller_widget = caller_widget        
         self.choose_icon_popup = PopupChooseIcon(self)
+
+        self.show_budget_info()
     
     def choose_icon(self):
         self.choose_icon_popup.open() 
+    
+    def set_icon(self, icon_source):
+        self.icon_source = icon_source
+        self.ids.choose_new_icon.ids.icon.source = icon_source
 
     def reset_inputs(self):
         self.ids.budg_name.text = self.caller_widget.current_budget.get_budg_name()
         self.ids.budg_amt.text = self.caller_widget.current_budget.get_str_budg_amt()
-        # self.ids.choose_icon.ids.icon.source =  self.caller_widget.get_budg_icon()
+        self.ids.choose_new_icon.ids.icon.source = self.caller_widget.current_budget.get_budg_icon()
+        self.icon_source = self.icon_source = self.caller_widget.current_budget.get_budg_icon()
 
     def show_budget_info(self):
-        # self.ids.budg_label.color =
-                
+        if self.caller_widget.current_budget == None:
+            return                  
         self.ids.budg_name.text = self.caller_widget.current_budget.get_budg_name()
         self.ids.budg_amt.text =  self.caller_widget.current_budget.get_str_budg_amt()
+        self.ids.choose_new_icon.ids.icon.source = self.caller_widget.current_budget.get_budg_icon()
+        self.icon_source = self.caller_widget.current_budget.get_budg_icon()
 
-        # self.ids.budg_amt.background_color =
-        # self.ids.budg_amt.text_color = 
-    
     def edit_budget(self):
         if self.ids.budg_name.text == "":
             new_name = self.caller_widget.current_budget.get_budg_name()
@@ -48,7 +55,9 @@ class PopupEditBudget(Popup):
             new_dispamt = "₱" + new_amt
         
         self.caller_widget.finish_edits(new_name, new_amt, new_dispamt)
+        self.caller_widget.update_icon(self.icon_source)
         self.dismiss()
+
 
 # Popup for choosing a new icon for budget
 class PopupChooseIcon(Popup):
@@ -158,6 +167,13 @@ class PopupAddBudget(Popup):
         self.caller_widget.add_budget(name, display_amount, amount, self.icon_source)
         self.dismiss()
 
+# Button/Image that opens the ChooseIcon popup
+# Also displays current icon
+class ChooseNewIcon(AnchorLayout):
+    caller_widget = ObjectProperty(None)
+
+    def button_function(self):
+        self.caller_widget.choose_icon()
 
 # Button/Image that opens the ChooseIcon popup
 # Also displays current icon
@@ -189,8 +205,6 @@ class Budget(AnchorLayout):
         self.total = amount
         self.icon_source = icon_source
         self.set_icon(icon_source)
-
-        self.click_edit_budg_popup = PopupEditBudget(self)
 
         # Saved remaining amount
         self.display_remaining = display_amount
@@ -236,6 +250,7 @@ class Budget(AnchorLayout):
     def button_function(self):
         print("Hi")
         self.caller_widget.view_budget(self, self.name, self.display_remaining, self.display_total)
+        self.caller_widget.edit_budget_popup.show_budget_info()
 
 # Budget Screen
 class BudgetScreen(Widget):
@@ -260,6 +275,8 @@ class BudgetScreen(Widget):
         self.edit_budget_popup = PopupEditBudget(self)
     
     def view_edit_budget(self):   
+        if self.current_budget == None:
+            return
         self.edit_budget_popup.open()
     
     def finish_edits(self, new_name, new_amt, new_dispamt):
@@ -267,7 +284,7 @@ class BudgetScreen(Widget):
         self.current_budget.total = new_amt
         self.current_budget.display_total = new_dispamt
         self.current_budget.display_remaining = new_dispamt
-        
+
         self.view_budget(self.current_budget, self.current_budget.name, 
             self.current_budget.display_remaining, self.current_budget.display_total)
 
@@ -277,6 +294,9 @@ class BudgetScreen(Widget):
     def add_budget(self, name, display_amount, amount, icon_source):
         budget = Budget(self, name, display_amount, amount, icon_source)
         self.ids["budgets_grid"].add_widget(budget)
+
+    def update_icon(self, icon_source):
+        self.current_budget.set_icon(icon_source)
 
     def view_budget(self, current_budget, budget_name, budget_remaining, budget_total):
         print("Hello")
