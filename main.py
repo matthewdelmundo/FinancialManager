@@ -11,13 +11,13 @@ Builder.load_file('globalwidgets.kv')
 
 from kivy.uix.screenmanager import ScreenManager, Screen
 
-class WindowManager(ScreenManager):
-    pass
-
 # App Build
 class FinancialManagerApp(App):
     def build(self):
-        return WindowManager()
+        sm = ScreenManager()
+        sm.add_widget(BudgetScreen(name='budget'))
+        sm.add_widget(HistoryScreen(name='history'))
+        return sm
 
 
 # Run

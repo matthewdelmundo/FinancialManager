@@ -295,8 +295,8 @@ class HistoryScreen(Screen):
         # Sets window to phone ratio
         Window.size = (338, 600)
 
-        # # Sets GridLayout size to its number of entries -> allows scrolling
-        # self.entries_grid.bind(minimum_height=self.entries_grid.setter("height"))
+        # Sets GridLayout size to its number of entries -> allows scrolling
+        self.entries_grid.bind(minimum_height=self.entries_grid.setter("height"))
 
         # Reference to the popup for ease of opening
         self.entry_popup = PopUpChooseEntry(self)

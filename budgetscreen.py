@@ -282,11 +282,11 @@ class BudgetScreen(Screen):
         # Sets window to phone ratio
         Window.size = (338, 600)
 
-        # # Sets GridLayout height to its number of entries -> allows scrolling
-        # self.budgets_grid.bind(minimum_height=self.budgets_grid.setter("height"))
+        # Sets GridLayout height to its number of entries -> allows scrolling
+        self.budgets_grid.bind(minimum_height=self.budgets_grid.setter("height"))
 
-        # # Initialize Labels
-        # self.ids["budgets_toolbar"].ids["title"].text = "Budgets"
+        # Initialize Labels
+        self.ids["budgets_toolbar"].ids["title"].text = "Budgets"
 
         # Reference to popups
         self.add_budget_popup = PopupAddBudget(self)
