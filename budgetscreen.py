@@ -240,7 +240,8 @@ class Budget(AnchorLayout):
         return self.name
 
     def get_str_budg_amt(self):
-        return str(self.total)
+        no_peso_display_total = self.display_total[1:]
+        return no_peso_display_total
 
     def get_budg_amt(self):
         return self.total
