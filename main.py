@@ -4,12 +4,12 @@ from budgetscreen import *
 
 import kivy
 from kivy.app import App
+from kivy.uix.screenmanager import ScreenManager, Screen
 
 # Loads kv files used by multiple screens
 from kivy.lang import Builder
 Builder.load_file('globalwidgets.kv')
 
-from kivy.uix.screenmanager import ScreenManager, Screen
 
 # App Build
 class FinancialManagerApp(App):
