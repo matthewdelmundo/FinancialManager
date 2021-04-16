@@ -288,12 +288,14 @@ class HistoryScreen(Screen):
     entries_grid = ObjectProperty(None)
     entries_list = []
 
-    def __init__(self, **kwargs):
+    def __init__(self, database, **kwargs):
         super(HistoryScreen, self).__init__(**kwargs)
 
         # TODO: DEBUG (Remove in Final)
         # Sets window to phone ratio
         Window.size = (338, 600)
+
+        self.database = database
 
         # Sets GridLayout size to its number of entries -> allows scrolling
         self.entries_grid.bind(minimum_height=self.entries_grid.setter("height"))
@@ -345,3 +347,6 @@ class HistoryScreen(Screen):
         for i in range(len(self.entries_list)):
             total = total + self.entries_list[i][1]
         return total
+
+    def Test(self):
+        self.database.Test()

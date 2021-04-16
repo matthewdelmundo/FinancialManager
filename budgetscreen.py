@@ -275,13 +275,15 @@ class BudgetScreen(Screen):
     budgets_grid = ObjectProperty(None)
     budgets_list = []
   
-    def __init__(self, **kwargs):
+    def __init__(self, database, **kwargs):
         super(BudgetScreen, self).__init__(**kwargs)
         self.current_budget = None
 
         # TODO: DEBUG (Remove in Final)
         # Sets window to phone ratio
         Window.size = (338, 600)
+
+        self.database = database
 
         # Sets GridLayout height to its number of entries -> allows scrolling
         self.budgets_grid.bind(minimum_height=self.budgets_grid.setter("height"))
@@ -327,4 +329,7 @@ class BudgetScreen(Screen):
 
     def get_budgets_list(self):
         return self.budgets_list
+
+    def Test(self):
+        self.database.Test()
         
