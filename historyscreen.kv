@@ -141,6 +141,7 @@
 
 # Popup for choosing between "Income" and "Expense"
 <PopUpChooseEntry>:
+    on_dismiss: app.root.current = 'history'
     title: "Add Entry"
 
     size_hint: 0.8, None
@@ -174,7 +175,9 @@
 # Popup that lets user input an amount and name for an entry
 <PopupAddIncome>
     title: "Add Income"
-    on_dismiss: root.reset_inputs()
+    on_dismiss: 
+        root.reset_inputs()
+        app.root.current = 'history'
 
     size_hint: 0.8, None
     size: 0, 250
@@ -220,7 +223,9 @@
 # Popup that lets user input an amount and name for an entry
 <PopupAddExpense>
     title: "Add Expense"
-    on_dismiss: root.reset_inputs()
+    on_dismiss: 
+        root.reset_inputs()
+        app.root.current = 'history'
 
     size_hint: 0.8, None
     size: 0, 250
@@ -338,13 +343,6 @@
                 size_hint_y: None
                 row_default_height: '60dp'
                 row_force_default: True
-
-        Button:
-            text: "Add"
-            on_release: root.request_add_entry()
-
-            size_hint: 0.2, 0.08
-            pos_hint: {"x": 0.3, "y": 0.09}
 
         Button:
             text: "Total \nBalance"

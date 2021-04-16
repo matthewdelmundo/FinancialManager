@@ -1,6 +1,8 @@
 from globalwidgets import *
 from historyscreen import *
 from budgetscreen import *
+from globalwidgets import *
+from add import *
 
 import kivy
 from kivy.app import App
@@ -15,10 +17,12 @@ Builder.load_file('globalwidgets.kv')
 class FinancialManagerApp(App):
     def build(self):
         sm = ScreenManager()
+        history_screen = HistoryScreen(name='history')
         sm.add_widget(BudgetScreen(name='budget'))
-        sm.add_widget(HistoryScreen(name='history'))
+        sm.add_widget(history_screen)
+        sm.add_widget(GlobalAdd(history_screen, name='add'))
         return sm
-
+    
 
 # Run
 if __name__ == "__main__":

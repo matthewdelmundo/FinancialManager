@@ -2,7 +2,8 @@ import kivy
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.properties import ColorProperty
-
+from kivy.uix.relativelayout import RelativeLayout
+from historyscreen import *
 
 # Custom TextInput for entries
 class AmountInput(TextInput):
@@ -149,5 +150,3 @@ class ImageButton(Button):
 
     def button_released(self):
         self.source = self.image_normal
-
-
