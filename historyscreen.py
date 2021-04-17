@@ -7,6 +7,8 @@ from kivy.properties import ObjectProperty
 from kivy.core.window import Window
 from kivy.uix.screenmanager import Screen
 
+from datepicker import DatePickerButton
+
 # Loads kv files for this screen
 from kivy.lang import Builder
 Builder.load_file('historyscreen.kv')
@@ -303,6 +305,8 @@ class HistoryScreen(Screen):
         # Reference to the popup for ease of opening
         self.entry_popup = PopUpChooseEntry(self)
         self.total_balance_popup = PopUpTotalBalance(self)
+
+        self.ids["entries_grid"].add_widget(DatePickerButton(self.database))
 
     # Opens the ChooseEntry popup
     def request_add_entry(self):

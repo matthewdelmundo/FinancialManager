@@ -1,6 +1,7 @@
 from globalwidgets import *
 from historyscreen import *
 from budgetscreen import *
+from datepicker import *
 from database import *
 
 import kivy
@@ -17,7 +18,7 @@ class FinancialManagerApp(App):
     def build(self):
         database = Database()
         sm = ScreenManager()
-        sm.add_widget(BudgetScreen(database, name='budget'))
+        sm.add_widget(BudgetScreen(name='budget'))
         sm.add_widget(HistoryScreen(database, name='history'))
         return sm
 

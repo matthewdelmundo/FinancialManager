@@ -270,20 +270,19 @@ class Budget(AnchorLayout):
         self.caller_widget.view_budget(self, self.name, self.display_remaining, self.display_total)
         self.caller_widget.edit_budget_popup.show_budget_info()
 
+
 # Budget Screen
 class BudgetScreen(Screen):
     budgets_grid = ObjectProperty(None)
     budgets_list = []
   
-    def __init__(self, database, **kwargs):
+    def __init__(self, **kwargs):
         super(BudgetScreen, self).__init__(**kwargs)
         self.current_budget = None
 
         # TODO: DEBUG (Remove in Final)
         # Sets window to phone ratio
         Window.size = (338, 600)
-
-        self.database = database
 
         # Sets GridLayout height to its number of entries -> allows scrolling
         self.budgets_grid.bind(minimum_height=self.budgets_grid.setter("height"))
