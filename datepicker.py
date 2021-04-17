@@ -76,23 +76,31 @@ Builder.load_string("""
 ###########################################################
 
 
-class DatePickerButton(Button):
+class DatePickerButton(ToggleButton):
     pHint_x = NumericProperty(0.8)
     pHint_y = NumericProperty(0.6)
     pHint = ReferenceListProperty(pHint_x, pHint_y)
 
-    def __init__(self, database, **kwargs):
+    def __init__(self, **kwargs):
         super(DatePickerButton, self).__init__(**kwargs)
 
-        self.database = database
+        self.database = None
+        self.active_screen = None
+        self.current_date = []
 
         # Init UI
-        self.text = "Pick Date"
-        self.current_date = self.database.current_date
+        self.text = "Cal"
 
         self.bind(on_press=self.show_popup)
 
+    def set_references(self, database, active_screen):
+        self.database = database
+        self.active_screen = active_screen
+        self.current_date = self.database.current_date
+
     def show_popup(self, val):
+        self.state = "down"
+
         self.cal = CalendarWidget(database=self.database,
                                   current_date=self.current_date, as_popup=True)
         self.popup = Popup(content=self.cal, on_dismiss=self.update_value, title="")
@@ -102,8 +110,11 @@ class DatePickerButton(Button):
         self.popup.open()
 
     def update_value(self, inst):
+        self.state = "normal"
+
         self.current_date = self.cal.current_date
         self.database.update_current_date(self.current_date)
+        self.active_screen.on_date_change_callback()
 
 
 class CalendarWidget(RelativeLayout):
@@ -119,7 +130,6 @@ class CalendarWidget(RelativeLayout):
         self.init_ui()
 
     def init_ui(self):
-
         self.left_arrow = ArrowButton(text="<", on_press=self.go_prev,
                                       pos_hint={"top": 1, "left": 0})
 
@@ -142,8 +152,6 @@ class CalendarWidget(RelativeLayout):
 
     def create_month_scr(self, month, year_num, month_num, toogle_today=False):
         """ Screen with calendar for one month """
-
-
 
         scr = Screen()
         m = self.month_names_eng[self.active_date[1] - 1]
@@ -354,18 +362,7 @@ from locale import getdefaultlocale
 
 def get_month_names():
     """ Return list with months names """
-
-    result = []
-    # If it possible get months names in system language
-    try:
-        with TimeEncoding("%s.%s" % getdefaultlocale()) as time_enc:
-            for i in range(1, 13):
-                result.append(month_name[i].decode(time_enc))
-
-        return result
-
-    except:
-        return get_month_names_eng()
+    return get_month_names_eng()
 
 
 def get_month_names_eng():
@@ -380,17 +377,9 @@ def get_month_names_eng():
 
 def get_days_abbrs():
     """ Return list with days abbreviations """
-
     result = []
-    # If it possible get days abbrs in system language
-    try:
-        with TimeEncoding("%s.%s" % getdefaultlocale()) as time_enc:
-            for i in range(7):
-                result.append(day_abbr[i].decode(time_enc))
-    except:
-        for i in range(7):
-            result.append(day_abbr[i])
-
+    for i in range(7):
+        result.append(day_abbr[i])
     return result
 
 

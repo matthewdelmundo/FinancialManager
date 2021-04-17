@@ -10,7 +10,8 @@ from historyscreen import *
 
 # Loads kv files for this screen
 from kivy.lang import Builder
-Builder.load_file('add.kv')
+Builder.load_file('kv Files/addscreen.kv')
+
 
 # Popup window for clicking the "Add" button
 class PopUpChooseEntry(Popup):
@@ -87,6 +88,7 @@ class PopUpAddExpense(Popup):
             self.caller_widget.add_entry("Expense", name, display_amount, amount)
             self.dismiss()
 
+
 # Popup window for clicking an entry
 class PopUpClickEntry(Popup):
     def __init__(self, caller_widget, **kwargs):
@@ -116,6 +118,7 @@ class PopUpClickEntry(Popup):
         elif self.caller_widget.get_entry_type() == "Expense":
             self.edit_expenseentry_popup.open()
         self.dismiss()
+
 
 # Custom Widget for the entries.
 # entry_type = "Income"/"Expense"
@@ -168,12 +171,14 @@ class Entry(Widget):
 
 
 class GlobalAdd(Screen):
-    entries_grid = HistoryScreen.entries_grid
-    entries_list = HistoryScreen.entries_list
-    def __init__(self, history_screen, **kwargs):
+    def __init__(self, database, history_screen, **kwargs):
         super(GlobalAdd, self).__init__(**kwargs)
         self.entry_popup = PopUpChooseEntry(self)
         self.history_screen = history_screen
+        self.database = database
+
+        self.history_screen.set_references(self)
+        self.history_screen.read_database()
 
     # Opens the ChooseEntry popup
     def request_add_entry(self):
@@ -182,15 +187,37 @@ class GlobalAdd(Screen):
     # Adds entry to UI display by adding a widget
     # display_amount is the amount in the format ₱XX,XXX.XX
     # amount is the float amount for use in the data array
-    def add_entry(self, entry_type, name, display_amount, amount):
+    def add_entry(self, entry_type, name, display_amount, amount, update_callback=True):
         if entry_type == "Income":
-            new_entry = Entry(entry_type, name, display_amount, len(self.entries_list), self)
-            self.history_screen.ids["entries_grid"].add_widget(new_entry)
+            new_entry = Entry(entry_type, name, display_amount,
+                              len(self.history_screen.entries_list), self)
 
-            self.entries_list.append([name, amount])
+            self.history_screen.ids["entries_grid"].add_widget(new_entry)
+            self.history_screen.entries_list.append([name, entry_type, None, amount])
 
         elif entry_type == "Expense":
-            new_entry = Entry(entry_type, name, display_amount, len(self.entries_list), self)
-            self.history_screen.ids["entries_grid"].add_widget(new_entry)
+            new_entry = Entry(entry_type, name, display_amount,
+                              len(self.history_screen.entries_list), self)
 
-            self.entries_list.append([name, -1 * amount])
+            self.history_screen.ids["entries_grid"].add_widget(new_entry)
+            self.history_screen.entries_list.append([name, entry_type, None, -1 * amount])
+
+        if update_callback:
+            self.history_screen.on_entries_list_updated_callback()
+
+    # Used when finishing edits of an entry
+    def update_entries_list(self, new_name, new_amount, index, entry_type):
+        print("update", self.history_screen.entries_list)
+        self.history_screen.entries_list[index][0] = new_name
+
+        # remove peso and commas
+        trim = re.compile(r'[^\d.]+')
+        new_amount = trim.sub('', new_amount)
+        new_amount = float(new_amount)
+
+        if entry_type == "Income":
+            self.history_screen.entries_list[index][3] = new_amount
+        elif entry_type == "Expense":
+            self.history_screen.entries_list[index][3] = -1 * new_amount
+
+        self.history_screen.on_entries_list_updated_callback()

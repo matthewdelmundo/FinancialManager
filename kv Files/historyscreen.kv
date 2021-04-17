@@ -321,19 +321,33 @@
     entries_grid: entries_grid
 
     FloatLayout:
+        id: history_screen
         size: root.width, root.height
 
-        TitleLabel:
-            text: "History"
+        ToolBar:
+            id: budgets_toolbar
+            size_hint: 1, 0.14
+            pos_hint: {"y": 0.86}
 
-            size_hint: 0.8, 0.08
-            pos_hint: {"x": 0.1, "y": 0.91}
+            Label:
+                id: active_date
+                text: "01 January 2021"
+
+                pos_hint: {"center_y": 0.2}
+
+            DatePickerButton:
+                id: date_picker
+                text: "Date"
+
+                size_hint: None, 0.8
+                width: self.height
+                pos_hint: {"right": 0.95, "center_y": 0.5}
 
         ScrollView:
             do_scroll_x: False
             do_scroll_y: True
-            size_hint: 0.7, 0.78
-            pos_hint: {"x": 0.15, "y": 0.11}
+            size_hint: 0.7, 0.63
+            pos_hint: {"x": 0.15, "y": 0.21}
 
             GridLayout:
                 id: entries_grid
@@ -344,17 +358,12 @@
                 row_default_height: '60dp'
                 row_force_default: True
 
-                Button:
-                    text: "Test"
-                    on_release:
-                        root.Test()
-
         Button:
-            text: "Total \nBalance"
-            on_release: root.view_total_balance()
+            text: "Clear"
+            on_release: root.clear_entries()
 
-            size_hint: 0.2, 0.08
-            pos_hint: {"x": 0.5, "y": 0.09}
+            size_hint: 0.4, 0.08
+            pos_hint: {"x": 0.3, "y": 0.11}
 
         NavigationBar:
             size_hint: 1, 0.08

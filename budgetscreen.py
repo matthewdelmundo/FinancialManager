@@ -9,7 +9,8 @@ from kivy.uix.screenmanager import Screen
 
 # Loads kv files for this screen
 from kivy.lang import Builder
-Builder.load_file('budgetscreen.kv')
+Builder.load_file('kv Files/budgetscreen.kv')
+
 
 class PopupEditBudget(Popup):
     def __init__(self, caller_widget, **kwargs):
@@ -328,7 +329,3 @@ class BudgetScreen(Screen):
 
     def get_budgets_list(self):
         return self.budgets_list
-
-    def Test(self):
-        self.database.Test()
-        
