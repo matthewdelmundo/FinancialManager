@@ -1,0 +1,112 @@
+{
+  "2021-4-10": {
+    "entries": [
+      {
+        "Amount": 350.0,
+        "Category": "Snacks",
+        "Name": "Ice Cream",
+        "Type": "Expense"
+      }
+    ]
+  },
+  "2021-4-15": {
+    "entries": [
+      {
+        "Amount": 469.99,
+        "Category": "Groceries",
+        "Name": "Grocery Run",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 120.0,
+        "Category": "Transportation",
+        "Name": "Grab Fare",
+        "Type": "Expense"
+      }
+    ]
+  },
+  "2021-4-17": {
+    "entries": [
+      {
+        "Amount": 9.0,
+        "Category": null,
+        "Name": "Pochi",
+        "Type": "Income"
+      },
+      {
+        "Amount": 9000000.0,
+        "Category": null,
+        "Name": "Lamborghini",
+        "Type": "Expense"
+      }
+    ]
+  },
+  "2021-4-6": {
+    "entries": [
+      {
+        "Amount": 3.0,
+        "Category": null,
+        "Name": "Long",
+        "Type": "Income"
+      },
+      {
+        "Amount": -33.0,
+        "Category": null,
+        "Name": "Loong",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 333.0,
+        "Category": null,
+        "Name": "Looong",
+        "Type": "Income"
+      },
+      {
+        "Amount": -3333.0,
+        "Category": null,
+        "Name": "Loooong",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 33333.0,
+        "Category": null,
+        "Name": "Looooong",
+        "Type": "Income"
+      },
+      {
+        "Amount": -333333.0,
+        "Category": null,
+        "Name": "Loooooong",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 3333333.0,
+        "Category": null,
+        "Name": "Looooooong",
+        "Type": "Income"
+      },
+      {
+        "Amount": -33333333.0,
+        "Category": null,
+        "Name": "Loooooooong",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 333333333.0,
+        "Category": null,
+        "Name": "Looooooooong",
+        "Type": "Income"
+      }
+    ]
+  },
+  "2022-1-1": {
+    "entries": [
+      {
+        "Amount": 50000.0,
+        "Category": null,
+        "Name": "Salary",
+        "Type": "Income"
+      }
+    ]
+  }
+}

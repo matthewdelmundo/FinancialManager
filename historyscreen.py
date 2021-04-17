@@ -6,12 +6,14 @@ from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
 from kivy.core.window import Window
 from kivy.uix.screenmanager import Screen
+
 from budgetscreen import *
-#from add import *
+from database import create_entry_dict
+from database import convert_month_num
 
 # Loads kv files for this screen
 from kivy.lang import Builder
-Builder.load_file('historyscreen.kv')
+Builder.load_file('kv Files/historyscreen.kv')
 
 
 # Popup window for editing an entry
@@ -84,7 +86,6 @@ class PopUpEditEntryExpense(Popup):
         self.dismiss()
 
 
-
 # Popup window for clicking the "Total Balance" button
 class PopUpTotalBalance(Popup):
     def __init__(self, caller_widget, **kwargs):
@@ -129,17 +130,22 @@ class EditNameInput(TextInput):
             return
         return super(EditNameInput, self).insert_text(substring, from_undo)
 
+
 # Main screen showing entry history
 # Should use array to store and edit data
 class HistoryScreen(Screen):
     entries_grid = ObjectProperty(None)
     entries_list = []
-    def __init__(self, **kwargs):
+
+    def __init__(self, database, **kwargs):
         super(HistoryScreen, self).__init__(**kwargs)
 
         # TODO: DEBUG (Remove in Final)
         # Sets window to phone ratio
         Window.size = (338, 600)
+
+        self.database = database
+        self.global_add = None
 
         # Sets GridLayout size to its number of entries -> allows scrolling
         self.entries_grid.bind(minimum_height=self.entries_grid.setter("height"))
@@ -147,26 +153,78 @@ class HistoryScreen(Screen):
         # Reference to the popup for ease of opening
         self.total_balance_popup = PopUpTotalBalance(self)
 
+        # Initialize Labels
+        self.ids["budgets_toolbar"].ids["title"].text = "History"
+        self.set_active_date_label()
+
+        # Configures Calendar Button
+        self.ids["date_picker"].set_references(self.database, self)
+
+
+    # Run by GlobalAdd
+    def set_references(self, global_add):
+        self.global_add = global_add
+
+    # Sets entries_grid to match data from database
+    # Uses database's current date
+    def read_database(self):
+        new_entries_list = self.database.load_entries_list()
+        for i in range(len(new_entries_list)):
+            entry = new_entries_list[i]
+            entry_name = entry[0]
+            entry_type = entry[1]
+            entry_category = entry[2]
+            entry_amount = entry[3]
+
+            display_amount = '₱{:,.2f}'.format(abs(entry_amount))
+            self.global_add.add_entry(entry_type, entry_name, display_amount, entry_amount,
+                                      update_callback=False)
+
+    # Run by DatePickerButton
+    # Reads database after date has been changed
+    def on_date_change_callback(self):
+        self.set_active_date_label()
+
+        self.ids["entries_grid"].clear_widgets()
+        self.entries_list = []
+        self.read_database()
+
+    def set_active_date_label(self):
+        active_date = self.database.get_current_date()
+        date_text = "{day} {month} {year}".format(day=active_date[0],
+                                                  month=convert_month_num(active_date[1]),
+                                                  year=active_date[2])
+        self.ids["active_date"].text = date_text
+
+    # Run every time the current entries_list is updated
+    def on_entries_list_updated_callback(self):
+        entry_dict_list = []
+        # Converts entries_list to dict compatible with data storage
+        for i in range(len(self.entries_list)):
+            entry = self.entries_list[i]
+            entry_name = entry[0]
+            entry_type = entry[1]
+            entry_category = entry[2]
+            entry_amount = entry[3]
+
+            entry_dict = create_entry_dict(entry_name, entry_type,
+                                           entry_category, entry_amount)
+            entry_dict_list.append(entry_dict)
+
+        self.database.save_entries_list(entry_dict_list)
+
+    def clear_entries(self):
+        self.ids["entries_grid"].clear_widgets()
+        self.entries_list = []
+        self.database.delete_entries_list()
+
     # Views Total Balance
     def view_total_balance(self):
         self.total_balance_popup.open()
-
-    # Update entries_list
-    def update_entries_list(self, new_name, new_amount, index, entry_type):
-        self.entries_list[index][0] = new_name
-
-        # remove peso and commas
-        trim = re.compile(r'[^\d.]+')
-        new_amount = trim.sub('', new_amount)
-        new_amount = float(new_amount)
-        if entry_type == "Income":
-            self.entries_list[index][1] = new_amount
-        elif entry_type == "Expense":
-            self.entries_list[index][1] = -1 * new_amount
 
     # Gets the sum of the entries_list
     def get_entries_list_total(self):
         total = 0
         for i in range(len(self.entries_list)):
-            total = total + self.entries_list[i][1]
+            total = total + self.entries_list[i][3]
         return total

@@ -18,7 +18,7 @@
         pos_hint: {"center_y": 0.6}
 
 <ToolBar@RelativeLayout>:
-    canvas:
+    canvas.before:
         Color:
             rgba: 1, 1, 1, 0.25
         Rectangle:
@@ -41,7 +41,8 @@
     Button:
         text: "Home"
         size_hint: 0.2, 1
-        pos_hint: {"x":0} 
+        pos_hint: {"x":0}
+
     Button:
         text: "Budget"  
         size_hint: 0.2, 1
@@ -67,6 +68,7 @@
         on_release:
             app.root.current = 'add'
             app.root.transition = NoTransition() 
+
 
 
 <CircularButton>
