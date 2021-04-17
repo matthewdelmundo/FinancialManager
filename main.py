@@ -1,6 +1,7 @@
 from globalwidgets import *
 from historyscreen import *
 from budgetscreen import *
+from add import *
 from datepicker import *
 from database import *
 
@@ -18,10 +19,12 @@ class FinancialManagerApp(App):
     def build(self):
         database = Database()
         sm = ScreenManager()
+        history_screen = HistoryScreen(database, name='history')
+        sm.add_widget(history_screen)
         sm.add_widget(BudgetScreen(name='budget'))
-        sm.add_widget(HistoryScreen(database, name='history'))
+        sm.add_widget(GlobalAdd(history_screen, name='add'))
         return sm
-
+    
 
 # Run
 if __name__ == "__main__":

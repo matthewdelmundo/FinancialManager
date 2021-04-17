@@ -65,6 +65,10 @@
         text: "Add"
         size_hint: 0.2, 1
         pos_hint: {"x":.8}
+        on_release:
+            app.root.current = 'add'
+            app.root.transition = NoTransition() 
+
 
 
 <CircularButton>
@@ -111,3 +115,4 @@
     background_normal: ''
     image_down: "images/wallet.png"
     image_normal: "images/add.png"
+
