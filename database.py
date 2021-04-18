@@ -110,3 +110,16 @@ class Database:
     def print_value(self):
         print(self.data.get("2021-4-10")["entries"][0])
         print(get_date_id(self.current_date))
+
+    def get_all_entries_total(self):
+        total = 0
+        datalist = self.data.keys()
+        for i in range(len(datalist)):
+            entries_list = self.data.get(datalist[i])["entries"]
+            for j in range(len(entries_list)):
+                amount = entries_list[j]["Amount"]
+                if entries_list[j]["Type"] == "Income":
+                    total += amount
+                elif entries_list[j]["Type"] == "Expense":
+                    total -= amount
+        return total

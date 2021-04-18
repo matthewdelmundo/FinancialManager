@@ -1,0 +1,44 @@
+#displays total balance
+<HomeScreen>:
+    on_enter: root.total_balance()
+        
+    FloatLayout:
+        orientation: "vertical"
+        spacing: 10
+        padding: 10
+
+        ToolBar:
+            id: home_toolbar
+            size_hint: 1, 0.14
+            pos_hint: {"y": 0.86}
+
+            Label:
+                id: active_date
+                text: "01 January 2021"
+                pos_hint: {"center_y": 0.2}
+
+        Image:
+            source: 'images/ui/diamond3.png'
+            allow_stretch: True
+            keep_ratio: True
+            pos_hint: {"x": 0.1, "y": 0.1}
+            size_hint: 0.8, 0.8
+
+        Label:
+            id: static_text
+            text: "Your total balance is"
+            halign: 'center'
+            valign: 'center'
+            font_size: 16
+            pos_hint: {"y": 0.025}
+
+        Label:
+            id: total_balance
+            text: ""
+            halign: 'center'
+            valign: 'center'
+            font_size: 24
+            pos_hint: {"y": -0.025}
+
+        NavigationBar:
+            size_hint: 1, 0.08

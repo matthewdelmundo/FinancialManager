@@ -1,4 +1,5 @@
 from globalwidgets import *
+from homescreen import *
 from historyscreen import *
 from budgetscreen import *
 from addscreen import *
@@ -22,6 +23,7 @@ class FinancialManagerApp(App):
         history_screen = HistoryScreen(database, name='history')
 
         sm.add_widget(history_screen)
+        sm.add_widget(HomeScreen(database, name='home'))
         sm.add_widget(BudgetScreen(name='budget'))
         sm.add_widget(GlobalAdd(database, history_screen, name='add'))
         return sm

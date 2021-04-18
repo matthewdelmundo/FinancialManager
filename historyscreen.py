@@ -86,34 +86,6 @@ class PopUpEditEntryExpense(Popup):
         self.dismiss()
 
 
-# Popup window for clicking the "Total Balance" button
-class PopUpTotalBalance(Popup):
-    def __init__(self, caller_widget, **kwargs):
-        super(PopUpTotalBalance, self).__init__(**kwargs)
-
-        # Widget that called this popup
-        self.caller_widget = caller_widget
-
-    # Gets the total amount from HistoryScreen
-    def total_balance(self):
-        total = self.caller_widget.get_entries_list_total()
-        #budgets = budgetscreen.get_budgets_list()
-        #print(budgets)
-
-        # positive value, green text
-        if total >= 0:
-            self.ids.total_balance.color = (0.47, 0.75, 0.39, 1)
-            text = '₱{:,.2f}'.format(total)
-            self.ids.total_balance.text = text
-
-        # negative value, red text
-        else:
-            abs_total = abs(total)
-            self.ids.total_balance.color = (0.75, 0.47, 0.39, 1)
-            text = '-₱{:,.2f}'.format(abs_total)
-            self.ids.total_balance.text = text
-
-
 # Custom TextInput for entry name
 class EntryNameInput(TextInput):
     # Prevents name from going over 24 characters
@@ -149,9 +121,6 @@ class HistoryScreen(Screen):
 
         # Sets GridLayout size to its number of entries -> allows scrolling
         self.entries_grid.bind(minimum_height=self.entries_grid.setter("height"))
-
-        # Reference to the popup for ease of opening
-        self.total_balance_popup = PopUpTotalBalance(self)
 
         # Initialize Labels
         self.ids["budgets_toolbar"].ids["title"].text = "History"
@@ -218,13 +187,3 @@ class HistoryScreen(Screen):
         self.entries_list = []
         self.database.delete_entries_list()
 
-    # Views Total Balance
-    def view_total_balance(self):
-        self.total_balance_popup.open()
-
-    # Gets the sum of the entries_list
-    def get_entries_list_total(self):
-        total = 0
-        for i in range(len(self.entries_list)):
-            total = total + self.entries_list[i][3]
-        return total

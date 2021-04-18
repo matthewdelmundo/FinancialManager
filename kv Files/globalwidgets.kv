@@ -42,6 +42,9 @@
         text: "Home"
         size_hint: 0.2, 1
         pos_hint: {"x":0}
+        on_release:
+            app.root.current = 'home'
+            app.root.transition = NoTransition()
 
     Button:
         text: "Budget"  

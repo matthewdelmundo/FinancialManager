@@ -188,19 +188,11 @@ class GlobalAdd(Screen):
     # display_amount is the amount in the format ₱XX,XXX.XX
     # amount is the float amount for use in the data array
     def add_entry(self, entry_type, name, display_amount, amount, update_callback=True):
-        if entry_type == "Income":
-            new_entry = Entry(entry_type, name, display_amount,
-                              len(self.history_screen.entries_list), self)
+        new_entry = Entry(entry_type, name, display_amount,
+                          len(self.history_screen.entries_list), self)
 
-            self.history_screen.ids["entries_grid"].add_widget(new_entry)
-            self.history_screen.entries_list.append([name, entry_type, None, amount])
-
-        elif entry_type == "Expense":
-            new_entry = Entry(entry_type, name, display_amount,
-                              len(self.history_screen.entries_list), self)
-
-            self.history_screen.ids["entries_grid"].add_widget(new_entry)
-            self.history_screen.entries_list.append([name, entry_type, None, -1 * amount])
+        self.history_screen.ids["entries_grid"].add_widget(new_entry)
+        self.history_screen.entries_list.append([name, entry_type, None, amount])
 
         if update_callback:
             self.history_screen.on_entries_list_updated_callback()
