@@ -54,11 +54,12 @@ class PopUpEditEntryIncome(Popup):
 
 
 class PopUpEditEntryExpense(Popup):
-    def __init__(self, caller_widget, **kwargs):
+    def __init__(self, caller_widget, parent_widget, **kwargs):
         super(PopUpEditEntryExpense, self).__init__(**kwargs)
 
         # Widget that called this popup
         self.caller_widget = caller_widget
+        self.parent_widget = parent_widget
 
         self.update_edit_entry_info()
 
@@ -105,11 +106,16 @@ class PopupEditCategory(Popup):
         self.parent_widget = parent_widget
         
         # Sets GridLayout height to its number of entries -> allows scrolling
-        # self.categories_grid.bind(minimum_height=self.categories_grid.setter("height"))
+        self.categories_grid.bind(minimum_height=self.categories_grid.setter("height"))
+
+    def return_to_edit(self):
+        self.parent_widget.parent_widget.edit_expenseentry_popup.open()
 
     def update_categories(self):
         self.ids["categories_grid"].clear_widgets()
         self.categories_list = self.caller_widget.caller_widget.get_budgets_list()
+        new_cat = Category(self.parent_widget, "")
+        self.ids["categories_grid"].add_widget(new_cat)
         for name in self.categories_list:
             new_cat = Category(self.parent_widget, name)
             self.ids["categories_grid"].add_widget(new_cat)

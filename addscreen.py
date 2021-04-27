@@ -25,7 +25,7 @@ class PopUpChooseEntry(Popup):
         self.add_income_popup = PopUpAddIncome(caller_widget)
 
         # Reference to the popup for ease of opening
-        self.add_expense_popup = PopUpAddExpense(caller_widget)
+        self.add_expense_popup = PopUpAddExpense(caller_widget, self)
 
     # Sends caller the add_entry function with "Income" as parameter
     def choose_income(self):
@@ -66,11 +66,12 @@ class PopUpAddIncome(Popup):
 
 # Popup window for clicking the "Expense" button
 class PopUpAddExpense(Popup):
-    def __init__(self, caller_widget, **kwargs):
+    def __init__(self, caller_widget, parent_widget, **kwargs):
         super(PopUpAddExpense, self).__init__(**kwargs)
 
         # Widget that called this popup
         self.caller_widget = caller_widget
+        self.parent_widget = parent_widget
 
         # Reference to the popup for ease of opening
         self.select_category_popup = PopupSelectCategory(caller_widget, self)
@@ -90,6 +91,8 @@ class PopUpAddExpense(Popup):
         display_amount = self.ids.entry_amount.text
         name = self.ids.entry_name.text
         category = self.ids.category_name.text
+        if category == "Category":
+            category = ""
         if display_amount != "":
             if name == "":
                 name = "New Expense"
@@ -111,9 +114,14 @@ class PopupSelectCategory(Popup):
         # Sets GridLayout height to its number of entries -> allows scrolling
         self.categories_grid.bind(minimum_height=self.categories_grid.setter("height"))
 
+    def return_to_add(self):
+        self.parent_widget.parent_widget.choose_expense()
+
     def update_categories(self):
         self.ids["categories_grid"].clear_widgets()
         self.categories_list = self.caller_widget.get_budgets_list()
+        new_cat = Category(self.parent_widget, "")
+        self.ids["categories_grid"].add_widget(new_cat)
         for name in self.categories_list:
             new_cat = Category(self.parent_widget, name)
             self.ids["categories_grid"].add_widget(new_cat)
@@ -128,7 +136,7 @@ class PopUpClickEntry(Popup):
         self.caller_widget = caller_widget
 
         self.edit_incomeentry_popup = PopUpEditEntryIncome(caller_widget)
-        self.edit_expenseentry_popup = PopUpEditEntryExpense(caller_widget)
+        self.edit_expenseentry_popup = PopUpEditEntryExpense(caller_widget, self)
 
         self.update_entry_info()
 
