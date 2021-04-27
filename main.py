@@ -21,13 +21,13 @@ class FinancialManagerApp(App):
         database = Database()
         sm = ScreenManager()
         history_screen = HistoryScreen(database, name='history')
+        budget_screen = BudgetScreen(name='budget')
 
-        sm.add_widget(history_screen)
         sm.add_widget(HomeScreen(database, name='home'))
-        sm.add_widget(BudgetScreen(name='budget'))
-        sm.add_widget(GlobalAdd(database, history_screen, name='add'))
+        sm.add_widget(history_screen)
+        sm.add_widget(budget_screen)
+        sm.add_widget(GlobalAdd(database, history_screen, budget_screen, name='add'))
         return sm
-    
 
 # Run
 if __name__ == "__main__":

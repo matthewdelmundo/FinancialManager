@@ -30,6 +30,13 @@
             halign: 'center'
             valign: 'center'
             font_size: 24
+
+        Label:
+            id:category_name
+            text: ""
+            halign: 'center'
+            valign: 'center'
+            font_size: 24
     
         Button:
             text: "Edit Entry"
@@ -132,8 +139,8 @@
             id: entry_amount
             hint_text: "₱0.00"
 
-            size_hint: 0.9, 0.38
-            pos_hint: {"x": 0.05,"y": 0.6}
+            size_hint: 0.9, 0.30
+            pos_hint: {"x": 0.05,"y": 0.7}
             font_size: 40
 
         EntryNameInput:
@@ -142,17 +149,78 @@
             on_focus: entry_amount.append_zeroes()
 
             size_hint: 0.9, 0.18
-            pos_hint: {"x": 0.05,"y": 0.4}
+            pos_hint: {"x": 0.05,"y": 0.5}
             multiline: False
             focus: True
+
+        Button:
+            id: category_name
+            text: "Category"
+            on_press: root.choose_category()
+            size_hint: 0.9, 0.15
+            pos_hint: {"x": 0.05, "y": 0.3}
 
         Button:
             text: "Add"
             on_press: entry_amount.append_zeroes()
             on_release: root.add_expense_entry()
 
-            size_hint: 0.5, 0.28
+            size_hint: 0.5, 0.20
             pos_hint: {"x": 0.25, "y": 0.05}
+
+
+# Popup that lets user input an amount and name for an entry
+<PopupSelectCategory>
+    categories_grid: categories_grid
+
+    title: "Select Category"
+    on_open: 
+        root.update_categories()
+
+    size_hint: 0.8, None
+    size: 0, 250
+
+    # Category Grid
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        size: root.width, root.height
+        # pos_hint: {"x": 0.05, "y": 0.05}
+
+        GridLayout:
+            id: categories_grid
+            cols: 1
+            spacing: 5
+            
+            size_hint_y: None
+            col_force_default: True
+            row_force_default: True
+            col_default_width: self.parent.width
+            # row_default_height: self.parent.width/3
+
+            row_default_height: '60dp'
+            row_force_default: True
+
+
+# Custom widget for each category
+<Category>:
+    RelativeLayout:
+        pos: root.x, root.y
+        width: root.width
+        height: root.height
+
+        Button:
+            on_release: root.press()
+
+        Label:
+            id: category_name
+            hint_text: "Category"
+
+            # size_hint: 0.38, 1
+            pos_hint: {"x": 0.05}
+            text_size: self.size
+            halign: "left"
+            valign: "middle"
 
 
 # Custom widget for each entry

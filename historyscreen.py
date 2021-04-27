@@ -49,7 +49,7 @@ class PopUpEditEntryIncome(Popup):
         else:
             new_name = self.ids.ent_name.text
         new_amt = self.ids.ent_amt.text
-        self.caller_widget.edit_entry_info(new_name, new_amt)
+        self.caller_widget.edit_entry_info(new_name, new_amt, None)
         self.dismiss()
 
 
@@ -61,6 +61,14 @@ class PopUpEditEntryExpense(Popup):
         self.caller_widget = caller_widget
 
         self.update_edit_entry_info()
+
+        # Reference to the popup for ease of opening
+        self.select_category_popup = PopupEditCategory(caller_widget, self)
+
+    # Sends caller the select_category function with "Expense" as parameter
+    def choose_category(self):
+        self.select_category_popup.open()
+        self.dismiss()
 
     def update_edit_entry_info(self):
         self.ids.ent_type.color = (0.95, 0.98, 0.32, 1)
@@ -82,9 +90,45 @@ class PopUpEditEntryExpense(Popup):
         else:
             new_name = self.ids.ent_name.text
         new_amt = self.ids.ent_amt.text
-        self.caller_widget.edit_entry_info(new_name, new_amt)
+        new_cat = self.ids.category_name.text
+        self.caller_widget.edit_entry_info(new_name, new_amt, new_cat)
         self.dismiss()
 
+
+# Popup window for clicking the "Category" button
+class PopupEditCategory(Popup):
+    def __init__(self, caller_widget, parent_widget, **kwargs):
+        super(PopupEditCategory, self).__init__(**kwargs)
+
+        # Widget that called this popup
+        self.caller_widget = caller_widget
+        self.parent_widget = parent_widget
+        
+        # Sets GridLayout height to its number of entries -> allows scrolling
+        # self.categories_grid.bind(minimum_height=self.categories_grid.setter("height"))
+
+    def update_categories(self):
+        self.ids["categories_grid"].clear_widgets()
+        self.categories_list = self.caller_widget.caller_widget.get_budgets_list()
+        for name in self.categories_list:
+            new_cat = Category(self.parent_widget, name)
+            self.ids["categories_grid"].add_widget(new_cat)
+
+
+# Button/Image that lets you view the category
+class Category(AnchorLayout):
+    def __init__(self, caller_widget, name, **kwargs):
+        super(Category, self).__init__(**kwargs)
+
+        self.caller_widget = caller_widget
+        self.name = name
+        self.initialize_entry()
+    def initialize_entry(self):
+        self.ids.category_name.text = self.name
+    def press(self):
+        self.caller_widget.ids.category_name.text = self.name
+        # self.caller_widget.caller_widget.choose_expense()
+    
 
 # Custom TextInput for entry name
 class EntryNameInput(TextInput):
@@ -101,7 +145,7 @@ class EditNameInput(TextInput):
         if len(self.text) >= 24:
             return
         return super(EditNameInput, self).insert_text(substring, from_undo)
-
+    
 
 # Main screen showing entry history
 # Should use array to store and edit data
@@ -147,7 +191,7 @@ class HistoryScreen(Screen):
 
             display_amount = '₱{:,.2f}'.format(abs(entry_amount))
             self.global_add.add_entry(entry_type, entry_name, display_amount, entry_amount,
-                                      update_callback=False)
+                                      entry_category, update_callback=False)
 
     # Run by DatePickerButton
     # Reads database after date has been changed

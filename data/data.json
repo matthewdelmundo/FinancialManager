@@ -7,7 +7,11 @@
         "Name": "Ice Cream",
         "Type": "Expense"
       }
-    ]
+    ],
+    "expense_categories": [
+      "Snacks"
+    ],
+    "income_categories": []
   },
   "2021-4-14": {
     "entries": [
@@ -23,6 +27,12 @@
         "Name": "New Expense",
         "Type": "Expense"
       }
+    ],
+    "expense_categories": [
+      null
+    ],
+    "income_categories": [
+      null
     ]
   },
   "2021-4-15": {
@@ -39,7 +49,12 @@
         "Name": "Grab Fare",
         "Type": "Expense"
       }
-    ]
+    ],
+    "expense_categories": [
+      "Groceries",
+      "Transportation"
+    ],
+    "income_categories": []
   },
   "2021-4-18": {
     "entries": [
@@ -67,6 +82,14 @@
         "Name": "New Expense",
         "Type": "Expense"
       }
+    ],
+    "expense_categories": [
+      null,
+      null,
+      null
+    ],
+    "income_categories": [
+      null
     ]
   },
   "2022-1-1": {
@@ -77,6 +100,10 @@
         "Name": "Salary",
         "Type": "Income"
       }
+    ],
+    "expense_categories": [],
+    "income_categories": [
+      null
     ]
   }
 }
