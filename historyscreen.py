@@ -114,10 +114,10 @@ class PopupEditCategory(Popup):
     def update_categories(self):
         self.ids["categories_grid"].clear_widgets()
         self.categories_list = self.caller_widget.caller_widget.get_budgets_list()
-        new_cat = Category(self.parent_widget, "")
+        new_cat = Category(self, "")
         self.ids["categories_grid"].add_widget(new_cat)
         for name in self.categories_list:
-            new_cat = Category(self.parent_widget, name)
+            new_cat = Category(self, name)
             self.ids["categories_grid"].add_widget(new_cat)
 
 
@@ -132,8 +132,13 @@ class Category(AnchorLayout):
     def initialize_entry(self):
         self.ids.category_name.text = self.name
     def press(self):
-        self.caller_widget.ids.category_name.text = self.name
-        # self.caller_widget.caller_widget.choose_expense()
+        self.caller_widget.parent_widget.ids.category_name.text = self.name
+        if isinstance(self.caller_widget, PopupEditCategory):
+            self.caller_widget.dismiss()
+            self.caller_widget.return_to_edit()
+        else:
+            self.caller_widget.dismiss()
+            self.caller_widget.return_to_add()
     
 
 # Custom TextInput for entry name

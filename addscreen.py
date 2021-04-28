@@ -76,7 +76,7 @@ class PopUpAddExpense(Popup):
         # Reference to the popup for ease of opening
         self.select_category_popup = PopupSelectCategory(caller_widget, self)
 
-    # Sends caller the select_category function with "Expense" as parameter
+    # Sends caller the choose_category function
     def choose_category(self):
         self.select_category_popup.open()
         self.dismiss()
@@ -115,15 +115,16 @@ class PopupSelectCategory(Popup):
         self.categories_grid.bind(minimum_height=self.categories_grid.setter("height"))
 
     def return_to_add(self):
+        # self.dismiss()
         self.parent_widget.parent_widget.choose_expense()
 
     def update_categories(self):
         self.ids["categories_grid"].clear_widgets()
         self.categories_list = self.caller_widget.get_budgets_list()
-        new_cat = Category(self.parent_widget, "")
+        new_cat = Category(self, "")
         self.ids["categories_grid"].add_widget(new_cat)
         for name in self.categories_list:
-            new_cat = Category(self.parent_widget, name)
+            new_cat = Category(self, name)
             self.ids["categories_grid"].add_widget(new_cat)
 
 
