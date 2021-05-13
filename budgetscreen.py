@@ -346,14 +346,13 @@ class BudgetScreen(Screen):
 
         budget = Budget(self, self.grid_index, name,
                         display_amount, amount, icon_source)
+        if update_budgets:
+            self.budget_database.save_budget(str(self.grid_index),
+                                             name, amount, icon_source)
         self.grid_index += 1
 
         self.ids["budgets_grid"].add_widget(budget)
         self.budgets_list.append(name)
-
-        if update_budgets:
-            self.budget_database.save_budget(str(self.grid_index),
-                                             name, amount, icon_source)
 
     def update_icon(self, icon_source):
         self.current_budget.set_icon(icon_source)

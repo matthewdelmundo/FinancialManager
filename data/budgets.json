@@ -13,5 +13,10 @@
     "Name": "Food",
     "Source": "images/temp/icons/expense/groceries.png",
     "Total": 120.0
+  },
+  "4": {
+    "Name": "Badget",
+    "Source": "images/temp/icons/expense/movies.png",
+    "Total": 1000.0
   }
 }
