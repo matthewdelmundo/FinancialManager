@@ -5,6 +5,7 @@ from budgetscreen import *
 from addscreen import *
 from datepicker import *
 from database import *
+from budgetdatabase import *
 
 import kivy
 from kivy.app import App
@@ -19,15 +20,18 @@ Builder.load_file('kv Files/globalwidgets.kv')
 class FinancialManagerApp(App):
     def build(self):
         database = Database()
+        budget_database = BudgetDatabase(database)
+
         sm = ScreenManager()
         history_screen = HistoryScreen(database, name='history')
-        budget_screen = BudgetScreen(name='budget')
+        budget_screen = BudgetScreen(budget_database, name='budget')
 
         sm.add_widget(HomeScreen(database, name='home'))
         sm.add_widget(history_screen)
         sm.add_widget(budget_screen)
         sm.add_widget(GlobalAdd(database, history_screen, budget_screen, name='add'))
         return sm
+
 
 # Run
 if __name__ == "__main__":

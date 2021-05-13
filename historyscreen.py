@@ -184,7 +184,6 @@ class HistoryScreen(Screen):
         # Configures Calendar Button
         self.ids["date_picker"].set_references(self.database, self)
 
-
     # Run by GlobalAdd
     def set_references(self, global_add):
         self.global_add = global_add

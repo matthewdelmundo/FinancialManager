@@ -8,10 +8,9 @@
         "Type": "Expense"
       }
     ],
-    "expense_categories": [
-      "Snacks"
-    ],
-    "income_categories": []
+    "expense_categories": {
+      "Snacks": 350.0
+    }
   },
   "2021-4-14": {
     "entries": [
@@ -28,12 +27,9 @@
         "Type": "Expense"
       }
     ],
-    "expense_categories": [
-      null
-    ],
-    "income_categories": [
-      null
-    ]
+    "expense_categories": {
+      "null": 5.0
+    }
   },
   "2021-4-15": {
     "entries": [
@@ -50,11 +46,10 @@
         "Type": "Expense"
       }
     ],
-    "expense_categories": [
-      "Groceries",
-      "Transportation"
-    ],
-    "income_categories": []
+    "expense_categories": {
+      "Groceries": 469.99,
+      "Transportation": 120.0
+    }
   },
   "2021-4-18": {
     "entries": [
@@ -83,14 +78,67 @@
         "Type": "Expense"
       }
     ],
-    "expense_categories": [
-      null,
-      null,
-      null
+    "expense_categories": {
+      "null": 555561110.0
+    }
+  },
+  "2021-5-11": {
+    "entries": [
+      {
+        "Amount": 213.0,
+        "Category": null,
+        "Name": "Bat",
+        "Type": "Income"
+      },
+      {
+        "Amount": 100.0,
+        "Category": "Test",
+        "Name": "Bat",
+        "Type": "Expense"
+      }
     ],
-    "income_categories": [
-      null
-    ]
+    "expense_categories": {
+      "Test": 100.0
+    }
+  },
+  "2021-5-13": {
+    "entries": [
+      {
+        "Amount": 12.0,
+        "Category": null,
+        "Name": "Farouq",
+        "Type": "Income"
+      },
+      {
+        "Amount": 4124.0,
+        "Category": "bambam",
+        "Name": "babab",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 123.0,
+        "Category": "bambam",
+        "Name": "vffvf",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 2314.0,
+        "Category": "bae",
+        "Name": "2342",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 22.0,
+        "Category": "12312",
+        "Name": "rawr",
+        "Type": "Expense"
+      }
+    ],
+    "expense_categories": {
+      "12312": 22.0,
+      "bae": 2314.0,
+      "bambam": 4247.0
+    }
   },
   "2022-1-1": {
     "entries": [
@@ -101,9 +149,6 @@
         "Type": "Income"
       }
     ],
-    "expense_categories": [],
-    "income_categories": [
-      null
-    ]
+    "expense_categories": {}
   }
 }

@@ -46,7 +46,7 @@ class Database:
 
         # current_date will change depending on which date is chosen in the calendar
         self.current_date = self.get_date_today()
-        self.test_json()
+
         self.categorize_json_content()
 
     def test_json(self):
@@ -69,48 +69,47 @@ class Database:
                                             
     # Adds Income & Budget Category lists to the default/hardcoded data
     def categorize_json_content(self):
-        for date in self.data:
-            print(date)
-            income_category_list = []
-            expense_category_list = []
-            entry_dict_list = self.data.get(date)["entries"]
-            for i in range(len(entry_dict_list)):
-                    entry_dict = entry_dict_list[i]
-                    entry_type = entry_dict["Type"]
-                    categ_name = entry_dict["Category"]
+        for date_id in self.data:
+            entry_dict_list = self.data.get(date_id)["entries"]
+            expense_category_dict = self.get_categories_dict(entry_dict_list)
 
-                    if entry_type == "Income":
-                        income_category_list.append(categ_name)
-                    elif entry_type == "Expense":
-                        expense_category_list.append(categ_name)
-
-            self.data.put(date, entries=entry_dict_list, income_categories=income_category_list, 
-                        expense_categories=expense_category_list)
+            self.data.put(date_id, entries=entry_dict_list,
+                          expense_categories=expense_category_dict)
 
     def save_entries_list(self, entries_list):
         date_id = get_date_id(self.current_date)
+        expense_category_dict = self.get_categories_dict(entries_list)
 
-        income_category_list, expense_category_list = self.save_categories_list(date_id, entries_list)
-
-        self.data.put(date_id, entries=entries_list, income_categories=income_category_list,
-            expense_categories=expense_category_list)
+        self.data.put(date_id, entries=entries_list,
+                      expense_categories=expense_category_dict)
 
     # SAVING CATEGORIES LIST!!!!!!!!!!!!!!!!    
-    def save_categories_list(self, date_id, entries_list):
-        income_category_list = []
-        expense_category_list = []
+    def get_categories_dict(self, entries_list):
+        expense_category_dict = {}
         
         for i in range(len(entries_list)):
-                entry_dict = entries_list[i]
-                entry_type = entry_dict["Type"]
-                categ_name = entry_dict["Category"]
+            entry_dict = entries_list[i]
+            entry_type = entry_dict["Type"]
+            entry_category = entry_dict["Category"]
+            entry_amount = entry_dict["Amount"]
 
-                if entry_type == "Expense":
-                    expense_category_list.append(categ_name)
-                elif entry_type == "Income":
-                    income_category_list.append(categ_name)
+            if entry_type == "Income":
+                continue
 
-        return income_category_list, expense_category_list
+            if entry_category in expense_category_dict:
+                expense_category_dict[entry_category] += entry_amount
+            else:
+                expense_category_dict[entry_category] = entry_amount
+
+        return expense_category_dict
+
+    def get_budget_expense(self, date_id, budget_name):
+        expense = 0
+        if self.data.exists(date_id):
+            expense_categories = self.data.get(date_id)["expense_categories"]
+            if budget_name in expense_categories:
+                expense = expense_categories[budget_name]
+        return expense
 
     def load_entries_list(self):
         date_id = get_date_id(self.current_date)

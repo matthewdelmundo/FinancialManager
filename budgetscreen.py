@@ -7,6 +7,8 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.clock import Clock
 from kivy.uix.screenmanager import Screen
 
+from database import convert_month_num
+
 # Loads kv files for this screen
 from kivy.lang import Builder
 Builder.load_file('kv Files/budgetscreen.kv')
@@ -140,7 +142,7 @@ class PopupAddBudget(Popup):
 
     def add_budget(self):
         name = self.ids["budget_name"].text
-        display_amount = "₱" + self.ids["budget_amount"].text
+        #display_amount = "₱" + self.ids["budget_amount"].text
         amount = self.ids["budget_amount"].get_amount()
         budget_names = self.caller_widget.get_budgets_list()
 
@@ -182,7 +184,7 @@ class PopupAddBudget(Popup):
         self.ids.budget_amount.hint_text = "Amount"
         self.ids.budget_amount.hint_text_color = (0.5, 0.5, 0.5, 1)
 
-        self.caller_widget.add_budget(name, display_amount, amount, self.icon_source)
+        self.caller_widget.add_budget(name, amount, self.icon_source)
         self.dismiss()
 
 # Button/Image that opens the ChooseIcon popup
@@ -225,7 +227,6 @@ class Budget(AnchorLayout):
         self.set_icon(icon_source)
 
         # Saved remaining amount
-        self.display_remaining = display_amount
         self.remaining = amount
 
         #percentage indicates background color
@@ -255,7 +256,6 @@ class Budget(AnchorLayout):
         self.total = new_amt 
 
         # Saved remaining amount
-        self.display_remaining = new_dispamt
         self.remaining = new_amt
 
         # self.icon_source = new_icon_source
@@ -267,8 +267,7 @@ class Budget(AnchorLayout):
 
     #############################
     def button_function(self):
-        print("Hi")
-        self.caller_widget.view_budget(self, self.name, self.display_remaining, self.display_total)
+        self.caller_widget.view_budget(self)
         self.caller_widget.edit_budget_popup.show_budget_info()
 
 
@@ -277,7 +276,7 @@ class BudgetScreen(Screen):
     budgets_grid = ObjectProperty(None)
     budgets_list = []
   
-    def __init__(self, **kwargs):
+    def __init__(self, budget_database, **kwargs):
         super(BudgetScreen, self).__init__(**kwargs)
         self.current_budget = None
 
@@ -285,16 +284,40 @@ class BudgetScreen(Screen):
         # Sets window to phone ratio
         Window.size = (338, 600)
 
+        self.budget_database = budget_database
+
         # Sets GridLayout height to its number of entries -> allows scrolling
         self.budgets_grid.bind(minimum_height=self.budgets_grid.setter("height"))
 
         # Initialize Labels
         self.ids["budgets_toolbar"].ids["title"].text = "Budgets"
+        self.set_active_date_label()
 
         # Reference to popups
         self.add_budget_popup = PopupAddBudget(self)
         self.edit_budget_popup = PopupEditBudget(self)
-    
+
+        self.grid_index = 1
+        self.read_budget_database()
+
+    def read_budget_database(self):
+        budgets = self.budget_database.load_budgets()
+        for i in range(len(budgets)):
+            budget = budgets[i]
+            budget_name = budget[0]
+            budget_total = budget[1]
+            budget_source = budget[2]
+
+            self.add_budget(budget_name, budget_total,
+                            budget_source, update_budgets=False)
+
+    def set_active_date_label(self):
+        active_date = self.budget_database.get_current_date()
+        date_text = "{day} {month} {year}".format(day=active_date[0],
+                                                  month=convert_month_num(active_date[1]),
+                                                  year=active_date[2])
+        self.ids["active_date"].text = date_text
+
     def view_edit_budget(self):   
         if self.current_budget == None:
             return
@@ -304,28 +327,43 @@ class BudgetScreen(Screen):
         self.current_budget.name = new_name
         self.current_budget.total = new_amt
         self.current_budget.display_total = new_dispamt
-        self.current_budget.display_remaining = new_dispamt
 
-        self.view_budget(self.current_budget, self.current_budget.name, 
-            self.current_budget.display_remaining, self.current_budget.display_total)
+        self.view_budget(self.current_budget)
 
     def popup_add_budget(self):
         self.add_budget_popup.open()
 
-    def add_budget(self, name, display_amount, amount, icon_source):
+    def add_budget(self, name, amount, icon_source, update_budgets=True):
+        display_amount = '₱' + f"{amount:,.2f}"
+
         budget = Budget(self, name, display_amount, amount, icon_source)
+
         self.ids["budgets_grid"].add_widget(budget)
         self.budgets_list.append(name)
+
+        if update_budgets:
+            self.budget_database.save_budget(str(self.grid_index),
+                                             name, amount, icon_source)
+            self.grid_index += 1
 
     def update_icon(self, icon_source):
         self.current_budget.set_icon(icon_source)
 
-    def view_budget(self, current_budget, budget_name, budget_remaining, budget_total):
-        print("Hello")
-        self.ids["budget_display"].ids["budget_name"].text = budget_name
-        self.ids["budget_display"].ids["budget_remaining"].text = budget_remaining
-        self.ids["budget_display"].ids["budget_total"].text = budget_total
+    def view_budget(self, current_budget):
         self.current_budget = current_budget
+
+        budget_name = self.current_budget.name
+        total = self.current_budget.total
+
+        expense = self.budget_database.get_budget_expense(budget_name)
+        display_remaining = '₱' + f"{total - expense:,.2f}"
+
+        self.ids["budget_display"].ids["budget_name"].text = \
+            budget_name
+        self.ids["budget_display"].ids["budget_remaining"].text = \
+            display_remaining
+        self.ids["budget_display"].ids["budget_total"].text = \
+            self.current_budget.display_total
 
     def get_budgets_list(self):
         return self.budgets_list
