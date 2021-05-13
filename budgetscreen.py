@@ -64,7 +64,7 @@ class PopupEditBudget(Popup):
 
         new_amt = float(new_amt.replace(',', ''))
 
-        self.caller_widget.finish_edits(new_name, new_amt, new_dispamt)
+        self.caller_widget.finish_edits(new_name, new_amt, new_dispamt, self.icon_source)
         self.caller_widget.update_icon(self.icon_source)
         self.dismiss()
 
@@ -216,7 +216,8 @@ class AddBudgetButton(AnchorLayout):
 
 # Button/Image that lets you view the budget
 class Budget(AnchorLayout):
-    def __init__(self, caller_widget, name, display_amount, amount, icon_source, **kwargs):
+    def __init__(self, caller_widget, grid_index, name,
+                 display_amount, amount, icon_source, **kwargs):
         super(Budget, self).__init__(**kwargs)
 
         self.caller_widget = caller_widget
@@ -227,6 +228,8 @@ class Budget(AnchorLayout):
         self.total = amount
         self.icon_source = icon_source
         self.set_icon(icon_source)
+
+        self.grid_index = grid_index
 
         # Saved remaining amount
         self.remaining = amount
@@ -325,10 +328,13 @@ class BudgetScreen(Screen):
             return
         self.edit_budget_popup.open()
     
-    def finish_edits(self, new_name, new_amt, new_dispamt):
+    def finish_edits(self, new_name, new_amt, new_dispamt, icon_source):
         self.current_budget.name = new_name
         self.current_budget.total = new_amt
         self.current_budget.display_total = new_dispamt
+
+        self.budget_database.save_budget(str(self.current_budget.grid_index),
+                                         new_name, new_amt, icon_source)
 
         self.view_budget(self.current_budget)
 
@@ -338,7 +344,9 @@ class BudgetScreen(Screen):
     def add_budget(self, name, amount, icon_source, update_budgets=True):
         display_amount = '₱' + f"{amount:,.2f}"
 
-        budget = Budget(self, name, display_amount, amount, icon_source)
+        budget = Budget(self, self.grid_index, name,
+                        display_amount, amount, icon_source)
+        self.grid_index += 1
 
         self.ids["budgets_grid"].add_widget(budget)
         self.budgets_list.append(name)
@@ -346,7 +354,6 @@ class BudgetScreen(Screen):
         if update_budgets:
             self.budget_database.save_budget(str(self.grid_index),
                                              name, amount, icon_source)
-            self.grid_index += 1
 
     def update_icon(self, icon_source):
         self.current_budget.set_icon(icon_source)

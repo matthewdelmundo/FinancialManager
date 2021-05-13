@@ -8,5 +8,10 @@
     "Name": "Test",
     "Source": "images/temp/icons/expense/transportation.png",
     "Total": 1000.0
+  },
+  "3": {
+    "Name": "Food",
+    "Source": "images/temp/icons/expense/groceries.png",
+    "Total": 120.0
   }
 }
