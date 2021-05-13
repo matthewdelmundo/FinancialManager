@@ -61,7 +61,9 @@ class PopupEditBudget(Popup):
         else:
             new_amt = self.ids.budg_amt.text 
             new_dispamt = "₱" + new_amt
-        
+
+        new_amt = float(new_amt.replace(',', ''))
+
         self.caller_widget.finish_edits(new_name, new_amt, new_dispamt)
         self.caller_widget.update_icon(self.icon_source)
         self.dismiss()
