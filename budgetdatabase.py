@@ -29,3 +29,10 @@ class BudgetDatabase:
     def get_budget_expense(self, budget_name):
         date_id = get_date_id(self.date_today)
         return self.database.get_budget_expense(date_id, budget_name)
+
+    def remove_budget(self, budget_name):
+        keys = self.budgets.keys()
+        for i in range(len(keys)):
+            value = self.budgets.get(keys[i])
+            if budget_name == value["Name"]:
+                self.budgets.delete(keys[i])

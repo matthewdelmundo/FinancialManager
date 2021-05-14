@@ -48,7 +48,15 @@
             on_release: root.edit_budget()
 
             size_hint: 0.5, 0.25
-            pos_hint: {"x": 0.25, "y": 0.05}
+            pos_hint: {"x": 0, "y": 0.05}
+
+        Button:
+            size_hint: 0.5, 0.28
+            text: "Delete"
+            on_release: root.delete_budget()
+
+            size_hint: 0.5, 0.25
+            pos_hint: {"x": 0.5, "y": 0.05}
 
 <ChooseNewIcon>
     Button:

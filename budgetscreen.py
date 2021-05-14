@@ -68,6 +68,14 @@ class PopupEditBudget(Popup):
         self.caller_widget.update_icon(self.icon_source)
         self.dismiss()
 
+    def delete_budget(self):
+        budget_names = self.caller_widget.get_budgets_list()
+        if self.caller_widget.current_budget.name in budget_names:
+            budget_names.remove(self.caller_widget.current_budget.name)
+            self.caller_widget.ids["budgets_grid"].remove_widget(self.caller_widget.current_budget)
+            self.caller_widget.budget_database.remove_budget(self.caller_widget.current_budget.name)
+        self.dismiss()
+
 
 # Popup for choosing a new icon for budget
 class PopupChooseIcon(Popup):
