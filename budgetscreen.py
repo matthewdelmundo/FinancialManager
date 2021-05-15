@@ -13,6 +13,31 @@ from database import convert_month_num
 from kivy.lang import Builder
 Builder.load_file('kv Files/budgetscreen.kv')
 
+class PopupDeleteBudget(Popup):
+    def __init__(self, caller_widget, immediate_caller_widget, **kwargs):
+        super(PopupDeleteBudget, self).__init__(**kwargs)
+
+        #Budget Screen
+        self.caller_widget = caller_widget
+
+        #PopupEditBudget
+        self.immediate_caller_widget = immediate_caller_widget
+
+    #Deletes a budget
+    def delete_budget(self):
+        budget_names = self.caller_widget.get_budgets_list()
+        if self.caller_widget.current_budget.name in budget_names:
+            budget_names.remove(self.caller_widget.current_budget.name)
+            self.caller_widget.ids["budgets_grid"].remove_widget(self.caller_widget.current_budget)
+            self.caller_widget.budget_database.remove_budget(self.caller_widget.current_budget.name)
+        self.dismiss()
+        self.immediate_caller_widget.return_to_budgets_screen()
+
+    #Called when No is pressed when asked to delete budget
+    def return_to_edit(self):
+        self.dismiss()
+
+    
 
 class PopupEditBudget(Popup):
     def __init__(self, caller_widget, **kwargs):
@@ -21,6 +46,7 @@ class PopupEditBudget(Popup):
         # Widget that called this popup
         self.caller_widget = caller_widget        
         self.choose_icon_popup = PopupChooseIcon(self)
+        self.req_del_budget = PopupDeleteBudget(caller_widget,self)
 
         self.show_budget_info()
     
@@ -68,12 +94,10 @@ class PopupEditBudget(Popup):
         self.caller_widget.update_icon(self.icon_source)
         self.dismiss()
 
-    def delete_budget(self):
-        budget_names = self.caller_widget.get_budgets_list()
-        if self.caller_widget.current_budget.name in budget_names:
-            budget_names.remove(self.caller_widget.current_budget.name)
-            self.caller_widget.ids["budgets_grid"].remove_widget(self.caller_widget.current_budget)
-            self.caller_widget.budget_database.remove_budget(self.caller_widget.current_budget.name)
+    def request_del_budget(self):
+        self.req_del_budget.open()
+
+    def return_to_budgets_screen(self):
         self.dismiss()
 
 

@@ -53,7 +53,33 @@
         Button:
             size_hint: 0.5, 0.28
             text: "Delete"
+            on_release: root.request_del_budget()
+
+            size_hint: 0.5, 0.25
+            pos_hint: {"x": 0.5, "y": 0.05}
+
+<PopupDeleteBudget>
+    title: "Delete Budget"
+    size_hint: 0.8, 0.4
+
+    RelativeLayout:
+        Label:
+            text: "Are you sure you want \n to delete this budget?"
+            color: (0.75, 0.47, 0.39, 1)
+            pos_hint: {"y": 0.1}
+
+        Button:
+            size_hint: 0.5, 0.28
+            text: "Yes"
             on_release: root.delete_budget()
+
+            size_hint: 0.5, 0.25
+            pos_hint: {"x": 0, "y": 0.05}
+
+        Button:
+            size_hint: 0.5, 0.28
+            text: "No"
+            on_release: root.return_to_edit()
 
             size_hint: 0.5, 0.25
             pos_hint: {"x": 0.5, "y": 0.05}

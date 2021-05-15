@@ -4,14 +4,9 @@
     "Source": "images/ui/wallet.png",
     "Total": 5000.0
   },
-  "2": {
-    "Name": "Test",
-    "Source": "images/temp/icons/expense/transportation.png",
-    "Total": 1000.0
-  },
   "4": {
-    "Name": "Badget",
-    "Source": "images/temp/icons/expense/movies.png",
+    "Name": "Test",
+    "Source": "images/ui/wallet.png",
     "Total": 1000.0
   }
 }

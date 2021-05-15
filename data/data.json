@@ -128,16 +128,35 @@
         "Type": "Expense"
       },
       {
-        "Amount": 22.0,
-        "Category": "12312",
-        "Name": "rawr",
+        "Amount": 1000.0,
+        "Category": "bambam",
+        "Name": "New Expense",
         "Type": "Expense"
       }
     ],
     "expense_categories": {
-      "12312": 22.0,
       "bae": 2314.0,
-      "bambam": 4247.0
+      "bambam": 5247.0
+    }
+  },
+  "2021-5-15": {
+    "entries": [
+      {
+        "Amount": 125.0,
+        "Category": "Test",
+        "Name": "New Expense",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 255.0,
+        "Category": "bambam",
+        "Name": "New Expense",
+        "Type": "Expense"
+      }
+    ],
+    "expense_categories": {
+      "Test": 125.0,
+      "bambam": 255.0
     }
   },
   "2022-1-1": {
