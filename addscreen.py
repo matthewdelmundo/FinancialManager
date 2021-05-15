@@ -138,7 +138,7 @@ class PopUpClickEntry(Popup):
         self.edit_incomeentry_popup = PopUpEditEntryIncome(caller_widget)
         self.edit_expenseentry_popup = PopUpEditEntryExpense(caller_widget, self)
 
-        self.req_del_entry = PopUpDeleteEntry(caller_widget)
+        self.req_del_entry = PopUpDeleteEntry(caller_widget, self)
 
         self.update_entry_info()
     
