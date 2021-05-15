@@ -37,7 +37,6 @@ class PopUpChooseEntry(Popup):
         self.add_expense_popup.open()
         self.dismiss()
 
-
 # Popup window for clicking the "Income" button
 class PopUpAddIncome(Popup):
     def __init__(self, caller_widget, **kwargs):
@@ -139,7 +138,12 @@ class PopUpClickEntry(Popup):
         self.edit_incomeentry_popup = PopUpEditEntryIncome(caller_widget)
         self.edit_expenseentry_popup = PopUpEditEntryExpense(caller_widget, self)
 
+        self.req_del_entry = PopUpDeleteEntry(caller_widget)
+
         self.update_entry_info()
+    
+    def request_del_entry(self):
+        self.req_del_entry.open()
 
     def update_entry_info(self):
         self.ids.ent_type.color = (0.95, 0.98, 0.32, 1)
@@ -162,7 +166,6 @@ class PopUpClickEntry(Popup):
         elif self.caller_widget.get_entry_type() == "Expense":
             self.edit_expenseentry_popup.open()
         self.dismiss()
-
 
 # Custom Widget for the entries.
 # entry_type = "Income"/"Expense"
@@ -203,6 +206,12 @@ class Entry(Widget):
 
     def get_category(self):
         return self.category
+    
+    def get_index(self):
+        return self.index
+    
+    def delete_entry_via_index(self, index):
+        self.caller_widget.del_ent_via_ind(index, self)
 
     # Initializes entry for UI display
     # Turns amount font color to green when Income entry
@@ -217,7 +226,6 @@ class Entry(Widget):
     # Prints list index when widget is pressed
     def press(self):
         self.click_entry_popup.open()
-
 
 class GlobalAdd(Screen):
     def __init__(self, database, history_screen, budget_screen, **kwargs):
@@ -241,6 +249,14 @@ class GlobalAdd(Screen):
     def edit_budget_balance(self, balance, dispbalance):
         budget_sreen = self.budget_screen
         budget_sreen.edit_budget_info(bs.new_name, balance, dispbalance)
+    
+    def get_entries_list(self):
+        return self.history_screen.entries_list
+    
+    def del_ent_via_ind(self, index, entry):
+        self.history_screen.entries_list.pop(index)
+        self.database.delete_ent_from_db(index) 
+        self.history_screen.ids["entries_grid"].remove_widget(entry)    
 
     # Adds entry to UI display by adding a widget
     # display_amount is the amount in the format ₱XX,XXX.XX
