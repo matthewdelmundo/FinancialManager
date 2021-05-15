@@ -15,6 +15,17 @@ from database import convert_month_num
 from kivy.lang import Builder
 Builder.load_file('kv Files/historyscreen.kv')
 
+class PopUpDeleteEntry(Popup):
+    def __init__(self, caller_widget, **kwargs):
+        super(PopUpDeleteEntry, self).__init__(**kwargs)
+
+        # Widget that called this popup
+        self.caller_widget = caller_widget
+
+    def delete_entry(self):
+        ent_ind = self.caller_widget.get_index()
+        self.caller_widget.delete_entry_via_index(ent_ind)
+        self.dismiss()
 
 # Popup window for editing an entry
 class PopUpEditEntryIncome(Popup):
@@ -23,7 +34,8 @@ class PopUpEditEntryIncome(Popup):
 
         # Widget that called this popup
         self.caller_widget = caller_widget
-
+        self.req_del_ent = PopUpDeleteEntry(caller_widget)
+ 
         self.update_edit_entry_info()
 
     def update_edit_entry_info(self):
@@ -52,7 +64,10 @@ class PopUpEditEntryIncome(Popup):
         self.caller_widget.edit_entry_info(new_name, new_amt, None)
         self.dismiss()
 
-
+    def request_del_entry(self):
+         self.req_del_ent.open()
+         self.dismiss()
+        
 class PopUpEditEntryExpense(Popup):
     def __init__(self, caller_widget, parent_widget, **kwargs):
         super(PopUpEditEntryExpense, self).__init__(**kwargs)
@@ -61,6 +76,7 @@ class PopUpEditEntryExpense(Popup):
         self.caller_widget = caller_widget
         self.parent_widget = parent_widget
 
+        self.req_del_ent = PopUpDeleteEntry(caller_widget)
         self.update_edit_entry_info()
 
         # Reference to the popup for ease of opening
@@ -95,6 +111,9 @@ class PopUpEditEntryExpense(Popup):
         self.caller_widget.edit_entry_info(new_name, new_amt, new_cat)
         self.dismiss()
 
+    def request_del_entry(self):
+         self.req_del_ent.open()
+         self.dismiss()
 
 # Popup window for clicking the "Category" button
 class PopupEditCategory(Popup):
@@ -204,7 +223,7 @@ class HistoryScreen(Screen):
                                       entry_category, update_callback=False)
 
     # Run by DatePickerButton
-    # Reads database after date has been changed
+    # Reads database after date has been change
     def on_date_change_callback(self):
         self.set_active_date_label()
 
