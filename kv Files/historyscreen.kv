@@ -14,6 +14,18 @@
     focus: True
     input_type: "number"
 
+<PopUpDeleteEntry>:
+    title: "Delete this entry?"
+    
+    size_hint: 0.8, None
+    size: 0, 100
+
+    Button:
+        text: "YES"
+        size_hint: 0.5, 0.28
+        pos_hint: {"x": 0.25, "y": 0.05}
+        on_press: root.delete_entry()   
+
 <PopUpEditEntryIncome>:
     title: "Edit Entry"
     on_open: root.update_edit_entry_info()
@@ -50,20 +62,26 @@
             focus: True
 
         Button:
-            text: "Finish!"
+            text: "Finish Edits!"
             on_press: ent_amt.append_zeroes()
             on_release: root.edit_entry()
 
             size_hint: 0.5, 0.28
-            pos_hint: {"x": 0.25, "y": 0.05}
-
+            pos_hint: {"x": 0, "y": 0.05}
+        
+        Button:
+            size_hint: 0.5, 0.28
+            pos_hint: {"x": 0.5, "y": 0.05}
+            text: "Delete Entry!"
+            on_release: root.request_del_entry()
+        
 <PopUpEditEntryExpense>:
     title: "Edit Entry"
     on_open: root.update_edit_entry_info()
     on_dismiss: root.reset_inputs() #!!!!!!
 
     size_hint: 0.8, None
-    size: 0, 300
+    size: 0, 400
 
     RelativeLayout:
         Label:
@@ -99,14 +117,19 @@
             size_hint: 0.9, 0.15
             pos_hint: {"x": 0.05, "y": 0.3}
 
-
         Button:
-            text: "Finish!"
+            text: "Finish Edits!"
             on_press: ent_amt.append_zeroes()
             on_release: root.edit_entry()
 
             size_hint: 0.5, 0.20
-            pos_hint: {"x": 0.25, "y": 0.05}
+            pos_hint: {"x": 0, "y": 0.05}
+        
+        Button:
+            size_hint: 0.5, 0.20
+            pos_hint: {"x": 0.5, "y": 0.05}
+            text: "Delete Entry!"
+            on_release: root.request_del_entry()
 
 
 # Popup that lets user input an amount and name for an entry
