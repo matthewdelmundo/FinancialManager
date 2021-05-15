@@ -16,15 +16,20 @@ from kivy.lang import Builder
 Builder.load_file('kv Files/historyscreen.kv')
 
 class PopUpDeleteEntry(Popup):
-    def __init__(self, caller_widget, **kwargs):
+    def __init__(self, caller_widget, immediate_caller_widget, **kwargs):
         super(PopUpDeleteEntry, self).__init__(**kwargs)
 
         # Widget that called this popup
         self.caller_widget = caller_widget
+        self.immediate_caller_widget = immediate_caller_widget
 
     def delete_entry(self):
         ent_ind = self.caller_widget.get_index()
         self.caller_widget.delete_entry_via_index(ent_ind)
+        self.dismiss()
+        self.immediate_caller_widget.return_to_edit_pop()
+    
+    def return_to_edit(self):
         self.dismiss()
 
 # Popup window for editing an entry
@@ -34,7 +39,7 @@ class PopUpEditEntryIncome(Popup):
 
         # Widget that called this popup
         self.caller_widget = caller_widget
-        self.req_del_ent = PopUpDeleteEntry(caller_widget)
+        self.req_del_ent = PopUpDeleteEntry(caller_widget, self)
  
         self.update_edit_entry_info()
 
@@ -65,8 +70,10 @@ class PopUpEditEntryIncome(Popup):
         self.dismiss()
 
     def request_del_entry(self):
-         self.req_del_ent.open()
-         self.dismiss()
+        self.req_del_ent.open()
+        
+    def return_to_edit_pop(self):
+        self.dismiss()
         
 class PopUpEditEntryExpense(Popup):
     def __init__(self, caller_widget, parent_widget, **kwargs):
@@ -76,7 +83,7 @@ class PopUpEditEntryExpense(Popup):
         self.caller_widget = caller_widget
         self.parent_widget = parent_widget
 
-        self.req_del_ent = PopUpDeleteEntry(caller_widget)
+        self.req_del_ent = PopUpDeleteEntry(caller_widget, self)
         self.update_edit_entry_info()
 
         # Reference to the popup for ease of opening
@@ -112,8 +119,10 @@ class PopUpEditEntryExpense(Popup):
         self.dismiss()
 
     def request_del_entry(self):
-         self.req_del_ent.open()
-         self.dismiss()
+        self.req_del_ent.open()
+
+    def return_to_edit_pop(self):
+        self.dismiss()
 
 # Popup window for clicking the "Category" button
 class PopupEditCategory(Popup):
