@@ -18,7 +18,6 @@ month_converter = {
     12: "December"
 }
 
-
 def convert_month_num(month_num):
     return month_converter[month_num]
 
@@ -66,7 +65,27 @@ class Database:
                                             "Type": "Income",
                                             "Category": None,
                                             "Amount": 50000.0}])
-                                            
+    
+    # Deletes an income/expense entry from database
+    def delete_ent_from_db(self, index):
+        date_id = get_date_id(self.current_date)
+        entry_list = self.data.get(date_id)["entries"]
+        entry_list.pop(index)
+
+        # Update category list too!
+        new_exp_cat_list = self.get_categories_dict(entry_list)
+
+        if len(entry_list) == 0 and self.data.exists(date_id):
+            self.data.delete(date_id)
+        else:
+            self.data.put(date_id, entries=entry_list, 
+                expense_categories=new_exp_cat_list)   
+                     
+    def delete_entries_list(self):
+        date_id = get_date_id(self.current_date)
+        if self.data.exists(date_id):
+            self.data.delete(date_id)
+
     # Adds Income & Budget Category lists to the default/hardcoded data
     def categorize_json_content(self):
         for date_id in self.data:
@@ -124,11 +143,6 @@ class Database:
                 entries_list.append(entry)
 
         return entries_list
-
-    def delete_entries_list(self):
-        date_id = get_date_id(self.current_date)
-        if self.data.exists(date_id):
-            self.data.delete(date_id)
 
     def update_current_date(self, current_date):
         self.current_date = current_date
