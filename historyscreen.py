@@ -76,12 +76,11 @@ class PopUpEditEntryIncome(Popup):
         self.dismiss()
         
 class PopUpEditEntryExpense(Popup):
-    def __init__(self, caller_widget, parent_widget, **kwargs):
+    def __init__(self, caller_widget, **kwargs):
         super(PopUpEditEntryExpense, self).__init__(**kwargs)
 
         # Widget that called this popup
         self.caller_widget = caller_widget
-        self.parent_widget = parent_widget
 
         self.req_del_ent = PopUpDeleteEntry(caller_widget, self)
         self.update_edit_entry_info()
@@ -132,12 +131,12 @@ class PopUpEditEntryExpense(Popup):
 
 # Popup window for clicking the "Category" button
 class PopupEditCategory(Popup):
-    def __init__(self, caller_widget, parent_widget, **kwargs):
+    def __init__(self, caller_widget, caller_popup, **kwargs):
         super(PopupEditCategory, self).__init__(**kwargs)
 
         # Widget that called this popup
         self.caller_widget = caller_widget
-        self.parent_widget = parent_widget
+        self.caller_popup = caller_popup
         
         # Sets GridLayout height to its number of entries -> allows scrolling
         self.categories_grid.bind(minimum_height=self.categories_grid.setter("height"))
@@ -145,28 +144,29 @@ class PopupEditCategory(Popup):
     def update_categories(self):
         self.ids["categories_grid"].clear_widgets()
         self.categories_list = self.caller_widget.get_budgets_list()
-        new_cat = Category(self, "")
+        new_cat = Category(self, self.caller_popup, "")
         self.ids["categories_grid"].add_widget(new_cat)
         for name in self.categories_list:
-            new_cat = Category(self, name)
+            new_cat = Category(self, self.caller_popup, name)
             self.ids["categories_grid"].add_widget(new_cat)
 
 
 # Button/Image that lets you view the category
 class Category(AnchorLayout):
-    def __init__(self, caller_widget, name, **kwargs):
+    def __init__(self, caller_widget, caller_popup, name, **kwargs):
         super(Category, self).__init__(**kwargs)
 
         self.caller_widget = caller_widget
+        self.caller_popup = caller_popup
         self.name = name
         self.initialize_entry()
     def initialize_entry(self):
         self.ids.category_name.text = self.name
     def press(self):
         if self.name == '':
-            self.caller_widget.parent_widget.ids.category_name.text = "Choose Category"
+            self.caller_popup.ids.category_name.text = "Choose Category"
         else:
-            self.caller_widget.parent_widget.ids.category_name.text = self.name
+            self.caller_popup.ids.category_name.text = self.name
         self.caller_widget.dismiss()
     
 
