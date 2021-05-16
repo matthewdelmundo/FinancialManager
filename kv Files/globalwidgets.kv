@@ -1,5 +1,3 @@
-#: import NoTransition kivy.uix.screenmanager.NoTransition
-
 # Custom Label for the screen title
 <TitleLabel@Label>:
     canvas:
@@ -43,23 +41,20 @@
         size_hint: 0.2, 1
         pos_hint: {"x":0}
         on_release:
-            app.root.current = 'home'
-            app.root.transition = NoTransition()
+            app.go_to_home()
 
     Button:
         text: "Budget"  
         size_hint: 0.2, 1
         pos_hint: {"x":.2} 
         on_release: 
-            app.root.current = 'budget'
-            app.root.transition = NoTransition() 
+            app.go_to_budget()
     Button:
         text: "History" 
         size_hint: 0.2, 1
         pos_hint: {"x":.4}
         on_release: 
-            app.root.current = 'history' 
-            app.root.transition = NoTransition() 
+            app.go_to_history()
     Button:
         text: "Overview"
         size_hint: 0.2, 1
@@ -69,8 +64,7 @@
         size_hint: 0.2, 1
         pos_hint: {"x":.8}
         on_release:
-            app.root.current = 'add'
-            app.root.transition = NoTransition() 
+            app.go_to_add()
 
 
 

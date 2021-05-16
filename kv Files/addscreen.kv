@@ -45,7 +45,7 @@
 
 # Popup for choosing between "Income" and "Expense"
 <PopUpChooseEntry>:
-    on_dismiss: app.root.current = 'history'
+    on_dismiss: app.go_to_history()
     title: "Add Entry"
 
     size_hint: 0.8, None
@@ -81,7 +81,7 @@
     title: "Add Income"
     on_dismiss: 
         root.reset_inputs()
-        app.root.current = 'history'
+        app.go_to_history()
 
     size_hint: 0.8, None
     size: 0, 250
@@ -129,7 +129,7 @@
     title: "Add Expense"
     on_dismiss: 
         root.reset_inputs()
-        app.root.current = 'history'
+        app.go_to_history()
 
     size_hint: 0.8, None
     size: 0, 250
@@ -155,8 +155,8 @@
 
         Button:
             id: category_name
-            text: "Category"
-            on_press: root.choose_category()
+            text: "Choose Category"
+            on_release: root.choose_category()
             size_hint: 0.9, 0.15
             pos_hint: {"x": 0.05, "y": 0.3}
 
@@ -174,9 +174,7 @@
     categories_grid: categories_grid
 
     title: "Select Category"
-    on_open: 
-        root.update_categories()
-    on_dismiss: root.return_to_add()    
+    on_open: root.update_categories()
 
     size_hint: 0.8, None
     size: 0, 250
@@ -215,7 +213,6 @@
 
         Label:
             id: category_name
-            hint_text: "Category"
 
             # size_hint: 0.38, 1
             pos_hint: {"x": 0.05}

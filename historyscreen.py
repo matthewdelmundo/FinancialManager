@@ -86,13 +86,11 @@ class PopUpEditEntryExpense(Popup):
         self.req_del_ent = PopUpDeleteEntry(caller_widget, self)
         self.update_edit_entry_info()
 
-        # Reference to the popup for ease of opening
         self.select_category_popup = PopupEditCategory(caller_widget, self)
 
     # Sends caller the select_category function with "Expense" as parameter
     def choose_category(self):
         self.select_category_popup.open()
-        self.dismiss()
 
     def update_edit_entry_info(self):
         self.ids.ent_type.color = (0.95, 0.98, 0.32, 1)
@@ -100,6 +98,11 @@ class PopUpEditEntryExpense(Popup):
 
         self.ids.ent_name.text = self.caller_widget.get_entry_name()
         self.ids.ent_amt.text = self.caller_widget.get_amount()
+
+        if self.caller_widget.get_category() == "":
+            self.ids.category_name.text = "Choose Category"
+        else:
+            self.ids.category_name.text = self.caller_widget.get_category()
 
         self.ids.ent_amt.background_color = (0.63, 0.22, 0.24, 1)
         self.ids.ent_amt.text_color = (0.94, 0.35, 0.39, 1)
@@ -114,7 +117,10 @@ class PopUpEditEntryExpense(Popup):
         else:
             new_name = self.ids.ent_name.text
         new_amt = self.ids.ent_amt.text
-        new_cat = self.ids.category_name.text
+        if self.ids.category_name.text == "Choose Category":
+            new_cat = ""
+        else:
+            new_cat = self.ids.category_name.text
         self.caller_widget.edit_entry_info(new_name, new_amt, new_cat)
         self.dismiss()
 
@@ -136,12 +142,9 @@ class PopupEditCategory(Popup):
         # Sets GridLayout height to its number of entries -> allows scrolling
         self.categories_grid.bind(minimum_height=self.categories_grid.setter("height"))
 
-    def return_to_edit(self):
-        self.parent_widget.parent_widget.edit_expenseentry_popup.open()
-
     def update_categories(self):
         self.ids["categories_grid"].clear_widgets()
-        self.categories_list = self.caller_widget.caller_widget.get_budgets_list()
+        self.categories_list = self.caller_widget.get_budgets_list()
         new_cat = Category(self, "")
         self.ids["categories_grid"].add_widget(new_cat)
         for name in self.categories_list:
@@ -160,13 +163,11 @@ class Category(AnchorLayout):
     def initialize_entry(self):
         self.ids.category_name.text = self.name
     def press(self):
-        self.caller_widget.parent_widget.ids.category_name.text = self.name
-        if isinstance(self.caller_widget, PopupEditCategory):
-            self.caller_widget.dismiss()
-            self.caller_widget.return_to_edit()
+        if self.name == '':
+            self.caller_widget.parent_widget.ids.category_name.text = "Choose Category"
         else:
-            self.caller_widget.dismiss()
-            self.caller_widget.return_to_add()
+            self.caller_widget.parent_widget.ids.category_name.text = self.name
+        self.caller_widget.dismiss()
     
 
 # Custom TextInput for entry name

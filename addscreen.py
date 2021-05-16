@@ -78,19 +78,19 @@ class PopUpAddExpense(Popup):
     # Sends caller the choose_category function
     def choose_category(self):
         self.select_category_popup.open()
-        self.dismiss()
 
     # Reinitialize input boxes
     def reset_inputs(self):
         self.ids.entry_amount.initialize_values()
         self.ids.entry_name.text = ""
+        self.ids.category_name.text = "Choose Category"
 
     # Asks caller_widget to add entry
     def add_expense_entry(self):
         display_amount = self.ids.entry_amount.text
         name = self.ids.entry_name.text
         category = self.ids.category_name.text
-        if category == "Category":
+        if category == "Choose Category":
             category = ""
         if display_amount != "":
             if name == "":
@@ -113,9 +113,6 @@ class PopupSelectCategory(Popup):
         # Sets GridLayout height to its number of entries -> allows scrolling
         self.categories_grid.bind(minimum_height=self.categories_grid.setter("height"))
 
-    def return_to_add(self):
-        # self.dismiss()
-        self.parent_widget.parent_widget.choose_expense()
 
     def update_categories(self):
         self.ids["categories_grid"].clear_widgets()
@@ -209,6 +206,9 @@ class Entry(Widget):
     
     def get_index(self):
         return self.index
+
+    def get_budgets_list(self):
+        return self.caller_widget.get_budgets_list()
     
     def delete_entry_via_index(self, index):
         self.caller_widget.del_ent_via_ind(index, self)
@@ -218,6 +218,7 @@ class Entry(Widget):
     def initialize_entry(self):
         self.ids.entry_name.text = self.name
         self.ids.entry_display_amount.text = self.display_amount
+        self.ids.category = ""
         if self.entry_type == "Income":
             self.ids.entry_display_amount.color = (0.47, 0.75, 0.39, 1)
         elif self.entry_type == "Expense":
