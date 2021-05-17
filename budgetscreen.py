@@ -406,4 +406,4 @@ class BudgetScreen(Screen):
             self.current_budget.display_total
 
     def get_budgets_list(self):
-        return self.budgets_list
+        return self.budget_database.load_budgets()

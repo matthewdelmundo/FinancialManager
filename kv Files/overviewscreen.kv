@@ -1,0 +1,131 @@
+# Custom widget for each expense category
+<Expense>:
+    RelativeLayout:
+        pos: root.x, root.y
+        width: root.width
+        height: root.height
+
+        Button:
+            on_release: root.press()
+
+        Label:
+            id: expense_name
+
+            pos_hint: {"x": 0.05}
+            text_size: self.size
+            halign: "left"
+            valign: "middle"
+
+        Label:
+            id: expense_amount
+
+            pos_hint: {"x": 0.05}
+            text_size: self.size
+            halign: "right"
+            valign: "middle"
+            
+<TotalValues@RelativeLayout>
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.15
+        Rectangle:
+            size: self.size
+
+    Label:
+        text: "Total Income"
+        pos_hint: {"x": 0.05}
+        text_size: self.size
+        halign: "left"
+        valign: "top"
+
+    Label:
+        id: total_income
+        text: "₱0.00"
+        multiline: False
+        pos_hint: {"x": -0.05}
+        text_size: self.size
+        halign: "right"
+        valign: "top"
+        color: 0.47, 0.75, 0.39, 1
+
+    Label:
+        text: "Total Expense"
+        pos_hint: {"x": 0.05}
+        text_size: self.size
+        halign: "left"
+        valign: "middle"
+
+    Label:
+        id: total_expense
+        text: "₱0.00"
+        multiline: False
+        pos_hint: {"x": -0.05}
+        text_size: self.size
+        halign: "right"
+        valign: "middle"
+        color: 0.94, 0.35, 0.39, 1
+
+    Label:
+        text: "Net Income"
+        pos_hint: {"x": 0.05}
+        text_size: self.size
+        halign: "left"
+        valign: "bottom"
+
+    Label:
+        id: net_income
+        text: "₱0.00"
+        multiline: False
+        pos_hint: {"x": -0.05}
+        text_size: self.size
+        halign: "right"
+        valign: "bottom"
+
+# Main screen for displaying spending breakdown
+<OverviewScreen>
+    expenses_grid: expenses_grid
+
+    FloatLayout:
+        size: root.width, root.height
+
+        ToolBar:
+            id: overview_toolbar
+            size_hint: 1, 0.14
+            pos_hint: {"y": 0.86}
+
+            Label:
+                id: active_date
+                text: "01 January 2021"
+
+                pos_hint: {"center_y": 0.2}
+
+            DatePickerButton:
+                id: date_picker
+                text: "Date"
+
+                size_hint: None, 0.8
+                width: self.height
+                pos_hint: {"right": 0.95, "center_y": 0.5}
+
+        TotalValues:
+            id: total_values
+            size_hint: 0.9, 0.14
+            pos_hint: {"x":0.05, "y": 0.72}
+
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            size_hint: 0.7, 0.63
+            pos_hint: {"x": 0.15, "y": 0.21}
+
+            GridLayout:
+                id: expenses_grid
+                cols: 1
+                spacing: 5
+
+                size_hint_y: None
+                row_default_height: '40dp'
+                row_force_default: True
+
+        NavigationBar:
+            size_hint: 1, 0.08

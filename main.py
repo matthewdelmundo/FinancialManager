@@ -3,6 +3,7 @@ from homescreen import *
 from historyscreen import *
 from budgetscreen import *
 from addscreen import *
+from overviewscreen import *
 from datepicker import *
 from database import *
 from budgetdatabase import *
@@ -26,11 +27,13 @@ class FinancialManagerApp(App):
         home_screen = HomeScreen(database, name='home')
         history_screen = HistoryScreen(database, name='history')
         budget_screen = BudgetScreen(budget_database, name='budget')
+        overview_screen = OverviewScreen(name='overview')
         add_screen = GlobalAdd(database, history_screen, budget_screen, name='add')
 
         sm.add_widget(home_screen)
         sm.add_widget(history_screen)
         sm.add_widget(budget_screen)
+        sm.add_widget(overview_screen)
         sm.add_widget(add_screen)
 
         # Save screens
@@ -38,6 +41,7 @@ class FinancialManagerApp(App):
         self.home_screen = home_screen
         self.budget_screen = budget_screen
         self.history_screen = history_screen
+        self.overview_screen = overview_screen 
         self.add_screen = add_screen
         return sm
     
@@ -52,11 +56,14 @@ class FinancialManagerApp(App):
         self.sm.switch_to(self.budget_screen, direction=dir)
 
     def go_to_history(self):
-        if self.sm.current == 'add':
-            dir = 'right'
-        else:
+        if self.sm.current == 'home' or self.sm.current == 'budget':
             dir = 'left'
+        else:
+            dir = 'right'
         self.sm.switch_to(self.history_screen, direction=dir)
+
+    def go_to_overview(self):
+        self.sm.switch_to(self.overview_screen, direction='left')
 
     def go_to_add(self):
         self.sm.switch_to(self.add_screen, direction='left')

@@ -42,7 +42,6 @@
         pos_hint: {"x":0}
         on_release:
             app.go_to_home()
-
     Button:
         text: "Budget"  
         size_hint: 0.2, 1
@@ -59,6 +58,8 @@
         text: "Overview"
         size_hint: 0.2, 1
         pos_hint: {"x":.6} 
+        on_release: 
+            app.go_to_overview()
     Button:
         text: "Add"
         size_hint: 0.2, 1

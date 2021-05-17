@@ -118,8 +118,8 @@ class PopupSelectCategory(Popup):
         self.categories_list = self.caller_widget.get_budgets_list()
         new_cat = Category(self, self.caller_popup, "")
         self.ids["categories_grid"].add_widget(new_cat)
-        for name in self.categories_list:
-            new_cat = Category(self, self.caller_popup, name)
+        for budget_tuple in self.categories_list:
+            new_cat = Category(self, self.caller_popup, budget_tuple[0])
             self.ids["categories_grid"].add_widget(new_cat)
 
 
