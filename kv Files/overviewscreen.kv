@@ -1,30 +1,48 @@
 # Custom widget for each expense category
-<Expense>:
-    RelativeLayout:
-        pos: root.x, root.y
-        width: root.width
-        height: root.height
+<ExpenseSummary>:
+    size_hint: None, None
+    StackLayout:
+        id: summary_grid
 
-        Button:
-            on_release: root.press()
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 0.15
+            Rectangle:
+                size: self.size
 
-        Label:
-            id: expense_name
+<ExpenseSummaryTitle>
+    size_hint: None, None
+    Label:
+        text: "Expense Summary"
+        bold: True
 
-            pos_hint: {"x": 0.05}
-            text_size: self.size
-            halign: "left"
-            valign: "middle"
+<ExpenseInfo>:
+    size_hint: None, None
+    Label:
+        id: expense_name
+        text: "Test"
 
-        Label:
-            id: expense_amount
+        font_size: 16
+        text_size: self.size
+        halign: "left"
+        valign: "middle"
 
-            pos_hint: {"x": 0.05}
-            text_size: self.size
-            halign: "right"
-            valign: "middle"
+        pos_hint: {"x": 0.05}
+
+    Label:
+        id: expense_amount
+        text: "P100.00"
+        color: 0.94, 0.35, 0.39, 1
+
+        font_size: 16
+        text_size: self.size
+        halign: "right"
+        valign: "middle"
+
+        pos_hint: {"right": 0.95}
             
-<TotalValues@RelativeLayout>
+<TotalValues>
+    size_hint: None, None
     canvas.before:
         Color:
             rgba: 1, 1, 1, 0.15
@@ -33,7 +51,7 @@
 
     Label:
         text: "Total Income"
-        pos_hint: {"x": 0.05}
+        pos_hint: {"x": 0.05, "top": 0.9}
         text_size: self.size
         halign: "left"
         valign: "top"
@@ -42,7 +60,7 @@
         id: total_income
         text: "₱0.00"
         multiline: False
-        pos_hint: {"x": -0.05}
+        pos_hint: {"x": -0.05, "top": 0.9}
         text_size: self.size
         halign: "right"
         valign: "top"
@@ -67,23 +85,24 @@
 
     Label:
         text: "Net Income"
-        pos_hint: {"x": 0.05}
+        pos_hint: {"x": 0.05, "y": 0.1}
         text_size: self.size
         halign: "left"
         valign: "bottom"
 
     Label:
         id: net_income
+        bold: True
         text: "₱0.00"
         multiline: False
-        pos_hint: {"x": -0.05}
+        pos_hint: {"x": -0.05, "y": 0.1}
         text_size: self.size
         halign: "right"
         valign: "bottom"
 
 # Main screen for displaying spending breakdown
 <OverviewScreen>
-    expenses_grid: expenses_grid
+    overviews_grid: overviews_grid
 
     FloatLayout:
         size: root.width, root.height
@@ -99,33 +118,18 @@
 
                 pos_hint: {"center_y": 0.2}
 
-            DatePickerButton:
-                id: date_picker
-                text: "Date"
-
-                size_hint: None, 0.8
-                width: self.height
-                pos_hint: {"right": 0.95, "center_y": 0.5}
-
-        TotalValues:
-            id: total_values
-            size_hint: 0.9, 0.14
-            pos_hint: {"x":0.05, "y": 0.72}
-
         ScrollView:
+            id: scroll_view
             do_scroll_x: False
             do_scroll_y: True
-            size_hint: 0.7, 0.63
-            pos_hint: {"x": 0.15, "y": 0.21}
+            size_hint: 0.7, 0.73
+            pos_hint: {"x": 0.15, "y": 0.11}
 
-            GridLayout:
-                id: expenses_grid
-                cols: 1
-                spacing: 5
+            StackLayout:
+                id: overviews_grid
 
+                spacing: [0, 10]
                 size_hint_y: None
-                row_default_height: '40dp'
-                row_force_default: True
 
         NavigationBar:
             size_hint: 1, 0.08

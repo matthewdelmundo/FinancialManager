@@ -25,11 +25,14 @@ class PopupDeleteBudget(Popup):
 
     #Deletes a budget
     def delete_budget(self):
-        budget_names = self.caller_widget.get_budgets_list()
+        budget_names = self.caller_widget.get_budget_names()
         if self.caller_widget.current_budget.name in budget_names:
-            budget_names.remove(self.caller_widget.current_budget.name)
             self.caller_widget.ids["budgets_grid"].remove_widget(self.caller_widget.current_budget)
+            budget_names.remove(self.caller_widget.current_budget.name)
             self.caller_widget.budget_database.remove_budget(self.caller_widget.current_budget.name)
+
+            self.caller_widget.budget_database.reorganize_json()
+
         self.dismiss()
         self.immediate_caller_widget.return_to_budgets_screen()
 
@@ -37,7 +40,6 @@ class PopupDeleteBudget(Popup):
     def return_to_edit(self):
         self.dismiss()
 
-    
 
 class PopupEditBudget(Popup):
     def __init__(self, caller_widget, **kwargs):
@@ -72,7 +74,7 @@ class PopupEditBudget(Popup):
         self.icon_source = self.caller_widget.current_budget.get_budg_icon()
 
     def edit_budget(self):
-        budget_names = self.caller_widget.get_budgets_list()
+        budget_names = self.caller_widget.get_budget_names()
         name = self.ids.budg_name.text
         if name == "" or name in budget_names:
             new_name = self.caller_widget.current_budget.get_budg_name()
@@ -178,7 +180,7 @@ class PopupAddBudget(Popup):
         name = self.ids["budget_name"].text
         #display_amount = "₱" + self.ids["budget_amount"].text
         amount = self.ids["budget_amount"].get_amount()
-        budget_names = self.caller_widget.get_budgets_list()
+        budget_names = self.caller_widget.get_budget_names()
 
         #does not allow budgets with no names (and no amount)
         if name == "":
@@ -312,7 +314,7 @@ class Budget(AnchorLayout):
 class BudgetScreen(Screen):
     budgets_grid = ObjectProperty(None)
     budgets_list = []
-  
+
     def __init__(self, budget_database, **kwargs):
         super(BudgetScreen, self).__init__(**kwargs)
         self.current_budget = None
@@ -336,6 +338,9 @@ class BudgetScreen(Screen):
 
         self.grid_index = 1
         self.read_budget_database()
+
+    def on_screen_callback(self):
+        self.reset_budget_view()
 
     def read_budget_database(self):
         budgets = self.budget_database.load_budgets()
@@ -374,13 +379,15 @@ class BudgetScreen(Screen):
         self.add_budget_popup.open()
 
     def add_budget(self, name, amount, icon_source, update_budgets=True):
-        display_amount = '₱' + f"{amount:,.2f}"
-
-        budget = Budget(self, self.grid_index, name,
-                        display_amount, amount, icon_source)
         if update_budgets:
+            self.grid_index = self.budget_database.reorganize_json()
             self.budget_database.save_budget(str(self.grid_index),
                                              name, amount, icon_source)
+
+        display_amount = '₱' + f"{amount:,.2f}"
+        budget = Budget(self, self.grid_index, name,
+                        display_amount, amount, icon_source)
+
         self.grid_index += 1
 
         self.ids["budgets_grid"].add_widget(budget)
@@ -396,7 +403,16 @@ class BudgetScreen(Screen):
         total = self.current_budget.total
 
         expense = self.budget_database.get_budget_expense(budget_name)
-        display_remaining = '₱' + f"{total - expense:,.2f}"
+        remaining = total - expense
+
+        display_remaining = '₱' + f"{remaining:,.2f}"
+        self.ids["budget_display"].ids["budget_remaining"].color = \
+            (0.47, 0.75, 0.39, 1)
+
+        if remaining < 0:
+            display_remaining = '-₱' + f"{abs(remaining):,.2f}"
+            self.ids["budget_display"].ids["budget_remaining"].color = \
+                (0.94, 0.35, 0.39, 1)
 
         self.ids["budget_display"].ids["budget_name"].text = \
             budget_name
@@ -405,5 +421,16 @@ class BudgetScreen(Screen):
         self.ids["budget_display"].ids["budget_total"].text = \
             self.current_budget.display_total
 
+    def reset_budget_view(self):
+        self.current_budget = None
+        self.ids["budget_display"].ids["budget_name"].text = "Daily Budget"
+        self.ids["budget_display"].ids["budget_remaining"].text = "₱0.00"
+        self.ids["budget_display"].ids["budget_remaining"].color = (1, 1, 1, 1)
+        self.ids["budget_display"].ids["budget_total"].text = "₱0.00"
+
+
     def get_budgets_list(self):
         return self.budget_database.load_budgets()
+
+    def get_budget_names(self):
+        return self.budgets_list

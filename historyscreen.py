@@ -129,44 +129,54 @@ class PopUpEditEntryExpense(Popup):
     def return_to_edit_pop(self):
         self.dismiss()
 
+
 # Popup window for clicking the "Category" button
 class PopupEditCategory(Popup):
+    categories_grid = ObjectProperty(None)
+    categories_list = []
+
     def __init__(self, caller_widget, caller_popup, **kwargs):
         super(PopupEditCategory, self).__init__(**kwargs)
 
         # Widget that called this popup
         self.caller_widget = caller_widget
         self.caller_popup = caller_popup
-        
+
         # Sets GridLayout height to its number of entries -> allows scrolling
         self.categories_grid.bind(minimum_height=self.categories_grid.setter("height"))
 
     def update_categories(self):
         self.ids["categories_grid"].clear_widgets()
         self.categories_list = self.caller_widget.get_budgets_list()
-        new_cat = Category(self, self.caller_popup, "")
+
+        new_cat = Category(self, self.caller_popup,
+                           ("Uncategorized", 0, "images/ui/wallet.png"))
         self.ids["categories_grid"].add_widget(new_cat)
+
         for budget_tuple in self.categories_list:
-            new_cat = Category(self, self.caller_popup, budget_tuple[0])
+            new_cat = Category(self, self.caller_popup, budget_tuple)
             self.ids["categories_grid"].add_widget(new_cat)
 
 
 # Button/Image that lets you view the category
 class Category(AnchorLayout):
-    def __init__(self, caller_widget, caller_popup, name, **kwargs):
+    def __init__(self, caller_widget, caller_popup, budget_info, **kwargs):
         super(Category, self).__init__(**kwargs)
 
         self.caller_widget = caller_widget
         self.caller_popup = caller_popup
-        self.name = name
+
+        self.budget_name = budget_info[0]
+        self.budget_source = budget_info[2]
+
         self.initialize_entry()
+
     def initialize_entry(self):
-        self.ids.category_name.text = self.name
+        self.ids["category_name"].text = self.budget_name
+        self.ids["icon"].source = self.budget_source
+
     def press(self):
-        if self.name == '':
-            self.caller_popup.ids.category_name.text = "Choose Category"
-        else:
-            self.caller_popup.ids.category_name.text = self.name
+        self.caller_popup.ids.category_name.text = self.budget_name
         self.caller_widget.dismiss()
     
 

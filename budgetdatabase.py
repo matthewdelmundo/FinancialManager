@@ -36,3 +36,18 @@ class BudgetDatabase:
             value = self.budgets.get(keys[i])
             if budget_name == value["Name"]:
                 self.budgets.delete(keys[i])
+
+    def reorganize_json(self):
+        keys = self.budgets.keys()
+        index = 0
+        for i in range(len(keys)):
+            key = keys[i]
+            budget = self.budgets.get(key)
+            budget_name = budget["Name"]
+            budget_source = budget["Source"]
+            budget_total = budget["Total"]
+
+            self.budgets.delete(key)
+            index = i + 1
+            self.save_budget(str(index), budget_name, budget_total, budget_source)
+        return index + 1

@@ -27,7 +27,7 @@ class FinancialManagerApp(App):
         home_screen = HomeScreen(database, name='home')
         history_screen = HistoryScreen(database, name='history')
         budget_screen = BudgetScreen(budget_database, name='budget')
-        overview_screen = OverviewScreen(name='overview')
+        overview_screen = OverviewScreen(database, name='overview')
         add_screen = GlobalAdd(database, history_screen, budget_screen, name='add')
 
         sm.add_widget(home_screen)
@@ -53,6 +53,7 @@ class FinancialManagerApp(App):
             dir = 'left'
         else:
             dir = 'right'
+        self.budget_screen.on_screen_callback()
         self.sm.switch_to(self.budget_screen, direction=dir)
 
     def go_to_history(self):
@@ -63,6 +64,7 @@ class FinancialManagerApp(App):
         self.sm.switch_to(self.history_screen, direction=dir)
 
     def go_to_overview(self):
+        self.overview_screen.on_screen_callback()
         self.sm.switch_to(self.overview_screen, direction='left')
 
     def go_to_add(self):

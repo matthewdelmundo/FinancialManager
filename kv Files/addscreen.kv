@@ -1,8 +1,8 @@
 # Popup for clicking Entry 
 <PopUpClickEntry>:
     title: "Entry"
-    size_hint: 0.8, None
-    size: 0, 200
+    size_hint: 0.8, 0.42
+
     on_open: root.update_entry_info()
 
     BoxLayout:
@@ -48,8 +48,7 @@
     on_dismiss: app.go_to_history()
     title: "Add Entry"
 
-    size_hint: 0.8, None
-    size: 0, 200
+    size_hint: 0.8, 0.42
 
     BoxLayout:
         orientation: "vertical"
@@ -83,8 +82,7 @@
         root.reset_inputs()
         app.go_to_history()
 
-    size_hint: 0.8, None
-    size: 0, 250
+    size_hint: 0.8, 0.42
 
     RelativeLayout:
         IncomeAmountInput:
@@ -131,8 +129,7 @@
         root.reset_inputs()
         app.go_to_history()
 
-    size_hint: 0.8, None
-    size: 0, 250
+    size_hint: 0.8, 0.42
 
     RelativeLayout:
         ExpenseAmountInput:
@@ -176,21 +173,23 @@
     title: "Select Category"
     on_open: root.update_categories()
 
-    size_hint: 0.8, None
-    size: 0, 250
+    size_hint: 0.8, 0.42
 
     # Category Grid
     ScrollView:
         do_scroll_x: False
         do_scroll_y: True
-        size: root.width, root.height
-        # pos_hint: {"x": 0.05, "y": 0.05}
+
+        size_hint: 1, 0.9
+        pos_hint: {"y": 0.05}
+
+        #size: root.width, root.height
 
         GridLayout:
             id: categories_grid
             cols: 1
             spacing: 5
-            
+
             size_hint_y: None
             col_force_default: True
             row_force_default: True
@@ -199,7 +198,6 @@
 
             row_default_height: '60dp'
             row_force_default: True
-
 
 # Custom widget for each category
 <Category>:
@@ -211,14 +209,22 @@
         Button:
             on_release: root.press()
 
+        Image:
+            id: icon
+            source: "images/ui/wallet.png"
+            size_hint: 0.25, 0.8
+            pos_hint: {"y": 0.1}
+
         Label:
             id: category_name
 
-            # size_hint: 0.38, 1
-            pos_hint: {"x": 0.05}
+            size_hint: 0.75, 1
+            pos_hint: {"x": 0.25}
             text_size: self.size
             halign: "left"
             valign: "middle"
+
+
 
 
 # Custom widget for each entry
@@ -244,6 +250,7 @@
         Label:
             id: entry_display_amount
 
+            bold: True
             size_hint: 0.48, 1
             pos_hint: {"right": 0.95}
             text_size: self.size

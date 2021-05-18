@@ -58,7 +58,7 @@ class PopUpAddIncome(Popup):
             if name == "":
                 name = "New Income"
             amount = self.ids.entry_amount.get_amount()
-            self.caller_widget.add_entry("Income", name, display_amount, amount, None)
+            self.caller_widget.add_entry("Income", name, display_amount, amount, "Income")
 
             self.dismiss()
 
@@ -98,10 +98,12 @@ class PopUpAddExpense(Popup):
             self.caller_widget.add_entry("Expense", name, display_amount, amount, category)
             self.dismiss()
 
+
 # Popup window for clicking the "Category" button
 class PopupSelectCategory(Popup):
     categories_grid = ObjectProperty(None)
     categories_list = []
+
     def __init__(self, caller_widget, caller_popup, **kwargs):
         super(PopupSelectCategory, self).__init__(**kwargs)
 
@@ -112,14 +114,16 @@ class PopupSelectCategory(Popup):
         # Sets GridLayout height to its number of entries -> allows scrolling
         self.categories_grid.bind(minimum_height=self.categories_grid.setter("height"))
 
-
     def update_categories(self):
         self.ids["categories_grid"].clear_widgets()
         self.categories_list = self.caller_widget.get_budgets_list()
-        new_cat = Category(self, self.caller_popup, "")
+
+        new_cat = Category(self, self.caller_popup,
+                           ("Uncategorized", 0, "images/ui/wallet.png"))
         self.ids["categories_grid"].add_widget(new_cat)
+
         for budget_tuple in self.categories_list:
-            new_cat = Category(self, self.caller_popup, budget_tuple[0])
+            new_cat = Category(self, self.caller_popup, budget_tuple)
             self.ids["categories_grid"].add_widget(new_cat)
 
 

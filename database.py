@@ -130,6 +130,44 @@ class Database:
                 expense = expense_categories[budget_name]
         return expense
 
+    def get_expense_categories_list(self, view_date):
+        date_id = get_date_id(view_date)
+        expense_categories_list = []
+
+        if self.data.exists(date_id):
+            expense_categories_dict = self.data.get(date_id)["expense_categories"]
+
+            for expense_name in expense_categories_dict:
+                expense_categories_list.append((expense_name,
+                                                expense_categories_dict[expense_name]))
+
+        return expense_categories_list
+
+    def get_total_income(self, view_date):
+        date_id = get_date_id(view_date)
+        total_income = 0
+
+        if self.data.exists(date_id):
+            entry_dict_list = self.data.get(date_id)["entries"]
+
+            for entry_dict in entry_dict_list:
+                entry_type = entry_dict["Type"]
+                entry_amount = entry_dict["Amount"]
+
+                if entry_type == "Income":
+                    total_income += entry_amount
+
+        return total_income
+
+    def get_total_expense(self, view_date):
+        expense_categories_list = self.get_expense_categories_list(view_date)
+        total_expense = 0
+
+        for expense in expense_categories_list:
+            total_expense += expense[1]
+
+        return total_expense
+
     def load_entries_list(self):
         date_id = get_date_id(self.current_date)
         entries_list = []
@@ -148,7 +186,7 @@ class Database:
         self.current_date = current_date
 
     def get_current_date(self):
-        return self.current_date
+        return [self.current_date[0], self.current_date[1], self.current_date[2]]
 
     def get_date_today(self):
         current_date = date.today()
