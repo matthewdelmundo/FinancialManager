@@ -295,6 +295,7 @@
         on_press: root.root.view_edit_budget()
 
 <BudgetScreen>
+    on_enter: root.update_bg_color()
     budgets_grid: budgets_grid
 
     FloatLayout:

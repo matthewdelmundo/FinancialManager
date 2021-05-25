@@ -251,8 +251,8 @@ class GlobalAdd(Screen):
         return self.budget_screen.get_budgets_list()
 
     def edit_budget_balance(self, balance, dispbalance):
-        budget_sreen = self.budget_screen
-        budget_sreen.edit_budget_info(bs.new_name, balance, dispbalance)
+        budget_screen = self.budget_screen
+        budget_screen.edit_budget_info(bs.new_name, balance, dispbalance)
     
     def get_entries_list(self):
         return self.history_screen.entries_list
@@ -274,6 +274,9 @@ class GlobalAdd(Screen):
 
         if update_callback:
             self.history_screen.on_entries_list_updated_callback()
+
+        #budget_sreen = self.budget_screen
+        
 
     # Used when finishing edits of an entry
     def update_entries_list(self, new_name, new_amount, new_category, index, entry_type):

@@ -267,15 +267,7 @@ class Budget(AnchorLayout):
 
         # Saved remaining amount
         self.remaining = amount
-
-        #percentage indicates background color
-        percent = (self.remaining/self.total)*100
-        if percent <= 100 and percent >= 50:
-            self.ids.background.background_normal = "images/ui/green.png"
-        elif percent < 50 and percent >= 25:
-            self.ids.background.background_normal = "images/ui/yellow.png"
-        elif percent < 25 and percent >= 0:
-            self.ids.background.background_normal = "images/ui/red.png"
+        self.ids.background.background_normal = "images/ui/green.png"
     
     def get_budg_name(self):
         return self.name
@@ -308,12 +300,14 @@ class Budget(AnchorLayout):
     def button_function(self):
         self.caller_widget.view_budget(self)
         self.caller_widget.edit_budget_popup.show_budget_info()
+        print(str(self.remaining) + " | " + str(self.total))
 
 
 # Budget Screen
 class BudgetScreen(Screen):
     budgets_grid = ObjectProperty(None)
     budgets_list = []
+    budgets_object_list = []
 
     def __init__(self, budget_database, **kwargs):
         super(BudgetScreen, self).__init__(**kwargs)
@@ -392,6 +386,7 @@ class BudgetScreen(Screen):
 
         self.ids["budgets_grid"].add_widget(budget)
         self.budgets_list.append(name)
+        self.budgets_object_list.append(budget)
 
     def update_icon(self, icon_source):
         self.current_budget.set_icon(icon_source)
@@ -404,12 +399,20 @@ class BudgetScreen(Screen):
 
         expense = self.budget_database.get_budget_expense(budget_name)
         remaining = total - expense
+        current_budget.remaining = remaining
 
-        display_remaining = '₱' + f"{remaining:,.2f}"
-        self.ids["budget_display"].ids["budget_remaining"].color = \
-            (0.47, 0.75, 0.39, 1)
+        percent = (remaining/total)*100
+        if percent <= 100 and percent >= 50:
+            display_remaining = '₱' + f"{remaining:,.2f}"
+            self.ids["budget_display"].ids["budget_remaining"].color = \
+                (0.47, 0.75, 0.39, 1)
 
-        if remaining < 0:
+        elif percent < 50 and percent > 0:
+            display_remaining = '₱' + f"{remaining:,.2f}"
+            self.ids["budget_display"].ids["budget_remaining"].color = \
+                (0.90, 0.90, 0.50, 1)
+
+        elif percent <= 0:
             display_remaining = '-₱' + f"{abs(remaining):,.2f}"
             self.ids["budget_display"].ids["budget_remaining"].color = \
                 (0.94, 0.35, 0.39, 1)
@@ -434,3 +437,19 @@ class BudgetScreen(Screen):
 
     def get_budget_names(self):
         return self.budgets_list
+
+    #percentage indicates background color
+    def update_bg_color(self):
+        budgets = self.budgets_object_list
+        for current_budget in budgets:
+            total = current_budget.total
+            expense = self.budget_database.get_budget_expense(current_budget.name)
+            remaining = total - expense
+
+            percent = (remaining/total)*100
+            if percent <= 100 and percent >= 50:
+                current_budget.ids.background.background_normal = "images/ui/green.png"
+            elif percent < 50 and percent > 0:
+                current_budget.ids.background.background_normal = "images/ui/yellow.png"
+            elif percent <= 0:
+                current_budget.ids.background.background_normal = "images/ui/red.png"

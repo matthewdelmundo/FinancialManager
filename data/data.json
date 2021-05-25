@@ -14,12 +14,6 @@
         "Type": "Expense"
       },
       {
-        "Amount": 80.0,
-        "Category": "Dining",
-        "Name": "Breakfast",
-        "Type": "Expense"
-      },
-      {
         "Amount": 120.0,
         "Category": "Dining",
         "Name": "Lunch",
@@ -48,12 +42,63 @@
         "Category": "Dining",
         "Name": "Dinner",
         "Type": "Expense"
+      },
+      {
+        "Amount": 30.0,
+        "Category": "Transportation",
+        "Name": "Bus",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 55.0,
+        "Category": "Dining",
+        "Name": "New Expense",
+        "Type": "Expense"
       }
     ],
     "expense_categories": {
-      "Dining": 360.0,
+      "Dining": 335.0,
       "Groceries": 180.0,
-      "Transportation": 60.0
+      "Transportation": 90.0
+    }
+  },
+  "2021-5-20": {
+    "entries": [
+      {
+        "Amount": 125.0,
+        "Category": "Dining",
+        "Name": "New Expense",
+        "Type": "Expense"
+      }
+    ],
+    "expense_categories": {
+      "Dining": 125.0
+    }
+  },
+  "2021-5-25": {
+    "entries": [
+      {
+        "Amount": 100.0,
+        "Category": "Diningg",
+        "Name": "New Expense",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 199.0,
+        "Category": "Diningg",
+        "Name": "New Expense",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 119.0,
+        "Category": "Transportation",
+        "Name": "New Expense",
+        "Type": "Expense"
+      }
+    ],
+    "expense_categories": {
+      "Diningg": 299.0,
+      "Transportation": 119.0
     }
   }
 }
