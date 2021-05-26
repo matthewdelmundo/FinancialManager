@@ -23,8 +23,6 @@ class PopUpChooseEntry(Popup):
 
         # Reference to the popup for ease of opening
         self.add_income_popup = PopUpAddIncome(caller_widget)
-
-        # Reference to the popup for ease of opening
         self.add_expense_popup = PopUpAddExpense(caller_widget)
 
     # Sends caller the add_entry function with "Income" as parameter
@@ -231,6 +229,7 @@ class Entry(Widget):
     def press(self):
         self.click_entry_popup.open()
 
+#Screen for adding an extry globally
 class GlobalAdd(Screen):
     def __init__(self, database, history_screen, budget_screen, **kwargs):
         super(GlobalAdd, self).__init__(**kwargs)
@@ -274,8 +273,6 @@ class GlobalAdd(Screen):
 
         if update_callback:
             self.history_screen.on_entries_list_updated_callback()
-
-        #budget_sreen = self.budget_screen
         
 
     # Used when finishing edits of an entry

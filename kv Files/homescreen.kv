@@ -1,4 +1,4 @@
-#displays total balance
+#Home screen widget
 <HomeScreen>:
     on_enter: root.total_balance()
         
@@ -7,7 +7,8 @@
         spacing: 10
         padding: 10
 
-        ToolBar_NoColor:
+        #adds a grey toolbar at upper side of the screen
+        ToolBar:
             id: home_toolbar
             size_hint: 1, 0.14
             pos_hint: {"y": 0.86}
@@ -15,6 +16,7 @@
             Label:
                 id: active_date
                 text: "01 January 2021"
+
                 pos_hint: {"center_y": 0.2}
 
         Image:

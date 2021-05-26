@@ -15,6 +15,7 @@ from database import convert_month_num
 from kivy.lang import Builder
 Builder.load_file('kv Files/historyscreen.kv')
 
+#Popup window for deleting an entry
 class PopUpDeleteEntry(Popup):
     def __init__(self, caller_widget, immediate_caller_widget, **kwargs):
         super(PopUpDeleteEntry, self).__init__(**kwargs)
@@ -32,7 +33,7 @@ class PopUpDeleteEntry(Popup):
     def return_to_edit(self):
         self.dismiss()
 
-# Popup window for editing an entry
+# Popup window for editing an income entry
 class PopUpEditEntryIncome(Popup):
     def __init__(self, caller_widget, **kwargs):
         super(PopUpEditEntryIncome, self).__init__(**kwargs)
@@ -74,7 +75,8 @@ class PopUpEditEntryIncome(Popup):
         
     def return_to_edit_pop(self):
         self.dismiss()
-        
+
+#Popup window for editing an expense entry
 class PopUpEditEntryExpense(Popup):
     def __init__(self, caller_widget, **kwargs):
         super(PopUpEditEntryExpense, self).__init__(**kwargs)
@@ -206,7 +208,6 @@ class HistoryScreen(Screen):
     def __init__(self, database, **kwargs):
         super(HistoryScreen, self).__init__(**kwargs)
 
-        # TODO: DEBUG (Remove in Final)
         # Sets window to phone ratio
         Window.size = (338, 600)
 

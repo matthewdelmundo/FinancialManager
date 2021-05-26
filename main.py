@@ -20,9 +20,11 @@ Builder.load_file('kv Files/globalwidgets.kv')
 # App Build
 class FinancialManagerApp(App):
     def build(self):
+        #instantiates entry and budget databases
         database = Database()
         budget_database = BudgetDatabase(database)
 
+        #creates the screen widgets
         sm = ScreenManager()
         home_screen = HomeScreen(database, name='home')
         history_screen = HistoryScreen(database, name='history')
@@ -30,6 +32,7 @@ class FinancialManagerApp(App):
         overview_screen = OverviewScreen(database, name='overview')
         add_screen = GlobalAdd(database, history_screen, budget_screen, name='add')
 
+        #adds the screen to the screen manager
         sm.add_widget(home_screen)
         sm.add_widget(history_screen)
         sm.add_widget(budget_screen)

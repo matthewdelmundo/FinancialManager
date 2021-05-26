@@ -4,7 +4,7 @@ from kivy.storage.jsonstore import JsonStore
 
 from database import get_date_id
 
-
+# Main class that holds the functions for reading and writing budgets
 class BudgetDatabase:
     def __init__(self, database):
         self.database = database
@@ -30,6 +30,7 @@ class BudgetDatabase:
         date_id = get_date_id(self.date_today)
         return self.database.get_budget_expense(date_id, budget_name)
 
+    #deletes a budget from database
     def remove_budget(self, budget_name):
         keys = self.budgets.keys()
         for i in range(len(keys)):

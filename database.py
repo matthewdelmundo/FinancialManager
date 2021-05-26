@@ -33,7 +33,7 @@ def create_entry_dict(name, type, category, amount):
             "Amount": amount}
 
 
-# Main class that holds the functions for reading and writing data
+# Main class that holds the functions for reading and writing entries
 class Database:
     def __init__(self):
         self.index = 0
@@ -102,7 +102,7 @@ class Database:
         self.data.put(date_id, entries=entries_list,
                       expense_categories=expense_category_dict)
 
-    # SAVING CATEGORIES LIST!!!!!!!!!!!!!!!!    
+    # Saving categories list  
     def get_categories_dict(self, entries_list):
         expense_category_dict = {}
         
@@ -207,6 +207,8 @@ class Database:
         print(self.data.get("2021-4-10")["entries"][0])
         print(get_date_id(self.current_date))
 
+    #calculates the total sum of entries
+    #Note that expense entries are entered in database as positive values
     def get_all_entries_total(self):
         total = 0
         datalist = self.data.keys()

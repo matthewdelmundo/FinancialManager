@@ -75,30 +75,50 @@
       "Dining": 125.0
     }
   },
-  "2021-5-25": {
+  "2021-5-26": {
     "entries": [
       {
-        "Amount": 100.0,
-        "Category": "Diningg",
+        "Amount": 125.0,
+        "Category": "Income",
+        "Name": "New Income",
+        "Type": "Income"
+      },
+      {
+        "Amount": 5.0,
+        "Category": "Income",
+        "Name": "12",
+        "Type": "Income"
+      },
+      {
+        "Amount": 150.0,
+        "Category": "Dining",
         "Name": "New Expense",
         "Type": "Expense"
       },
       {
-        "Amount": 199.0,
-        "Category": "Diningg",
-        "Name": "New Expense",
-        "Type": "Expense"
-      },
-      {
-        "Amount": 119.0,
+        "Amount": 120.0,
         "Category": "Transportation",
+        "Name": "New Expense",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 600.0,
+        "Category": "Movie",
+        "Name": "New Expense",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 5.0,
+        "Category": "aa",
         "Name": "New Expense",
         "Type": "Expense"
       }
     ],
     "expense_categories": {
-      "Diningg": 299.0,
-      "Transportation": 119.0
+      "Dining": 150.0,
+      "Movie": 600.0,
+      "Transportation": 120.0,
+      "aa": 5.0
     }
   }
 }

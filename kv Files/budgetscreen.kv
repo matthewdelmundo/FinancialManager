@@ -1,3 +1,4 @@
+#Popup for editing a budget
 <PopupEditBudget>
     title: "Edit Budget"
     size_hint: 0.8, 0.4
@@ -45,11 +46,14 @@
             size_hint: 0.5, 0.28
             text: "Finish Edits!"
             on_press: budg_amt.append_zeroes()
-            on_release: root.edit_budget()
+            on_release: 
+                root.edit_budget()
+                root.single_update_bg_color()
 
             size_hint: 0.5, 0.25
             pos_hint: {"x": 0, "y": 0.05}
 
+        #Delete button, asks for confirmation
         Button:
             size_hint: 0.5, 0.28
             text: "Delete"
@@ -58,6 +62,7 @@
             size_hint: 0.5, 0.25
             pos_hint: {"x": 0.5, "y": 0.05}
 
+#Popup for budget deletion confirmation
 <PopupDeleteBudget>
     title: "Delete Budget"
     size_hint: 0.8, 0.4
@@ -132,7 +137,7 @@
         source: "images/ui/wallet.png"
         size_hint: 0.8, 0.8
 
-
+#Popup for adding a budget
 <PopupAddBudget>
     title: "Add Budget"
     size_hint: 0.8, 0.4
@@ -213,7 +218,7 @@
     Button:
     	id: background
         on_release: root.button_function()
-        #background_normal: "images/ui/green.png"		#color indicator
+        #background normal features color indicator, can be found at python file
         background_down: "images/ui/circle_down.png"	
 
         size_hint: 0.9, 0.9
@@ -240,11 +245,6 @@
         valign: "middle"
 
         pos_hint: {"x": 0.1, "center_y": 0.75}
-
-    # TODO: Make progress bar graphic for budgets
-    #ProgressBar:
-    #    size_hint: 0.8, 1
-    #    pos_hint: {"x": 0.1, "center_y": 0.55}
 
     Label:
         text: "Remaining"
@@ -294,14 +294,17 @@
 
         on_press: root.root.view_edit_budget()
 
+#Budget screen widget
 <BudgetScreen>
+    #every time user enters budgetscreen, update bg colors of all budgets
     on_enter: root.update_bg_color()
     budgets_grid: budgets_grid
 
     FloatLayout:
         size: root.width, root.height
 
-        ToolBar_NoColor:
+        #adds a grey toolbar at upper side of the screen
+        ToolBar:
             id: budgets_toolbar
             size_hint: 1, 0.14
             pos_hint: {"y": 0.86}

@@ -1,12 +1,22 @@
 {
   "1": {
-    "Name": "Diningg",
+    "Name": "Dining",
     "Source": "images/temp/icons/expense/food.png",
-    "Total": 300.0
+    "Total": 200.0
   },
   "2": {
     "Name": "Transportation",
     "Source": "images/temp/icons/expense/transportation.png",
     "Total": 120.0
+  },
+  "3": {
+    "Name": "aa",
+    "Source": "images/ui/wallet.png",
+    "Total": 125.0
+  },
+  "4": {
+    "Name": "Movie",
+    "Source": "images/temp/icons/expense/movies.png",
+    "Total": 500.0
   }
 }

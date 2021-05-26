@@ -100,13 +100,14 @@
         halign: "right"
         valign: "bottom"
 
-# Main screen for displaying spending breakdown
+# Overview screen widget for displaying spending breakdown
 <OverviewScreen>
     overviews_grid: overviews_grid
 
     FloatLayout:
         size: root.width, root.height
 
+        #adds a grey toolbar at upper side of the screen
         ToolBar:
             id: overview_toolbar
             size_hint: 1, 0.14

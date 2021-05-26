@@ -15,23 +15,18 @@ from database import convert_month_num
 from kivy.lang import Builder
 Builder.load_file('kv Files/homescreen.kv')
 
+#Home Screen
 class HomeScreen(Screen):
     def __init__(self, database, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
-
-        self.database = database
-
         #Initialize Labels
+        self.database = database
         self.set_active_date_label()
         self.ids.home_toolbar.ids.title.text = "Home"
 
-
-    # Gets the total amount from HistoryScreen
+    # Gets the total amount of all entries from database
     def total_balance(self):
         total = self.database.get_all_entries_total()
-
-        #total = self.caller_widget.get_entries_list_total()
-        #budgets = budgetscreen.get_budgets_list()
         
         # positive value, green text
         if total >= 0:
@@ -46,6 +41,7 @@ class HomeScreen(Screen):
             text = '-₱{:,.2f}'.format(abs_total)
             self.ids.total_balance.text = text
 
+    #Changes date to current date
     def set_active_date_label(self):
         active_date = self.database.get_current_date()
         date_text = "{day} {month} {year}".format(day=active_date[0],

@@ -75,7 +75,7 @@
     input_type: "number"
 
 
-# Popup that lets user input an amount and name for an entry
+# Popup that lets user input an amount and name for an income entry
 <PopupAddIncome>
     title: "Add Income"
     on_dismiss: 
@@ -122,7 +122,7 @@
     input_type: "number"
 
 
-# Popup that lets user input an amount and name for an entry
+# Popup that lets user input an amount and name for an expense entry
 <PopupAddExpense>
     title: "Add Expense"
     on_dismiss: 
@@ -166,7 +166,7 @@
             pos_hint: {"x": 0.25, "y": 0.05}
 
 
-# Popup that lets user input an amount and name for an entry
+# Popup that lets the user pick which budget category to pair the entry with
 <PopupSelectCategory>
     categories_grid: categories_grid
 
@@ -257,6 +257,7 @@
             halign: "right"
             valign: "middle"
 
+#Adding an expense can now be done anywhere through the navigation bar
 <GlobalAdd>
     on_enter: root.request_add_entry()
     FloatLayout:
