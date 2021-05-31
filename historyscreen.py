@@ -152,7 +152,7 @@ class PopupEditCategory(Popup):
         self.categories_list = self.caller_widget.get_budgets_list()
 
         new_cat = Category(self, self.caller_popup,
-                           ("Uncategorized", 0, "images/ui/wallet.png"))
+                           ("Uncategorized", 0, "images/icons/Budgets/wallet_medium.png"))
         self.ids["categories_grid"].add_widget(new_cat)
 
         for budget_tuple in self.categories_list:
