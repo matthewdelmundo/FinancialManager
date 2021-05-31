@@ -48,6 +48,7 @@ class Database:
 
         self.categorize_json_content()
 
+    # Initializing test database content
     def test_json(self):
         self.data.put("2021-4-10", entries=[{"Name": "Ice Cream",
                                              "Type": "Expense",
@@ -80,7 +81,8 @@ class Database:
         else:
             self.data.put(date_id, entries=entry_list, 
                 expense_categories=new_exp_cat_list)   
-                     
+
+    # Deletes list of entries under current date                
     def delete_entries_list(self):
         date_id = get_date_id(self.current_date)
         if self.data.exists(date_id):
@@ -95,6 +97,8 @@ class Database:
             self.data.put(date_id, entries=entry_dict_list,
                           expense_categories=expense_category_dict)
 
+    # Puts data to the database based on the newly added/updated entries list and expense
+    # category list
     def save_entries_list(self, entries_list):
         date_id = get_date_id(self.current_date)
         expense_category_dict = self.get_categories_dict(entries_list)
