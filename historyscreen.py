@@ -15,7 +15,7 @@ from database import convert_month_num
 from kivy.lang import Builder
 Builder.load_file('kv Files/historyscreen.kv')
 
-#Popup window for deleting an entry
+# Popup window for deleting an entry
 class PopUpDeleteEntry(Popup):
     def __init__(self, caller_widget, immediate_caller_widget, **kwargs):
         super(PopUpDeleteEntry, self).__init__(**kwargs)
@@ -24,12 +24,14 @@ class PopUpDeleteEntry(Popup):
         self.caller_widget = caller_widget
         self.immediate_caller_widget = immediate_caller_widget
 
+    # Deletes entry from entry list and entry database
     def delete_entry(self):
         ent_ind = self.caller_widget.get_index()
         self.caller_widget.delete_entry_via_index(ent_ind)
         self.dismiss()
         self.immediate_caller_widget.return_to_edit_pop()
     
+    # Returns to Edit popup when refusing deletion
     def return_to_edit(self):
         self.dismiss()
 
@@ -44,23 +46,20 @@ class PopUpEditEntryIncome(Popup):
  
         self.update_edit_entry_info()
 
+    # Sends details to be displayed on the Edit Income Entry Popup
     def update_edit_entry_info(self):
-        self.ids.ent_type.color = (0.95, 0.98, 0.32, 1)
-        self.ids.ent_type.text = "ENTRY TYPE: INCOME"
-
         self.ids.ent_name.text = self.caller_widget.get_entry_name()
         self.ids.ent_amt.text = self.caller_widget.get_amount()
 
         self.ids.ent_amt.background_color = (0.22, 0.48, 0.3, 1)
         self.ids.ent_amt.text_color = (0.47, 0.75, 0.39, 1)
-        # elif self.caller_widget.get_entry_type() == "Expense":
-        #     self.ids.ent_amt.background_color = (0.63, 0.22, 0.24, 1)
-        #     self.ids.ent_amt.hint_text_color = (0.94, 0.35, 0.39, 1)
 
+    # Resets income entry details to default/previous version
     def reset_inputs(self):
         self.ids.ent_amt.text = self.caller_widget.get_amount()
         self.ids.ent_name.text = self.caller_widget.get_entry_name()
 
+    # Commit the edits made by the user to the entry
     def edit_entry(self):
         if self.ids.ent_name.text == "":
             new_name = self.caller_widget.get_entry_name()
@@ -70,9 +69,11 @@ class PopUpEditEntryIncome(Popup):
         self.caller_widget.edit_entry_info(new_name, new_amt, None)
         self.dismiss()
 
+    # Opens the delete entry popup
     def request_del_entry(self):
         self.req_del_ent.open()
-        
+    
+    # Returns to edit popup
     def return_to_edit_pop(self):
         self.dismiss()
 
@@ -93,10 +94,8 @@ class PopUpEditEntryExpense(Popup):
     def choose_category(self):
         self.select_category_popup.open()
 
+    # Sends details to be displayed on the Edit Expense Entry Popup
     def update_edit_entry_info(self):
-        self.ids.ent_type.color = (0.95, 0.98, 0.32, 1)
-        self.ids.ent_type.text = "ENTRY TYPE: EXPENSE"
-
         self.ids.ent_name.text = self.caller_widget.get_entry_name()
         self.ids.ent_amt.text = self.caller_widget.get_amount()
 
@@ -108,10 +107,12 @@ class PopUpEditEntryExpense(Popup):
         self.ids.ent_amt.background_color = (0.63, 0.22, 0.24, 1)
         self.ids.ent_amt.text_color = (0.94, 0.35, 0.39, 1)
 
+    # Resets entry details to default/previous version
     def reset_inputs(self):
         self.ids.ent_amt.text = self.caller_widget.get_amount()
         self.ids.ent_name.text = self.caller_widget.get_entry_name()
-
+    
+    # Commit the edits made by the user to the entry
     def edit_entry(self):
         if self.ids.ent_name.text == "":
             new_name = self.caller_widget.get_entry_name()
@@ -125,9 +126,11 @@ class PopUpEditEntryExpense(Popup):
         self.caller_widget.edit_entry_info(new_name, new_amt, new_cat)
         self.dismiss()
 
+    # Opens the delete entry popup
     def request_del_entry(self):
         self.req_del_ent.open()
 
+    # Returns to edit popup
     def return_to_edit_pop(self):
         self.dismiss()
 
