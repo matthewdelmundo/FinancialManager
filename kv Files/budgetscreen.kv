@@ -205,13 +205,12 @@
 <AddBudgetButton>
     Button:
         on_release: root.button_function()
-        background_normal: "images/ui/square_normal.png"
-        background_down: "images/ui/square_down.png"
         size_hint: 0.8, 0.8
 
     Image:
-        source: "images/ui/add.png"
+        source: "images/icons/add_medium.png"
         size_hint: 0.8, 0.8
+        allow_stretch: True
 
 
 <Budget>
@@ -244,7 +243,7 @@
         halign: "left"
         valign: "middle"
 
-        pos_hint: {"x": 0.1, "center_y": 0.75}
+        pos_hint: {"x": 0.1, "center_y": 0.65}
 
     Label:
         text: "Remaining"
@@ -253,7 +252,7 @@
         halign: "left"
         valign: "middle"
 
-        pos_hint: {"x": 0.1, "center_y": 0.55}
+        pos_hint: {"x": 0.1, "center_y": 0.45}
 
     Label:
         id: budget_total
@@ -263,7 +262,7 @@
         halign: "left"
         valign: "middle"
 
-        pos_hint: {"x": 0.1, "center_y": 0.4}
+        pos_hint: {"x": 0.1, "center_y": 0.3}
 
     Label:
         text: "Total"
@@ -272,27 +271,34 @@
         halign: "left"
         valign: "middle"
 
-        pos_hint: {"x": 0.1, "center_y": 0.25}
+        pos_hint: {"x": 0.1, "center_y": 0.15}
 
     Label:
         id: budget_name
-        text: "Daily Budget"
+        text: "Budget Display"
         bold: True
 
-        pos_hint: {"center_y": 0.1}
+        bold: True
+        pos_hint: {"center_y": 0.9}
+        text_size: self.size
+        halign: "center"
+        valign: "center"
     
     Button:
-        text: "Edit"
+        text: ""
         font_size: 12
         text_size: self.size
         halign: "center"
 
-        pos_hint: {"x": 0.9, "center_y": 0.9}
-        size_hint: 0.04, 0.1
-        
-
-
+        pos_hint: {"center_x": 0.95, "center_y": 0.9}
+        size_hint: None, 0.15
+        width: self.height
         on_press: root.root.view_edit_budget()
+
+    Image:
+        source: "images/icons/edit_small.png"
+        size_hint: 0.15, 0.15
+        pos_hint: {"center_x": 0.95, "center_y": 0.9}
 
 #Budget screen widget
 <BudgetScreen>

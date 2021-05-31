@@ -120,5 +120,18 @@
       "Transportation": 120.0,
       "aa": 5.0
     }
+  },
+  "2021-5-31": {
+    "entries": [
+      {
+        "Amount": 231.0,
+        "Category": "Movie",
+        "Name": "babab",
+        "Type": "Expense"
+      }
+    ],
+    "expense_categories": {
+      "Movie": 231.0
+    }
   }
 }

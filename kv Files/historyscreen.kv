@@ -205,11 +205,17 @@
 
             DatePickerButton:
                 id: date_picker
-                text: "Date"
+                text: ""
 
                 size_hint: None, 0.8
                 width: self.height
-                pos_hint: {"right": 0.95, "center_y": 0.5}
+                pos_hint: {"center_x": 0.85, "center_y": 0.5}
+
+            Image:
+                source: "images/icons/calendar_medium.png"
+                size_hint: 0.8, 0.8
+                pos_hint: {"center_x": 0.85, "center_y": 0.5}
+                allow_stretch: True
 
         ScrollView:
             do_scroll_x: False

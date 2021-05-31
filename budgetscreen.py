@@ -461,7 +461,7 @@ class BudgetScreen(Screen):
 
     def reset_budget_view(self):
         self.current_budget = None
-        self.ids["budget_display"].ids["budget_name"].text = "Daily Budget"
+        self.ids["budget_display"].ids["budget_name"].text = "Budget Display"
         self.ids["budget_display"].ids["budget_remaining"].text = "₱0.00"
         self.ids["budget_display"].ids["budget_remaining"].color = (1, 1, 1, 1)
         self.ids["budget_display"].ids["budget_total"].text = "₱0.00"
