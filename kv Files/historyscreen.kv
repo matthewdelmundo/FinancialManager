@@ -21,11 +21,13 @@
     size_hint: 0.8, 0.4
 
     RelativeLayout:
+        # Asks the user for deletion confirmation 
         Label:
             text: "Are you sure you want \n to delete this entry?"
             color: (0.75, 0.47, 0.39, 1)
             pos_hint: {"y": 0.1}
 
+        # Commits the deletion
         Button:
             text: "Yes"
             size_hint: 0.5, 0.28    
@@ -34,6 +36,7 @@
             size_hint: 0.5, 0.25   
             pos_hint: {"x": 0, "y": 0.05}
 
+        # Deletion operation not carried out
         Button:
             text: "No"
             size_hint: 0.5, 0.28
@@ -44,7 +47,7 @@
 
 #Popup for editing an income entry
 <PopUpEditEntryIncome>:
-    title: "Edit Entry"
+    title: "EDIT INCOME ENTRY"
     on_open: root.update_edit_entry_info()
     on_dismiss: root.reset_inputs() #!!!!!!
 
@@ -52,22 +55,16 @@
     size: 0, 300
 
     RelativeLayout:
-        Label:
-            id: ent_type
-            text: ""
-            halign: 'center'
-            valign: 'center'
-            pos_hint: {"x": 0.05,"y": 0.8}
-            font_size: 24
-
+        # Shows the entry amount
         EditAmountInputIncome:
             id: ent_amt
             text: ""
 
-            size_hint: 0.9, 0.38
-            pos_hint: {"x": 0.05,"y": 0.6}
+            size_hint: 0.9, 0.3
+            pos_hint: {"x": 0.05,"y": 0.7}
             font_size: 34
 
+        # Shows the entry name
         EditNameInput:
             id: ent_name
             text: ""
@@ -78,6 +75,7 @@
             multiline: False
             focus: True
 
+        # Button for confirming edits
         Button:
             text: "Finish Edits!"
             on_press: ent_amt.append_zeroes()
@@ -86,6 +84,7 @@
             size_hint: 0.5, 0.28
             pos_hint: {"x": 0, "y": 0.05}
         
+        # Button for deleting entry
         Button:
             size_hint: 0.5, 0.28
             pos_hint: {"x": 0.5, "y": 0.05}
@@ -94,22 +93,15 @@
  
  #Popup for editing an expense entry       
 <PopUpEditEntryExpense>:
-    title: "Edit Entry"
+    title: "EDIT EXPENSE ENTRY"
     on_open: root.update_edit_entry_info()
     on_dismiss: root.reset_inputs()
 
     size_hint: 0.8, None
-    size: 0, 400
+    size: 0, 300
 
     RelativeLayout:
-        Label:
-            id: ent_type
-            text: ""
-            halign: 'center'
-            valign: 'center'
-            pos_hint: {"x": 0.05,"y": 0.8}
-            font_size: 24
-
+        # Shows the entry amount
         EditAmountInputExpense:
             id: ent_amt
             text: ""
@@ -118,6 +110,7 @@
             pos_hint: {"x": 0.05,"y": 0.7}
             font_size: 34
 
+        # Shows the entry name
         EditNameInput:
             id: ent_name
             text: ""
@@ -128,6 +121,7 @@
             multiline: False
             focus: True
 
+        # Button for selecting entry category
         Button:
             id: category_name
             text: "Choose Category"
@@ -135,6 +129,7 @@
             size_hint: 0.9, 0.15
             pos_hint: {"x": 0.05, "y": 0.3}
 
+        # Button for committing edits
         Button:
             text: "Finish Edits!"
             on_press: ent_amt.append_zeroes()
@@ -143,6 +138,7 @@
             size_hint: 0.5, 0.20
             pos_hint: {"x": 0, "y": 0.05}
         
+        # Button for deleting entry
         Button:
             size_hint: 0.5, 0.20
             pos_hint: {"x": 0.5, "y": 0.05}

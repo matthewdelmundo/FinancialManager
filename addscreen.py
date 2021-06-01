@@ -125,6 +125,7 @@ class PopupSelectCategory(Popup):
             self.ids["categories_grid"].add_widget(new_cat)
 
 
+
 # Popup window for clicking an entry
 class PopUpClickEntry(Popup):
     def __init__(self, caller_widget, **kwargs):
@@ -140,30 +141,39 @@ class PopUpClickEntry(Popup):
 
         self.update_entry_info()
     
+    # Opens delete entry popup
     def request_del_entry(self):
         self.req_del_entry.open()
 
+    # Displays entry details
     def update_entry_info(self):
-        self.ids.ent_type.color = (0.95, 0.98, 0.32, 1)
-        self.ids.ent_type.text = "ENTRY TYPE: " + self.caller_widget.get_entry_type()
         self.ids.ent_name.text = self.caller_widget.get_entry_name()
         if self.caller_widget.get_entry_type() == "Income":
             self.ids.ent_amt.color = (0.47, 0.75, 0.39, 1)
         elif self.caller_widget.get_entry_type() == "Expense":
             self.ids.ent_amt.color = (0.75, 0.47, 0.39, 1)
-        self.ids.ent_amt.text = "AMOUNT: " + self.caller_widget.get_amount()
+        self.ids.ent_amt.text = self.caller_widget.get_amount()
         if self.caller_widget.get_category() == None:
             category = ""
         else:
             category = self.caller_widget.get_category()
         self.ids.category_name.text = "CATEGORY: " + category
-
+    
+    # Opens edit entry popup
     def request_edit_entry(self):
         if self.caller_widget.get_entry_type() == "Income":
             self.edit_incomeentry_popup.open()
         elif self.caller_widget.get_entry_type() == "Expense":
             self.edit_expenseentry_popup.open()
         self.dismiss()
+
+# Popup that opens when an income entry is clicked
+class PopUpClickEntryIncome(PopUpClickEntry):
+    pass
+
+# Popup that opens when an expense entry is clicked
+class PopUpClickEntryExpense(PopUpClickEntry):
+    pass
 
 # Custom Widget for the entries.
 # entry_type = "Income"/"Expense"
@@ -177,7 +187,10 @@ class Entry(Widget):
         self.category = category
         self.index = index
         self.caller_widget = caller_widget
-        self.click_entry_popup = PopUpClickEntry(self)
+        if self.entry_type == "Income":
+            self.click_entry_popup = PopUpClickEntryIncome(self)
+        elif self.entry_type == "Expense":
+            self.click_entry_popup = PopUpClickEntryExpense(self)
 
         self.initialize_entry()
 
