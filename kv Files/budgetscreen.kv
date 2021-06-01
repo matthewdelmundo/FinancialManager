@@ -93,8 +93,8 @@
     Button:
         on_release: root.button_function()
 
-        background_normal: "images/ui/circle_normal.png"
-        background_down: "images/ui/circle_down.png"
+        #background_normal: "images/ui/circle_normal.png"
+        #background_down: "images/ui/circle_down.png"
         size_hint: 0.8, 0.8
 
     Image:
@@ -108,29 +108,36 @@
     icon_grid: icon_grid
 
     title: "Choose Budget Icon"
-    size_hint: 1, 1
+    size_hint: 0.9, 0.9
+    RelativeLayout:
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            size_hint: 1, 0.85
+            pos_hint: {"y": 0.15}
 
-    ScrollView:
-        do_scroll_x: False
-        do_scroll_y: True
-        size_hint: 1, 1
+            GridLayout:
+                id: icon_grid
+                cols: 3
 
-        GridLayout:
-            id: icon_grid
-            cols: 3
+                size_hint_y: None
+                col_force_default: True
+                row_force_default: True
+                col_default_width: self.parent.width/3
+                row_default_height: self.parent.width/3
 
-            size_hint_y: None
-            col_force_default: True
-            row_force_default: True
-            col_default_width: self.parent.width/3
-            row_default_height: self.parent.width/3
+        Button:
+            size_hint: 0.5, 0.09
+            pos_hint: {"center_x": 0.5, "y": 0.02}
+
+            text: "Cancel"
 
 <BudgetIcon>
     Button:
         on_release: root.button_function()
 
-        background_normal: "images/ui/circle_normal.png"
-        background_down: "images/ui/circle_down.png"
+        #background_normal: "images/ui/circle_normal.png"
+        #background_down: "images/ui/circle_down.png"
         size_hint: 0.8, 0.8
 
     Image:
@@ -194,8 +201,8 @@
     Button:
         on_release: root.button_function()
 
-        background_normal: "images/ui/circle_normal.png"
-        background_down: "images/ui/circle_down.png"
+        #background_normal: "images/ui/circle_normal.png"
+        #background_down: "images/ui/circle_down.png"
         size_hint: 0.8, 0.8
 
     Image:
@@ -221,7 +228,7 @@
     	id: background
         on_release: root.button_function()
         #background normal features color indicator, can be found at python file
-        background_down: "images/ui/circle_down.png"	
+        #background_down: "images/ui/circle_down.png"
 
         size_hint: 0.9, 0.9
 
@@ -247,7 +254,7 @@
         halign: "left"
         valign: "middle"
 
-        pos_hint: {"x": 0.1, "center_y": 0.65}
+        pos_hint: {"x": 0.1, "center_y": 0.8}
 
     Label:
         text: "Remaining"
@@ -256,7 +263,7 @@
         halign: "left"
         valign: "middle"
 
-        pos_hint: {"x": 0.1, "center_y": 0.45}
+        pos_hint: {"x": 0.1, "center_y": 0.6}
 
     Label:
         id: budget_total
@@ -266,7 +273,7 @@
         halign: "left"
         valign: "middle"
 
-        pos_hint: {"x": 0.1, "center_y": 0.3}
+        pos_hint: {"x": 0.1, "center_y": 0.45}
 
     Label:
         text: "Total"
@@ -275,7 +282,7 @@
         halign: "left"
         valign: "middle"
 
-        pos_hint: {"x": 0.1, "center_y": 0.15}
+        pos_hint: {"x": 0.1, "center_y": 0.3}
 
     Label:
         id: budget_name
@@ -283,9 +290,9 @@
         bold: True
 
         bold: True
-        pos_hint: {"center_y": 0.9}
+        pos_hint: {"right": 0.9, "center_y": 0.1}
         text_size: self.size
-        halign: "center"
+        halign: "right"
         valign: "center"
     
     Button:
@@ -294,7 +301,7 @@
         text_size: self.size
         halign: "center"
 
-        pos_hint: {"center_x": 0.95, "center_y": 0.9}
+        pos_hint: {"center_x": 0.95, "center_y": 0.1}
         size_hint: None, 0.15
         width: self.height
         on_press: root.root.view_edit_budget()
@@ -302,7 +309,7 @@
     Image:
         source: "images/icons/edit_small.png"
         size_hint: 0.15, 0.15
-        pos_hint: {"center_x": 0.95, "center_y": 0.9}
+        pos_hint: {"center_x": 0.95, "center_y": 0.1}
         allow_stretch: True
 
 #Budget screen widget

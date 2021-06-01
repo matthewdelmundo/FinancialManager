@@ -56,7 +56,8 @@ class PopUpAddIncome(Popup):
             if name == "":
                 name = "New Income"
             amount = self.ids.entry_amount.get_amount()
-            self.caller_widget.add_entry("Income", name, display_amount, amount, "Income")
+            self.caller_widget.add_entry("Income", name, display_amount,
+                                         amount, "Income", "images/icons/income_icon.png")
 
             self.dismiss()
 
@@ -71,6 +72,8 @@ class PopUpAddExpense(Popup):
 
         # Reference to the popup for ease of opening
         self.select_category_popup = PopupSelectCategory(caller_widget, self)
+
+        self.category_source = ""
 
     # Sends caller the choose_category function
     def choose_category(self):
@@ -93,8 +96,13 @@ class PopUpAddExpense(Popup):
             if name == "":
                 name = "New Expense"
             amount = self.ids.entry_amount.get_amount()
-            self.caller_widget.add_entry("Expense", name, display_amount, amount, category)
+            self.caller_widget.add_entry("Expense", name, display_amount,
+                                         amount, category, self.category_source)
             self.dismiss()
+
+    def update_category_data(self, category_name, category_source):
+        self.ids["category_name"].text = category_name
+        self.category_source = category_source
 
 
 # Popup window for clicking the "Category" button
@@ -133,6 +141,7 @@ class PopUpClickEntry(Popup):
 
         # Widget that called this popup
         self.caller_widget = caller_widget
+        self.category_source = caller_widget.category_source
 
         self.edit_incomeentry_popup = PopUpEditEntryIncome(caller_widget)
         self.edit_expenseentry_popup = PopUpEditEntryExpense(caller_widget)
@@ -158,6 +167,7 @@ class PopUpClickEntry(Popup):
         else:
             category = self.caller_widget.get_category()
         self.ids.category_name.text = category
+        self.ids["entry_icon"].source = self.category_source
     
     # Opens edit entry popup
     def request_edit_entry(self):
@@ -179,12 +189,15 @@ class PopUpClickEntryExpense(PopUpClickEntry):
 # entry_type = "Income"/"Expense"
 # index = index in the currently used entries_list (found in HistoryScreen)
 class Entry(Widget):
-    def __init__(self, entry_type, name, display_amount, category, index, caller_widget, **kwargs):
+    def __init__(self, entry_type, name, display_amount, category, category_source,
+                 index, caller_widget, **kwargs):
         super(Entry, self).__init__(**kwargs)
         self.entry_type = entry_type
         self.name = name
         self.display_amount = display_amount
         self.category = category
+        self.category_source = category_source
+        self.ids["entry_icon"].source = category_source
         self.index = index
         self.caller_widget = caller_widget
         if self.entry_type == "Income":
@@ -194,7 +207,7 @@ class Entry(Widget):
 
         self.initialize_entry()
 
-    def edit_entry_info(self, new_name, new_amt, new_cat):  ###### ALERT!
+    def edit_entry_info(self, new_name, new_amt, new_cat, new_source):  ###### ALERT!
         self.name = new_name
         self.ids.entry_name.text = new_name
 
@@ -204,7 +217,10 @@ class Entry(Widget):
         self.display_amount = new_amt
         self.ids.entry_display_amount.text = new_amt
         self.category = new_cat
-        self.caller_widget.update_entries_list(self.name, self.display_amount, self.category, self.index, self.entry_type)
+        self.category_source = new_source
+        self.ids["entry_icon"].source = new_source
+        self.caller_widget.update_entries_list(self.name, self.display_amount,
+                                               self.category, self.index, self.entry_type)
 
     def get_entry_type(self):
         return self.entry_type
@@ -277,9 +293,25 @@ class GlobalAdd(Screen):
     # Adds entry to UI display by adding a widget
     # display_amount is the amount in the format ₱XX,XXX.XX
     # amount is the float amount for use in the data array
-    def add_entry(self, entry_type, name, display_amount, amount, category, update_callback=True):
-        new_entry = Entry(entry_type, name, display_amount, category,
+    def add_entry(self, entry_type, name, display_amount, amount,
+                  category, category_source, update_callback=True):
+        new_entry = Entry(entry_type, name, display_amount, category, category_source,
                           len(self.history_screen.entries_list), self)
+
+        # Reconfigures layout when entry is an income
+        if (entry_type == "Income"):
+            new_entry.ids["icon_layout"].pos_hint = {"right": 1}
+            new_entry.ids["button_layout"].pos_hint = {"x": 0}
+            #button_layout_size =
+            #new_entry.ids["button_layout"].pos_hint = {"x": 0}
+
+
+        #if (entry_type == "Income"):
+        #    new_entry.ids["icon_layout"].pos_hint = {"right": 1}
+        #    new_entry.ids["entry_button"].pos_hint = {"x": 0}
+        #    new_entry.ids["entry_name"].pos_hint = {"x": 0.05}
+        #    new_entry.ids["entry_display_amount"].pos_hint = {"right": 0.74}
+
 
         self.history_screen.ids["entries_grid"].add_widget(new_entry)
         self.history_screen.entries_list.append([name, entry_type, category, amount])

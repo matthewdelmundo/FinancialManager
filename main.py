@@ -27,7 +27,7 @@ class FinancialManagerApp(App):
         #creates the screen widgets
         sm = ScreenManager()
         home_screen = HomeScreen(database, name='home')
-        history_screen = HistoryScreen(database, name='history')
+        history_screen = HistoryScreen(database, budget_database, name='history')
         budget_screen = BudgetScreen(budget_database, name='budget')
         overview_screen = OverviewScreen(database, name='overview')
         add_screen = GlobalAdd(database, history_screen, budget_screen, name='add')

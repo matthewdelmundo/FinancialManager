@@ -66,7 +66,8 @@ class PopUpEditEntryIncome(Popup):
         else:
             new_name = self.ids.ent_name.text
         new_amt = self.ids.ent_amt.text
-        self.caller_widget.edit_entry_info(new_name, new_amt, None)
+        self.caller_widget.edit_entry_info(new_name, new_amt, "Income",
+                                           "images/icons/income_icon.png")
         self.dismiss()
 
     # Opens the delete entry popup
@@ -89,6 +90,12 @@ class PopUpEditEntryExpense(Popup):
         self.update_edit_entry_info()
 
         self.select_category_popup = PopupEditCategory(caller_widget, self)
+
+        self.category_source = ""
+
+    def update_category_data(self, category_name, category_source):
+        self.ids["category_name"].text = category_name
+        self.category_source = category_source
 
     # Sends caller the select_category function with "Expense" as parameter
     def choose_category(self):
@@ -123,7 +130,8 @@ class PopUpEditEntryExpense(Popup):
             new_cat = ""
         else:
             new_cat = self.ids.category_name.text
-        self.caller_widget.edit_entry_info(new_name, new_amt, new_cat)
+        new_source = self.category_source
+        self.caller_widget.edit_entry_info(new_name, new_amt, new_cat, new_source)
         self.dismiss()
 
     # Opens the delete entry popup
@@ -181,7 +189,7 @@ class Category(AnchorLayout):
         self.ids["icon"].source = self.budget_source
 
     def press(self):
-        self.caller_popup.ids.category_name.text = self.budget_name
+        self.caller_popup.update_category_data(self.budget_name, self.budget_source)
         self.caller_widget.dismiss()
     
 
@@ -208,13 +216,14 @@ class HistoryScreen(Screen):
     entries_grid = ObjectProperty(None)
     entries_list = []
 
-    def __init__(self, database, **kwargs):
+    def __init__(self, database, budget_database, **kwargs):
         super(HistoryScreen, self).__init__(**kwargs)
 
         # Sets window to phone ratio
         Window.size = (338, 600)
 
         self.database = database
+        self.budget_database = budget_database
         self.global_add = None
 
         # Sets GridLayout size to its number of entries -> allows scrolling
@@ -243,8 +252,9 @@ class HistoryScreen(Screen):
             entry_amount = entry[3]
 
             display_amount = '₱{:,.2f}'.format(abs(entry_amount))
+            category_source = self.budget_database.get_source(entry_category)
             self.global_add.add_entry(entry_type, entry_name, display_amount, entry_amount,
-                                      entry_category, update_callback=False)
+                                      entry_category, category_source, update_callback=False)
 
     # Run by DatePickerButton
     # Reads database after date has been change

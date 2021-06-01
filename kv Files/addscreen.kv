@@ -9,43 +9,54 @@
     size_hint: 0.8, 0.29
 
     on_open: root.update_entry_info()
+    RelativeLayout:
+        Image:
+            source: "images/ui/circle_icon_border.png"
+            size_hint: 1, 0.8
+            pos_hint: {"y": 1}
 
-    BoxLayout:
-        orientation: "vertical"
-        spacing: 10 
-        padding: 8
+        Image:
+            id: entry_icon
+            source: "images/icons/Budgets/wallet_icon.png"
+            size_hint: 1, 0.8
+            pos_hint: {"y": 1}
 
-        # Label:
-        #     id: ent_type
-        #     text: ""
-        #     halign: 'center'
-        #     valign: 'center'
-        #     font_size: 24
+        BoxLayout:
+            orientation: "vertical"
+            spacing: 10
+            padding: 8
 
-        Label:
-            id: ent_name
-            text: ""
-            halign: 'center'
-            valign: 'center'
-            font_size: 24
+            # Label:
+            #     id: ent_type
+            #     text: ""
+            #     halign: 'center'
+            #     valign: 'center'
+            #     font_size: 24
 
-        Label:
-            id: ent_amt
-            text: ""
-            halign: 'center'
-            valign: 'center'
-            font_size: 24
+            Label:
+                id: ent_name
+                text: ""
+                halign: 'center'
+                valign: 'center'
+                font_size: 24
 
-        Label:
-            id:category_name
-            text: ""
-            halign: 'center'
-            valign: 'center'
-            font_size: 24
-    
-        Button:
-            text: "Edit Entry"
-            on_release: root.request_edit_entry()
+            Label:
+                id: ent_amt
+                text: ""
+                halign: 'center'
+                valign: 'center'
+                font_size: 24
+
+            Label:
+                id:category_name
+                text: ""
+                halign: 'center'
+                valign: 'center'
+                font_size: 24
+
+            Button:
+                text: "Edit Entry"
+                on_release: root.request_edit_entry()
 
 
 # Popup for choosing between "Income" and "Expense"
@@ -229,9 +240,6 @@
             halign: "left"
             valign: "middle"
 
-
-
-
 # Custom widget for each entry
 # uses a name and an amount variable
 <Entry>:
@@ -240,27 +248,51 @@
         width: root.width
         height: root.height
 
-        Button:
-            on_release: root.press()
+        RelativeLayout:
+            id: icon_layout
+            size_hint: None, 1
+            size: self.height, self.height
 
-        Label:
-            id: entry_name
+            Image:
+                id: entry_icon
+                source: "images/icons/income_icon.png"
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
 
-            size_hint: 0.38, 1
-            pos_hint: {"x": 0.05}
-            text_size: self.size
-            halign: "left"
-            valign: "middle"
+        RelativeLayout:
+            id: button_layout
+            size_hint: None, None
+            size: root.width - (icon_layout.width + 5), root.height
+            pos: icon_layout.width + 5, self.y
 
-        Label:
-            id: entry_display_amount
+            Button:
+                id: entry_button
+                on_release: root.press()
 
-            bold: True
-            size_hint: 0.48, 1
-            pos_hint: {"right": 0.95}
-            text_size: self.size
-            halign: "right"
-            valign: "middle"
+            Label:
+                id: entry_name
+
+                size_hint: 0.9, 1
+                pos_hint: {"x": 0.05, "y": 0.6}
+                #size_hint: 0.38, 1
+
+                text_size: self.size
+                halign: "left"
+                valign: "bottom"
+
+            Label:
+                id: entry_display_amount
+
+                font_size: 22
+                bold: True
+                size_hint: 0.9, 1
+                pos_hint: {"x": 0.05, "y": 0.1}
+
+                #size_hint: 0.48, 1
+                #pos_hint: {"right": 0.95}
+                text_size: self.size
+                halign: "left"
+                valign: "bottom"
+
 
 #Adding an expense can now be done anywhere through the navigation bar
 <GlobalAdd>

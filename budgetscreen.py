@@ -137,6 +137,7 @@ class PopupChooseIcon(Popup):
     icon_grid = ObjectProperty(None)
 
     icon_sources = [
+        "images/icons/Budgets/wallet_icon.png",
         "images/icons/Budgets/meal_icon.png",
         "images/icons/Budgets/game_icon.png",
         "images/icons/Budgets/groceries_icon.png",
