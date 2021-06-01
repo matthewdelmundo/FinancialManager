@@ -180,7 +180,7 @@ class BudgetIcon(AnchorLayout):
 # Popup that lets you set budget icon, budget name, and budget amount
 class PopupAddBudget(Popup):
     # Default icon in case no new icon has been set
-    icon_source = "images/icons/Budgets/wallet_medium.png"
+    icon_source = "images/icons/Budgets/wallet_icon.png"
 
     def __init__(self, caller_widget, **kwargs):
         super(PopupAddBudget, self).__init__(**kwargs)
@@ -194,7 +194,7 @@ class PopupAddBudget(Popup):
     def reset_inputs(self):
         self.ids["budget_amount"].initialize_values()
         self.ids["budget_name"].text = ""
-        self.set_icon("images/icons/Budgets/wallet_medium.png")
+        self.set_icon("images/icons/Budgets/wallet_icon.png")
 
     def choose_icon(self):
         self.choose_icon_popup.open()
