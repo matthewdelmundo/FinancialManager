@@ -48,9 +48,11 @@ class FinancialManagerApp(App):
         self.add_screen = add_screen
         return sm
     
+    # Change screen to Home Screen
     def go_to_home(self):
         self.sm.switch_to(self.home_screen, direction='right')
         
+    # Change screen to Budget Screen
     def go_to_budget(self):
         if self.sm.current == 'home':
             dir = 'left'
@@ -59,6 +61,7 @@ class FinancialManagerApp(App):
         self.budget_screen.on_screen_callback()
         self.sm.switch_to(self.budget_screen, direction=dir)
 
+    # Change screen to History Screen
     def go_to_history(self):
         if self.sm.current == 'home' or self.sm.current == 'budget':
             dir = 'left'
@@ -66,10 +69,12 @@ class FinancialManagerApp(App):
             dir = 'right'
         self.sm.switch_to(self.history_screen, direction=dir)
 
+    # Change screen to Overview Screen
     def go_to_overview(self):
         self.overview_screen.on_screen_callback()
         self.sm.switch_to(self.overview_screen, direction='left')
 
+    # Change screen to Add Screen
     def go_to_add(self):
         self.sm.switch_to(self.add_screen, direction='left')
 
