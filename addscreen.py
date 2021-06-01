@@ -120,6 +120,7 @@ class PopupSelectCategory(Popup):
         # Sets GridLayout height to its number of entries -> allows scrolling
         self.categories_grid.bind(minimum_height=self.categories_grid.setter("height"))
 
+    # Updates the values of categories grid
     def update_categories(self):
         self.ids["categories_grid"].clear_widgets()
         self.categories_list = self.caller_widget.get_budgets_list()

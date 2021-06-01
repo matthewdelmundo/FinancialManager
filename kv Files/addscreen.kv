@@ -98,7 +98,7 @@
         root.reset_inputs()
         app.go_to_history()
 
-    size_hint: 0.8, 0.42
+    size_hint: 0.8, 0.40
 
     RelativeLayout:
         IncomeAmountInput:
@@ -106,7 +106,7 @@
             hint_text: "₱0.00"
 
             size_hint: 0.9, 0.3
-            pos_hint: {"x": 0.05,"y": 0.7}
+            pos_hint: {"x": 0.05,"y": 0.65}
             font_size: 40
 
         EntryNameInput:
@@ -115,7 +115,7 @@
             on_focus: entry_amount.append_zeroes()
 
             size_hint: 0.9, 0.18
-            pos_hint: {"x": 0.05,"y": 0.5}
+            pos_hint: {"x": 0.05,"y": 0.4}
             multiline: False
             focus: True
 
@@ -145,7 +145,7 @@
         root.reset_inputs()
         app.go_to_history()
 
-    size_hint: 0.8, 0.42
+    size_hint: 0.8, 0.40
 
     RelativeLayout:
         ExpenseAmountInput:

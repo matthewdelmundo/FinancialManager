@@ -158,6 +158,7 @@ class PopupEditCategory(Popup):
         # Sets GridLayout height to its number of entries -> allows scrolling
         self.categories_grid.bind(minimum_height=self.categories_grid.setter("height"))
 
+    # Updates the values of categories grid
     def update_categories(self):
         self.ids["categories_grid"].clear_widgets()
         self.categories_list = self.caller_widget.get_budgets_list()
@@ -184,10 +185,12 @@ class Category(AnchorLayout):
 
         self.initialize_entry()
 
+    # Sets the initial value to the given budget
     def initialize_entry(self):
         self.ids["category_name"].text = self.budget_name
         self.ids["icon"].source = self.budget_source
 
+    # Sets the category to the chosen budget when pressed
     def press(self):
         self.caller_popup.update_category_data(self.budget_name, self.budget_source)
         self.caller_widget.dismiss()
