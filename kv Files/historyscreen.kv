@@ -27,6 +27,10 @@
             color: (0.75, 0.47, 0.39, 1)
             pos_hint: {"y": 0.1}
 
+            text_size: self.size
+            halign: 'center'
+            valign: 'middle'
+
         # Commits the deletion
         Button:
             text: "Yes"
@@ -179,6 +183,41 @@
             row_default_height: '60dp'
             row_force_default: True
 
+#Popup for deleting an entry
+<PopUpClearHistory>:
+    title: "Clear Entries"
+
+    size_hint: 0.8, 0.4
+
+    RelativeLayout:
+        # Asks the user for deletion confirmation
+        Label:
+            text: "Are you sure you want \n to delete the entries?"
+            color: (0.75, 0.47, 0.39, 1)
+            pos_hint: {"y": 0.1}
+
+            text_size: self.size
+            halign: 'center'
+            valign: 'middle'
+
+        # Commits the deletion
+        Button:
+            text: "Yes"
+            size_hint: 0.5, 0.28
+            on_press: root.clear_history()
+
+            size_hint: 0.5, 0.25
+            pos_hint: {"x": 0, "y": 0.05}
+
+        # Deletion operation not carried out
+        Button:
+            text: "No"
+            size_hint: 0.5, 0.28
+            on_press: root.dismiss()
+
+            size_hint: 0.5, 0.25
+            pos_hint: {"x": 0.5, "y": 0.05}
+
 # History screen widget for displaying entry history
 <HistoryScreen>
     entries_grid: entries_grid
@@ -229,11 +268,27 @@
                 row_force_default: True
 
         Button:
-            text: "Clear"
-            on_release: root.clear_entries()
+            text: ""
+            on_release: root.request_clear_entries()
 
             size_hint: 0.4, 0.08
             pos_hint: {"x": 0.3, "y": 0.11}
+
+        RelativeLayout:
+            size_hint: 0.12, 0.12
+            pos_hint: {"x": 0.32, "y": 0.09}
+
+            Image:
+                source: "images/icons/garbage_small.png"
+
+        Label:
+            text: "Clear"
+            size_hint: 0.4, 0.08
+            pos_hint: {"x": 0.3, "y": 0.11}
+
+            text_size: self.size
+            halign: 'center'
+            valign: 'middle'
 
         NavigationBar:
             size_hint: 1, 0.08

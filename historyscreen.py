@@ -27,7 +27,6 @@ class PopUpDeleteEntry(Popup):
     # Deletes entry from entry list and entry database
     def delete_entry(self):
         ent_ind = self.caller_widget.get_index()
-        print(ent_ind)
         self.caller_widget.delete_entry_via_index(ent_ind)
         self.dismiss()
         self.immediate_caller_widget.return_to_edit_pop()
@@ -212,7 +211,21 @@ class EditNameInput(TextInput):
         if len(self.text) >= 24:
             return
         return super(EditNameInput, self).insert_text(substring, from_undo)
-    
+
+
+# Popup window for clearing entries in the current active date
+class PopUpClearHistory(Popup):
+    def __init__(self, caller_widget, **kwargs):
+        super(PopUpClearHistory, self).__init__(**kwargs)
+
+        # Widget that called this popup
+        self.caller_widget = caller_widget
+
+    # Deletes entry from entry list and entry database
+    def clear_history(self):
+        self.caller_widget.clear_entries()
+        self.dismiss()
+
 
 # Main screen showing entry history
 # Should use array to store and edit data
@@ -229,6 +242,8 @@ class HistoryScreen(Screen):
         self.database = database
         self.budget_database = budget_database
         self.global_add = None
+
+        self.clear_history_popup = PopUpClearHistory(self)
 
         # Sets GridLayout size to its number of entries -> allows scrolling
         self.entries_grid.bind(minimum_height=self.entries_grid.setter("height"))
@@ -294,6 +309,9 @@ class HistoryScreen(Screen):
             entry_dict_list.append(entry_dict)
 
         self.database.save_entries_list(entry_dict_list)
+
+    def request_clear_entries(self):
+        self.clear_history_popup.open()
 
     def clear_entries(self):
         self.ids["entries_grid"].clear_widgets()
