@@ -10,23 +10,18 @@
     "Total": 120.0
   },
   "3": {
-    "Name": "aa",
-    "Source": "images/icons/Budgets/wallet_icon.png",
-    "Total": 125.0
-  },
-  "4": {
     "Name": "Movie",
     "Source": "images/icons/Budgets/movie_icon.png",
     "Total": 500.0
   },
-  "5": {
+  "4": {
     "Name": "Computer Shop",
     "Source": "images/icons/Budgets/game_icon.png",
-    "Total": 80.0
+    "Total": 120.0
   },
-  "6": {
+  "5": {
     "Name": "Groceries",
     "Source": "images/icons/Budgets/groceries_icon.png",
-    "Total": 200.0
+    "Total": 300.0
   }
 }

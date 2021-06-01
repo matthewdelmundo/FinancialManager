@@ -12,8 +12,11 @@ class BudgetDatabase:
 
         self.budgets = JsonStore("data/budgets.json", indent=2, sort_keys=True)
 
-    def get_source(self, budget_name):
-        source = "images/icons/income_icon.png"
+    def get_source(self, budget_name, entry_type):
+        if entry_type == "Income":
+            return "images/icons/income_icon.png"
+
+        source =  "images/icons/Budgets/wallet_icon.png"
         for budget_ind in self.budgets:
             budget = self.budgets.get(budget_ind)
             if budget["Name"] == budget_name:

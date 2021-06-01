@@ -27,6 +27,7 @@ class PopUpDeleteEntry(Popup):
     # Deletes entry from entry list and entry database
     def delete_entry(self):
         ent_ind = self.caller_widget.get_index()
+        print(ent_ind)
         self.caller_widget.delete_entry_via_index(ent_ind)
         self.dismiss()
         self.immediate_caller_widget.return_to_edit_pop()
@@ -91,7 +92,7 @@ class PopUpEditEntryExpense(Popup):
 
         self.select_category_popup = PopupEditCategory(caller_widget, self)
 
-        self.category_source = ""
+        self.category_source = self.caller_widget.category_source
 
     def update_category_data(self, category_name, category_source):
         self.ids["category_name"].text = category_name
@@ -255,7 +256,7 @@ class HistoryScreen(Screen):
             entry_amount = entry[3]
 
             display_amount = '₱{:,.2f}'.format(abs(entry_amount))
-            category_source = self.budget_database.get_source(entry_category)
+            category_source = self.budget_database.get_source(entry_category, entry_type)
             self.global_add.add_entry(entry_type, entry_name, display_amount, entry_amount,
                                       entry_category, category_source, update_callback=False)
 
@@ -263,7 +264,9 @@ class HistoryScreen(Screen):
     # Reads database after date has been change
     def on_date_change_callback(self):
         self.set_active_date_label()
+        self.reload_entries()
 
+    def reload_entries(self):
         self.ids["entries_grid"].clear_widgets()
         self.entries_list = []
         self.read_database()

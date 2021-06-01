@@ -1,1 +1,54 @@
-{}
+{
+  "2021-6-1": {
+    "entries": [
+      {
+        "Amount": 5000.0,
+        "Category": "Income",
+        "Name": "Monthly Allowance",
+        "Type": "Income"
+      },
+      {
+        "Amount": 300.0,
+        "Category": "Movie",
+        "Name": "Demon Slayer Movie",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 80.0,
+        "Category": "Dining",
+        "Name": "Katsudon",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 20.0,
+        "Category": "Transportation",
+        "Name": "MRT Commute",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 400.0,
+        "Category": "Income",
+        "Name": "Loan return from Josh",
+        "Type": "Income"
+      },
+      {
+        "Amount": 120.0,
+        "Category": "Dining",
+        "Name": "S&R Pizza",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 80.0,
+        "Category": "Groceries",
+        "Name": "Bath Supplies",
+        "Type": "Expense"
+      }
+    ],
+    "expense_categories": {
+      "Dining": 200.0,
+      "Groceries": 80.0,
+      "Movie": 300.0,
+      "Transportation": 20.0
+    }
+  }
+}

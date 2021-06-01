@@ -78,7 +78,7 @@ Builder.load_string("""
 
 class DatePickerButton(ToggleButton):
     pHint_x = NumericProperty(0.8)
-    pHint_y = NumericProperty(0.6)
+    pHint_y = NumericProperty(0.5)
     pHint = ReferenceListProperty(pHint_x, pHint_y)
 
     def __init__(self, **kwargs):

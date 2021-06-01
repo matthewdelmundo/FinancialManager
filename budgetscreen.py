@@ -35,7 +35,9 @@ class PopupDeleteBudget(Popup):
             self.caller_widget.ids["budgets_grid"].remove_widget(self.caller_widget.current_budget)
             budget_names.remove(self.caller_widget.current_budget.name)
             self.caller_widget.budget_database.remove_budget(self.caller_widget.current_budget.name)
+
             self.caller_widget.budget_database.reorganize_json()
+            self.caller_widget.reload_budgets()
 
         #dismisses self and caller widget (popupeditbudget)
         self.dismiss()
@@ -272,11 +274,12 @@ class ChooseIcon(AnchorLayout):
 
 # Button/Image that opens the AddBudget popup
 class AddBudgetButton(AnchorLayout):
-    caller_widget = ObjectProperty(None)
+    def __init__(self, caller_widget, **kwargs):
+        super(AddBudgetButton, self).__init__(**kwargs)
+        self.caller_widget = caller_widget
 
     def button_function(self):
         self.caller_widget.popup_add_budget()
-        
 
 # Button/Image that lets you view the budget
 class Budget(AnchorLayout):
@@ -366,7 +369,14 @@ class BudgetScreen(Screen):
     def on_screen_callback(self):
         self.reset_budget_view()
 
+    def reload_budgets(self):
+        self.grid_index = 1
+        self.ids["budgets_grid"].clear_widgets()
+        self.read_budget_database()
+
     def read_budget_database(self):
+        self.ids["budgets_grid"].add_widget(AddBudgetButton(self))
+
         budgets = self.budget_database.load_budgets()
         for i in range(len(budgets)):
             budget = budgets[i]

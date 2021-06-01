@@ -73,7 +73,7 @@ class PopUpAddExpense(Popup):
         # Reference to the popup for ease of opening
         self.select_category_popup = PopupSelectCategory(caller_widget, self)
 
-        self.category_source = ""
+        self.category_source = "images/icons/Budgets/wallet_icon.png"
 
     # Sends caller the choose_category function
     def choose_category(self):
@@ -243,6 +243,7 @@ class Entry(Widget):
     
     def delete_entry_via_index(self, index):
         self.caller_widget.del_ent_via_ind(index, self)
+        self.caller_widget.reload_entries()
 
     # Initializes entry for UI display
     # Turns amount font color to green when Income entry
@@ -270,6 +271,9 @@ class GlobalAdd(Screen):
 
         self.history_screen.set_references(self)
         self.history_screen.read_database()
+
+    def reload_entries(self):
+        self.history_screen.reload_entries()
 
     # Opens the ChooseEntry popup
     def request_add_entry(self):
