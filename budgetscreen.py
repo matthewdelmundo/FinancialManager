@@ -135,11 +135,11 @@ class PopupChooseIcon(Popup):
     icon_grid = ObjectProperty(None)
 
     icon_sources = [
-        "images/temp/icons/expense/food.png",
-        "images/temp/icons/expense/game.png",
-        "images/temp/icons/expense/groceries.png",
-        "images/temp/icons/expense/movies.png",
-        "images/temp/icons/expense/transportation.png"
+        "images/icons/Budgets/meal_icon.png",
+        "images/icons/Budgets/game_icon.png",
+        "images/icons/Budgets/groceries_icon.png",
+        "images/icons/Budgets/movie_icon.png",
+        "images/icons/Budgets/car_icon.png"
     ]
 
     def __init__(self, caller_widget, **kwargs):

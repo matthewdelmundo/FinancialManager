@@ -1,12 +1,12 @@
 {
   "1": {
     "Name": "Dining",
-    "Source": "images/temp/icons/expense/food.png",
+    "Source": "images/icons/Budgets/meal_icon.png",
     "Total": 200.0
   },
   "2": {
     "Name": "Transportation",
-    "Source": "images/temp/icons/expense/transportation.png",
+    "Source": "images/icons/Budgets/car_icon.png",
     "Total": 120.0
   },
   "3": {
@@ -16,7 +16,17 @@
   },
   "4": {
     "Name": "Movie",
-    "Source": "images/temp/icons/expense/movies.png",
+    "Source": "images/icons/Budgets/movie_icon.png",
     "Total": 500.0
+  },
+  "5": {
+    "Name": "Computer Shop",
+    "Source": "images/icons/Budgets/game_icon.png",
+    "Total": 80.0
+  },
+  "6": {
+    "Name": "Groceries",
+    "Source": "images/icons/Budgets/groceries_icon.png",
+    "Total": 200.0
   }
 }

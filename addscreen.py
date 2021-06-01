@@ -88,7 +88,7 @@ class PopUpAddExpense(Popup):
         name = self.ids.entry_name.text
         category = self.ids.category_name.text
         if category == "Choose Category":
-            category = ""
+            category = "Uncategorized"
         if display_amount != "":
             if name == "":
                 name = "New Expense"
@@ -157,7 +157,7 @@ class PopUpClickEntry(Popup):
             category = ""
         else:
             category = self.caller_widget.get_category()
-        self.ids.category_name.text = "CATEGORY: " + category
+        self.ids.category_name.text = category
     
     # Opens edit entry popup
     def request_edit_entry(self):
@@ -290,7 +290,6 @@ class GlobalAdd(Screen):
 
     # Used when finishing edits of an entry
     def update_entries_list(self, new_name, new_amount, new_category, index, entry_type):
-        print("update", self.history_screen.entries_list)
         self.history_screen.entries_list[index][0] = new_name
         self.history_screen.entries_list[index][2] = new_category
 
