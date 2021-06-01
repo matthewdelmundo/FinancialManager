@@ -165,11 +165,25 @@
         "Category": "Transportation",
         "Name": "Test",
         "Type": "Expense"
+      },
+      {
+        "Amount": 251.0,
+        "Category": "Movie",
+        "Name": "New Expense",
+        "Type": "Expense"
+      },
+      {
+        "Amount": 1.0,
+        "Category": "aa",
+        "Name": "New Expense",
+        "Type": "Expense"
       }
     ],
     "expense_categories": {
       "Dining": 1232.0,
-      "Transportation": 200.0
+      "Movie": 251.0,
+      "Transportation": 200.0,
+      "aa": 1.0
     }
   }
 }

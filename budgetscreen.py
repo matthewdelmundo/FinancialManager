@@ -114,8 +114,10 @@ class PopupEditBudget(Popup):
         remaining = current_budget.remaining
 
         percent = (remaining/total)*100
-        if percent <= 100 and percent >= 50:
+        if percent == 100:
             current_budget.ids.background.background_normal = "images/ui/green.png"
+        elif percent < 100 and percent >= 50:
+            current_budget.ids.background.background_normal = "images/ui/lightgreen.png"
         elif percent < 50 and percent > 0:
             current_budget.ids.background.background_normal = "images/ui/yellow.png"
         elif percent <= 0:
@@ -481,8 +483,10 @@ class BudgetScreen(Screen):
             remaining = total - expense
 
             percent = (remaining/total)*100
-            if percent <= 100 and percent >= 50:
+            if percent == 100:
                 current_budget.ids.background.background_normal = "images/ui/green.png"
+            elif percent < 100 and percent >= 50:
+                current_budget.ids.background.background_normal = "images/ui/lightgreen.png"
             elif percent < 50 and percent > 0:
                 current_budget.ids.background.background_normal = "images/ui/yellow.png"
             elif percent <= 0:
