@@ -44,7 +44,7 @@
 
         Button:
             size_hint: 0.5, 0.28
-            text: "Finish Edits!"
+            text: "Finish Edits"
             on_press: budg_amt.append_zeroes()
             on_release: 
                 root.edit_budget()
@@ -56,7 +56,7 @@
         #Delete button, asks for confirmation
         Button:
             size_hint: 0.5, 0.28
-            text: "Delete"
+            text: "Delete Budget"
             on_release: root.request_del_budget()
 
             size_hint: 0.5, 0.25

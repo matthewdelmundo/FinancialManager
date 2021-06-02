@@ -51,7 +51,7 @@
 
 #Popup for editing an income entry
 <PopUpEditEntryIncome>:
-    title: "EDIT INCOME ENTRY"
+    title: "Edit"
     on_open: root.update_edit_entry_info()
     on_dismiss: root.reset_inputs() #!!!!!!
 
@@ -59,6 +59,18 @@
     size: 0, 300
 
     RelativeLayout:
+        # Icon Border
+        Image:
+            source: "images/ui/circle_icon_border.png"
+            size_hint: 1, 0.5
+            pos_hint: {"y": 1}
+
+        # Icon Image
+        Image:
+            source: "images/icons/income_icon.png"
+            size_hint: 1, 0.5
+            pos_hint: {"y": 1}
+
         # Shows the entry amount
         EditAmountInputIncome:
             id: ent_amt
@@ -81,7 +93,7 @@
 
         # Button for confirming edits
         Button:
-            text: "Finish Edits!"
+            text: "Finish Edits"
             on_press: ent_amt.append_zeroes()
             on_release: root.edit_entry()
 
@@ -92,12 +104,12 @@
         Button:
             size_hint: 0.5, 0.20
             pos_hint: {"x": 0.5, "y": 0.05}
-            text: "Delete Entry!"
+            text: "Delete Entry"
             on_release: root.request_del_entry()
  
  #Popup for editing an expense entry       
 <PopUpEditEntryExpense>:
-    title: "EDIT EXPENSE ENTRY"
+    title: "Edit"
     on_open: root.update_edit_entry_info()
     on_dismiss: root.reset_inputs()
 
@@ -105,6 +117,19 @@
     size: 0, 300
 
     RelativeLayout:
+        # Icon Border
+        Image:
+            source: "images/ui/circle_icon_border.png"
+            size_hint: 1, 0.5
+            pos_hint: {"y": 1}
+
+        # Icon Image
+        Image:
+            id: entry_icon
+            source: "images/icons/Budgets/wallet_icon.png"
+            size_hint: 1, 0.5
+            pos_hint: {"y": 1}
+
         # Shows the entry amount
         EditAmountInputExpense:
             id: ent_amt
@@ -135,7 +160,7 @@
 
         # Button for committing edits
         Button:
-            text: "Finish Edits!"
+            text: "Finish Edits"
             on_press: ent_amt.append_zeroes()
             on_release: root.edit_entry()
 
@@ -146,7 +171,7 @@
         Button:
             size_hint: 0.5, 0.20
             pos_hint: {"x": 0.5, "y": 0.05}
-            text: "Delete Entry!"
+            text: "Delete Entry"
             on_release: root.request_del_entry()
 
 

@@ -96,6 +96,7 @@ class PopUpEditEntryExpense(Popup):
     def update_category_data(self, category_name, category_source):
         self.ids["category_name"].text = category_name
         self.category_source = category_source
+        self.ids["entry_icon"].source = category_source
 
     # Sends caller the select_category function with "Expense" as parameter
     def choose_category(self):

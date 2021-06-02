@@ -1,8 +1,8 @@
 <PopUpClickEntryIncome@PopUpClickEntry>:
-    title: "INCOME"
+    title: " "
 
 <PopUpClickEntryExpense@PopUpClickEntry>:
-    title: "EXPENSE"
+    title: " "
 
 # Popup for clicking Entry 
 <PopUpClickEntry>:
@@ -93,7 +93,7 @@
 
 # Popup that lets user input an amount and name for an income entry
 <PopupAddIncome>
-    title: "Add Income"
+    title: "Add"
     on_dismiss: 
         root.reset_inputs()
         app.go_to_history()
@@ -101,6 +101,18 @@
     size_hint: 0.8, 0.40
 
     RelativeLayout:
+        # Icon Border
+        Image:
+            source: "images/ui/circle_icon_border.png"
+            size_hint: 1, 0.5
+            pos_hint: {"y": 1}
+
+        # Icon Image
+        Image:
+            source: "images/icons/income_icon.png"
+            size_hint: 1, 0.5
+            pos_hint: {"y": 1}
+
         IncomeAmountInput:
             id: entry_amount
             hint_text: "₱0.00"
@@ -140,7 +152,7 @@
 
 # Popup that lets user input an amount and name for an expense entry
 <PopupAddExpense>
-    title: "Add Expense"
+    title: "Add"
     on_dismiss: 
         root.reset_inputs()
         app.go_to_history()
@@ -148,6 +160,19 @@
     size_hint: 0.8, 0.40
 
     RelativeLayout:
+        # Icon Border
+        Image:
+            source: "images/ui/circle_icon_border.png"
+            size_hint: 1, 0.5
+            pos_hint: {"y": 1}
+
+        # Icon Image
+        Image:
+            id: entry_icon
+            source: "images/icons/Budgets/wallet_icon.png"
+            size_hint: 1, 0.5
+            pos_hint: {"y": 1}
+
         ExpenseAmountInput:
             id: entry_amount
             hint_text: "₱0.00"

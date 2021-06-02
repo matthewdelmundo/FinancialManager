@@ -103,6 +103,7 @@ class PopUpAddExpense(Popup):
     def update_category_data(self, category_name, category_source):
         self.ids["category_name"].text = category_name
         self.category_source = category_source
+        self.ids["entry_icon"].source = category_source
 
 
 # Popup window for clicking the "Category" button
@@ -168,13 +169,14 @@ class PopUpClickEntry(Popup):
         else:
             category = self.caller_widget.get_category()
         self.ids.category_name.text = category
-        self.ids["entry_icon"].source = self.category_source
     
     # Opens edit entry popup
     def request_edit_entry(self):
         if self.caller_widget.get_entry_type() == "Income":
             self.edit_incomeentry_popup.open()
         elif self.caller_widget.get_entry_type() == "Expense":
+            self.edit_expenseentry_popup.category_source = self.category_source
+            self.edit_expenseentry_popup.ids["entry_icon"].source = self.category_source
             self.edit_expenseentry_popup.open()
         self.dismiss()
 
@@ -258,6 +260,11 @@ class Entry(Widget):
 
     # Prints list index when widget is pressed
     def press(self):
+        if self.entry_type == "Income":
+            self.click_entry_popup.ids["entry_icon"].source = "images/icons/income_icon.png"
+        elif self.entry_type == "Expense":
+            self.click_entry_popup.category_source = self.category_source
+            self.click_entry_popup.ids["entry_icon"].source = self.category_source
         self.click_entry_popup.open()
 
 #Screen for adding an extry globally
